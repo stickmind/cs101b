@@ -1,0 +1,1312 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Topic 3. Recursion" href="../../topic-3/index.html" /><link rel="prev" title="Section 2. Containers and Recursion" href="../section-2.1/index.html" />
+
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+        <title>Assignment 2. Fun with Collections - CS101B Programming Abstractions</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pied-piper-admonition.css?v=e32e2275" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">CS101B Programming Abstractions</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">CS101B Programming Abstractions</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../resources/index.html">Resources</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Resources</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Workflow/index.html">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/PythonToCpp/index.html">Python to C++ Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Debugging/index.html">Debugging Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Testing/index.html">Testing Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-0/index.html">Introduction</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Introduction</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-0/assign-0/index.html">Assignment 0. Welcome to CS101B!</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-1/index.html">Topic 1. Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Topic 1. Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-1/section-1.1/index.html">Section 1.1 C++ and Recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-1/assign-1.1/index.html">Assignment 1. Welcome to C++</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Topic 2. Containers</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Topic 2. Containers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../section-2.1/index.html">Section 2. Containers and Recursion</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Assignment 2. Fun with Collections</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-3/index.html">Topic 3. Recursion</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Topic 3. Recursion</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/section-3.1/index.html">Section 3.1 Recursion and Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/assign-3.1/index.html">Assignment 3.1 A Visit to Recursia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/section-3.2/index.html">Section 3.2 Recursion and Backtracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/assign-3.2/index.html">Assignment 3.2 Recursion to the Rescue!</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-4/index.html">Topic 4. Algorithm and Abstraction</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Topic 4. Algorithm and Abstraction</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/section-4.1/index.html">Section 4.1 Big-O, Searching and Sorting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/section-4.2/index.html">Section 4.2 Class Design and Dynamic Memory Allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/assign-4.1/index.html">Assignment 4.1 Bag’O Big-O</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../topic-5/index.html">Topic 5. Data Structures</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>返回顶部</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section class="tex2jax_ignore mathjax_ignore" id="assignment-2-fun-with-collections">
+<h1>Assignment 2. Fun with Collections<a class="headerlink" href="#assignment-2-fun-with-collections" title="Link to this heading">¶</a></h1>
+<p>This assignment is all about the amazing things you can do with collections. It’s a two-parter. The first is a program that can guess the language a piece of text is written in. The second models rising sea levels on a sampler of realistic terrains. By the time you’ve completed this assignment, <strong>you’ll have a much better handle on the container classes and how to use different types like queues, maps, vectors, and sets to model and solve problems</strong>. Plus, you’ll have some things we think you’d love to share with your friends and family.</p>
+<p>This assignment has two parts. It will be quite a lot to do if you start this assignment the night before it’s due, but if you <strong>make slow and steady progress on this assignment each day</strong> you should be in great shape. Here’s our recommended timetable:</p>
+<ul class="simple">
+<li><p>Aim to complete Rosetta Stone within four days of the assignment going out.</p></li>
+<li><p>Aim to complete Rising Tides within seven days of this assignment going out.</p></li>
+</ul>
+<section id="starter-files">
+<h2>Starter Files<a class="headerlink" href="#starter-files" title="Link to this heading">¶</a></h2>
+<p>We provide a ZIP of the starter project. Download the zip, extract the files, and open the project in VS Code.</p>
+<p>📦 <a class="reference download internal" download="" href="../../_downloads/84d2656db736ebbe974ba2084604747a/Assignment-2.1.zip"><span class="xref download myst">Starter code</span></a></p>
+</section>
+<section id="part-one-rosetta-stone">
+<h2>Part One: Rosetta Stone<a class="headerlink" href="#part-one-rosetta-stone" title="Link to this heading">¶</a></h2>
+<p><em>Rosetta Stone is a joint project with Katie Creel, Diana Navas, and Wanheng Hu, Embedded Ethics Extraordinaires. Thanks to Richard Lin, Patricia Wei, Jin-Hee Lee, Neha Chetry, Nuhu Osman Attah, and Rose Novick for providing sample texts.</em></p>
+<p>Have you ever navigated your web browser to a site not written in your native language? If so, you might have seen something like this in the corner:</p>
+<figure class="align-center" id="id1">
+<img alt="../../_images/TranslateThisPage.png" src="../../_images/TranslateThisPage.png" />
+<figcaption>
+<p><span class="caption-text"><em>A message from Google Chrome that indicates the page being visited is written in Haitian Creole and offering to translate it to English.</em></span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The browser has automatically detected that the website I visited is written in Haitian Creole, while the browser itself is set to English.</p>
+<p>How does the browser know what language a webpage is written in? This is the <strong><em>language identification</em></strong> problem, which has been studied extensively for at least the last thirty years. In this part of the assignment, you’ll implement a simple but effective language identification algorithm, gaining experience working with the <code class="docutils literal notranslate"><span class="pre">Map</span></code> container type in the process.</p>
+<section id="background-trigrams">
+<h3>Background: Trigrams<a class="headerlink" href="#background-trigrams" title="Link to this heading">¶</a></h3>
+<p>The approach we’ll be using for language identification is based on <strong><em>trigram profiles</em></strong>. To understand what a trigram profile is, let’s do an example. Suppose we have this (admittedly silly) piece of text:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="n">BANANA</span> <span class="n">BANDANA</span>
+</pre></div>
+</div>
+<p>The trigram profile for this string is a collection of all its length-three subtrings, along with the number of times that length-three substring appears. Specifically, it’s this group:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ANA&quot;:</span> <span class="pre">3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">BA&quot;:</span> <span class="pre">2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;A</span> <span class="pre">B&quot;:</span> <span class="pre">2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;BAN&quot;:</span> <span class="pre">2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;AND&quot;:</span> <span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;DAN&quot;:</span> <span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;NA</span> <span class="pre">&quot;:</span> <span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;NAN&quot;:</span> <span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;NDA&quot;:</span> <span class="pre">1</span></code></p></li>
+</ul>
+<p>That is, the pattern <code class="docutils literal notranslate"><span class="pre">ANA</span></code> appears three times, the pattern <code class="docutils literal notranslate"><span class="pre">BAN</span></code> appears twice, and the pattern <code class="docutils literal notranslate"><span class="pre">NDA</span></code> appears exactly once. These substrings are called trigrams. (More generally, the <strong><em>k-grams</em></strong> of a text are all of the substrings of that text that have length exactly <em>k</em>.)</p>
+<p>Trigram profiles are useful for language identification because the patterns of trigrams that appear in a long piece of text often heavily reflects the language that text was written in. For example, here’s the top trigrams from a profile of an English text (specifically, the Wikipedia article “Human”):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">th&quot;:</span> <span class="pre">667</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;the&quot;:</span> <span class="pre">616</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;he</span> <span class="pre">&quot;:</span> <span class="pre">533</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">an&quot;:</span> <span class="pre">497</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;nd</span> <span class="pre">&quot;:</span> <span class="pre">492</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;and&quot;:</span> <span class="pre">470</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ion&quot;:</span> <span class="pre">423</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">of&quot;:</span> <span class="pre">376</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">in&quot;:</span> <span class="pre">375</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;of</span> <span class="pre">&quot;:</span> <span class="pre">363</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;tio&quot;:</span> <span class="pre">333</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ed</span> <span class="pre">&quot;:</span> <span class="pre">320</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ing&quot;:</span> <span class="pre">318</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;man&quot;:</span> <span class="pre">289</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ng</span> <span class="pre">&quot;:</span> <span class="pre">288</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p>That top entry, <code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">th&quot;</span></code>, indicates that the text has a lot of words that start with <code class="docutils literal notranslate"><span class="pre">th</span></code>. You can see that the word <code class="docutils literal notranslate"><span class="pre">&quot;the&quot;</span></code> is extremely common, as are the suffixes <code class="docutils literal notranslate"><span class="pre">&quot;ing&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;ion&quot;</span></code>.</p>
+<p>Contrast this with a set of trigrams taken from a piece written in Malay:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;an</span> <span class="pre">&quot;:</span> <span class="pre">184</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ang&quot;:</span> <span class="pre">82</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">da&quot;:</span> <span class="pre">73</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">me&quot;:</span> <span class="pre">71</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ng</span> <span class="pre">&quot;:</span> <span class="pre">71</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;dan&quot;:</span> <span class="pre">52</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;kan&quot;:</span> <span class="pre">52</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;sia&quot;:</span> <span class="pre">52</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ia</span> <span class="pre">&quot;:</span> <span class="pre">47</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;men&quot;:</span> <span class="pre">42</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">be&quot;:</span> <span class="pre">40</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">pe&quot;:</span> <span class="pre">39</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">ya&quot;:</span> <span class="pre">39</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;yan&quot;:</span> <span class="pre">39</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">ma&quot;:</span> <span class="pre">38</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p>Or this set of trigrams from a piece written in Spanish:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">de&quot;:</span> <span class="pre">531</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;os</span> <span class="pre">&quot;:</span> <span class="pre">396</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;de</span> <span class="pre">&quot;:</span> <span class="pre">374</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ent&quot;:</span> <span class="pre">298</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">la&quot;:</span> <span class="pre">293</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;es</span> <span class="pre">&quot;:</span> <span class="pre">277</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;la</span> <span class="pre">&quot;:</span> <span class="pre">239</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;el</span> <span class="pre">&quot;:</span> <span class="pre">232</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">co&quot;:</span> <span class="pre">217</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">es&quot;:</span> <span class="pre">208</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;en</span> <span class="pre">&quot;:</span> <span class="pre">198</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ien&quot;:</span> <span class="pre">198</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;nte&quot;:</span> <span class="pre">196</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;as</span> <span class="pre">&quot;:</span> <span class="pre">193</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">en&quot;:</span> <span class="pre">185</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p>Or this piece written in Slovene:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;je</span> <span class="pre">&quot;:</span> <span class="pre">82</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">po&quot;:</span> <span class="pre">65</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">pr&quot;:</span> <span class="pre">45</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ih</span> <span class="pre">&quot;:</span> <span class="pre">45</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;anj&quot;:</span> <span class="pre">43</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;nos&quot;:</span> <span class="pre">43</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">na&quot;:</span> <span class="pre">39</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ost&quot;:</span> <span class="pre">39</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ove&quot;:</span> <span class="pre">37</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;lov&quot;:</span> <span class="pre">36</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">je&quot;:</span> <span class="pre">34</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">ra&quot;:</span> <span class="pre">33</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;raz&quot;:</span> <span class="pre">33</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;in</span> <span class="pre">&quot;:</span> <span class="pre">32</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;sti&quot;:</span> <span class="pre">32</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p>Or this one in Hausa:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ar</span> <span class="pre">&quot;:</span> <span class="pre">93</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;an</span> <span class="pre">&quot;:</span> <span class="pre">85</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">da&quot;:</span> <span class="pre">72</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;in</span> <span class="pre">&quot;:</span> <span class="pre">69</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;da</span> <span class="pre">&quot;:</span> <span class="pre">58</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;iya&quot;:</span> <span class="pre">42</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">a</span> <span class="pre">&quot;:</span> <span class="pre">39</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">ka&quot;:</span> <span class="pre">38</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">ta&quot;:</span> <span class="pre">38</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ara&quot;:</span> <span class="pre">38</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">sh&quot;:</span> <span class="pre">35</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">wa&quot;:</span> <span class="pre">35</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;a</span> <span class="pre">s&quot;:</span> <span class="pre">35</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ana&quot;:</span> <span class="pre">33</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;na</span> <span class="pre">&quot;:</span> <span class="pre">33</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p>As you can see, the relative frequencies of the trigrams in the text are markedly different from one another. This makes it possible to guess a text’s language by computing its trigram profile and then finding which language that profile most resembles.</p>
+</section>
+<section id="background-utf-8">
+<h3>Background: UTF-8<a class="headerlink" href="#background-utf-8" title="Link to this heading">¶</a></h3>
+<p>Before we dive into the actual coding part, we have to address an issue you’ll encounter almost immediately when working on this assignment.</p>
+<p>Here’s what happens if we gram trigrams from a piece of text written in Vietnamese:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ng</span> <span class="pre">&quot;:</span> <span class="pre">591</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;h\341\273&quot;:</span> <span class="pre">442</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">\304\221&quot;:</span> <span class="pre">371</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\260\341\273&quot;:</span> <span class="pre">311</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\306\260\341&quot;:</span> <span class="pre">311</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">th&quot;:</span> <span class="pre">307</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">nh&quot;:</span> <span class="pre">276</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">ng&quot;:</span> <span class="pre">251</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\303\240</span> <span class="pre">&quot;:</span> <span class="pre">231</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">tr&quot;:</span> <span class="pre">229</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\341\273\235&quot;:</span> <span class="pre">219</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\304\221\341&quot;:</span> <span class="pre">211</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;nh</span> <span class="pre">&quot;:</span> <span class="pre">205</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;i\341\273&quot;:</span> <span class="pre">200</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p>And here’s some trigrams from Bulgarian text:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\320\275\320&quot;:</span> <span class="pre">835</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\321\202\320&quot;:</span> <span class="pre">701</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\320\276\320&quot;:</span> <span class="pre">607</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\320\260</span> <span class="pre">&quot;:</span> <span class="pre">551</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\321\200\320&quot;:</span> <span class="pre">517</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\320\265\320&quot;:</span> <span class="pre">491</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\320\260\320&quot;:</span> <span class="pre">450</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\320\270\320&quot;:</span> <span class="pre">438</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\320\262\320&quot;:</span> <span class="pre">433</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\320\270\321&quot;:</span> <span class="pre">395</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\260</span> <span class="pre">\320&quot;:</span> <span class="pre">356</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\320\270</span> <span class="pre">&quot;:</span> <span class="pre">349</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\320\276\321&quot;:</span> <span class="pre">348</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\320\260\321&quot;:</span> <span class="pre">321</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p>And here’s some from Farsi:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\330\247\331&quot;:</span> <span class="pre">562</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\330\247\330&quot;:</span> <span class="pre">529</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\247\331\206&quot;:</span> <span class="pre">391</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\331\206\330&quot;:</span> <span class="pre">361</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\330\263\330&quot;:</span> <span class="pre">320</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">\330\247&quot;:</span> <span class="pre">306</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\333\214</span> <span class="pre">&quot;:</span> <span class="pre">287</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\331\210\330&quot;:</span> <span class="pre">281</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\333\214\330&quot;:</span> <span class="pre">256</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">\330\250&quot;:</span> <span class="pre">241</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\331\207</span> <span class="pre">&quot;:</span> <span class="pre">240</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\331\206</span> <span class="pre">&quot;:</span> <span class="pre">235</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\330\257\330&quot;:</span> <span class="pre">231</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;\330\261\330&quot;:</span> <span class="pre">230</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p>What’s going on here? Why are we seeing lots of numbers and slashes rather than actual characters?</p>
+<p>The reason has to do with two historical artifacts of C++ colliding with contemporary realities. C++ is an older language (it dates back to the 1980s), at a time where computer networks were small and memory was scarce. To save space, most C++ implementations only allowed for 256 different values for the <code class="docutils literal notranslate"><span class="pre">char</span></code> type. And that was fine, since computers were often used in contexts where the English alphabet (plus a few added characters for other languages) was all that was needed. You could easily get away with having only 256 possible different characters, and the space savings were key at a time where even a 1GB hard drive would be considered a luxury.</p>
+<p>But now that memory is <em>much</em> cheaper and people all over the world are connecting and sharing text in their native languages, this restriction on the <code class="docutils literal notranslate"><span class="pre">char</span></code> type is more of a liability than an asset. Restricting the char type to only have 256 possible values means that there are more Chinese characters than there are possible <code class="docutils literal notranslate"><span class="pre">char</span></code> values – not to mention more emojis than <code class="docutils literal notranslate"><span class="pre">char</span></code>s.</p>
+<p>To address this, a compromise was reached – while (for backwards compatibility) English letters would take up just one char value, glyphs from other languages would be encoded as a sequence of multiple consecutive chars representing a single glyph. And, as a strange side-effect, the individual chars making up those glyphs can’t easily be displayed in isolation. They are often displayed as <code class="docutils literal notranslate"><span class="pre">\NNN</span></code>. For example, the sequence <code class="docutils literal notranslate"><span class="pre">\331\206</span></code> corresponds to the Arabic character <code class="docutils literal notranslate"><span class="pre">ن</span></code>, while <code class="docutils literal notranslate"><span class="pre">\320\270</span></code> corresponds to the Cyrillic letter <code class="docutils literal notranslate"><span class="pre">и</span></code>. This system is called <strong><em>UTF-8</em></strong>.</p>
+<p>In the context of this assignment, this means that a “trigram” formed from a piece of text might actually consist of a fractional character. For example, the ancient Phoenician character <code class="docutils literal notranslate"><span class="pre">𐤄</span></code> is encoded as a sequence of four <code class="docutils literal notranslate"><span class="pre">char</span></code> values, so trigrams from Phoenician text would often contain quarters or halves of individual Phoenician letters. While in general it is not okay to subdivide characters this way (many systems will display error characters if you try printing out a partial glyph), <strong><em>for the purposes of this assignment you should always form trigrams from a group of three <code class="docutils literal notranslate"><span class="pre">char</span></code> values</em></strong>, regardless of what fraction of a glyph those three <code class="docutils literal notranslate"><span class="pre">char</span></code>s represent.</p>
+<p>To summarize:</p>
+<ol class="arabic simple">
+<li><p>Don’t be surprised if you see sequences like <code class="docutils literal notranslate"><span class="pre">\302</span></code> or <code class="docutils literal notranslate"><span class="pre">\225</span></code> appearing in your trigrams. That’s a consequence of using characters that 1980s Americans wouldn’t have expected to see on their computers. It’s a complete historical artifact, but one we have to live with today.</p></li>
+<li><p>For the purposes of this assignment, it is perfectly okay – and in fact, expected – that when forming trigrams, you should always form groups of three <code class="docutils literal notranslate"><span class="pre">char</span></code> values, rather than trying to segment text at the actual boundaries between glyphs. Surprisingly, this still works well in practice.</p></li>
+<li><p>Outside of the context of CS101B, be aware that <code class="docutils literal notranslate"><span class="pre">char</span></code> does not mean “a character in any language.” Some glyphs require multiple characters to encode. The “correct” way to handle these sorts of strings is to use a library that properly breaks text apart into its individual units.</p></li>
+</ol>
+</section>
+<section id="milestone-one-form-k-grams">
+<h3>Milestone One: Form k-Grams<a class="headerlink" href="#milestone-one-form-k-grams" title="Link to this heading">¶</a></h3>
+<p>Your first task in this problem is to implement a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">kGramsIn</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">text</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">kGramLength</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a string, then returns a <code class="docutils literal notranslate"><span class="pre">Map&lt;string,</span> <span class="pre">double&gt;</span></code> containing the frequencies of all the <em>k</em>-grams of length <code class="docutils literal notranslate"><span class="pre">kGramLength</span></code>. Each key should be a <em>k</em>-gram (a substring of length <code class="docutils literal notranslate"><span class="pre">kGramLength</span></code>), and each value should be the number of times that this <em>k</em>-gram appears in the string. For convenience, any <em>k</em>-gram that doesn’t appear in the text should not be present in the map, not even with value zero.</p>
+<p>You can assume that the <code class="docutils literal notranslate"><span class="pre">kGramLength</span></code> parameter is positive (for example, it shouldn’t be 0 or -137). If the <code class="docutils literal notranslate"><span class="pre">kGramLength</span></code> parameter is not positive (that is, it’s zero or negative), you should call the special function <code class="docutils literal notranslate"><span class="pre">error</span></code>, defined in <code class="docutils literal notranslate"><span class="pre">&quot;error.h&quot;</span></code>, to report an error. You can call this function as follows:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Some error message&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">error</span></code> function acts like an emergency abort and will immediately exit the function with an error.</p>
+<p>The input string might be shorter than <code class="docutils literal notranslate"><span class="pre">kGramLength</span></code>. If that happens, there are no <em>k</em>-grams, and you should return an empty <code class="docutils literal notranslate"><span class="pre">Map</span></code>.</p>
+<div class="tip admonition">
+<p class="admonition-title">Milestone One Requirements</p>
+<ol class="arabic simple">
+<li><p>Implement the <code class="docutils literal notranslate"><span class="pre">kGramsIn</span></code> function in <code class="docutils literal notranslate"><span class="pre">RosettaStone.cpp</span></code>.</p></li>
+<li><p>Use the provided tests to confirm that your code works correctly.</p></li>
+<li><p>Optionally, but not required: use <code class="docutils literal notranslate"><span class="pre">STUDENT_TEST</span></code> to add a test case or two of your own!</p></li>
+</ol>
+</div>
+<p>You might be wondering why we’re having you return a <code class="docutils literal notranslate"><span class="pre">Map&lt;string,</span> <span class="pre">double&gt;</span></code> here rather than a <code class="docutils literal notranslate"><span class="pre">Map&lt;string,</span> <span class="pre">int&gt;</span></code>. After all, the frequencies here are all integers, and <code class="docutils literal notranslate"><span class="pre">int</span></code> seems like a more appropriate type. There are two reasons why we’re having you do this:</p>
+<ol class="arabic simple">
+<li><p>In a later step, you will be dividing all the entries of this map to make them between 0 and 1, inclusive. Working with a <code class="docutils literal notranslate"><span class="pre">Map&lt;string,</span> <span class="pre">double&gt;</span></code> here makes that step a bit easier.</p></li>
+<li><p>Later on, you’ll be doing a calculation involving multiplying each of the terms in the map by themselves. The <code class="docutils literal notranslate"><span class="pre">int</span></code> type is (usually) limited to a range from roughly negative two billion to roughly positive two billion, and some of the entries in the map, when squared, exceed that range. On the other hand, <code class="docutils literal notranslate"><span class="pre">double</span></code>s can comfortably handle values outside this range.</p></li>
+</ol>
+<p>Some notes on this problem:</p>
+<ul class="simple">
+<li><p><strong><em>There’s an Endearing C++ Quirk you may encounter in this part of the assignment.</em></strong> The <code class="docutils literal notranslate"><span class="pre">.length()</span></code> and <code class="docutils literal notranslate"><span class="pre">.size()</span></code> functions on a string return what’s called an <em>unsigned integer.</em> These are integer values that are not permitted to be negative, which means that they can have unusual interactions with subtraction. For example, if you have a string of length 2 and compute <code class="docutils literal notranslate"><span class="pre">str.length()</span> <span class="pre">-</span> <span class="pre">3</span></code>, instead of getting -1, you’ll get a gigantic positive number (this is called <em>integer overflow</em> - take <a class="reference external" href="https://cs102.stickmind.com">CS102</a> for details!). As a result, <strong><em>avoid subtraction</em></strong> when working with <code class="docutils literal notranslate"><span class="pre">.length()</span></code> and <code class="docutils literal notranslate"><span class="pre">.size()</span></code>. If you’re tempted to subtract something from the length of a string, instead see if you can add something to another quantity.</p></li>
+<li><p>Just to make sure the notion of a <em>k</em>-gram is clear, the 3-grams of the string <code class="docutils literal notranslate"><span class="pre">&quot;ABCDEF&quot;</span></code> are <code class="docutils literal notranslate"><span class="pre">&quot;ABC&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;BCD&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;CDE&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;DEF&quot;</span></code>; the 4-grams of the string <code class="docutils literal notranslate"><span class="pre">&quot;ABCDEF&quot;</span></code> are <code class="docutils literal notranslate"><span class="pre">&quot;ABCD&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;BCDE&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;CDEF&quot;</span></code>; the only 6-gram of <code class="docutils literal notranslate"><span class="pre">&quot;ABCDEF&quot;</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;ABCDEF&quot;</span></code>; the six 1-grams of <code class="docutils literal notranslate"><span class="pre">&quot;ABCDEF&quot;</span></code> are <code class="docutils literal notranslate"><span class="pre">&quot;A&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;B&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;C&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;D&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;E&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;F&quot;</span></code>; and there are no 137-grams of the string <code class="docutils literal notranslate"><span class="pre">&quot;ABCDEF&quot;</span></code>.</p></li>
+<li><p>To make sense of the syntax here, the name of the function you’re writing is <code class="docutils literal notranslate"><span class="pre">kGramsIn</span></code>, and the function return type is <code class="docutils literal notranslate"><span class="pre">Map&lt;string,</span> <span class="pre">double&gt;</span></code>. This does not mean that there is an actual <code class="docutils literal notranslate"><span class="pre">Map&lt;string,</span> <span class="pre">double&gt;</span></code> named <code class="docutils literal notranslate"><span class="pre">kGramsIn</span></code>. If you want to create a <code class="docutils literal notranslate"><span class="pre">Map&lt;string,</span> <span class="pre">double&gt;</span></code> as a local variable, feel free to do so, but pick a more descriptive name for it.</p></li>
+<li><p>You should call the <code class="docutils literal notranslate"><span class="pre">error</span></code> function if the <em>k</em>-gram length is zero or negative, because there’s no meaningful way to define a 0-gram or a -137-gram. However, if the <em>k</em>-gram length is greater than the length of the input string, you should return an empty <code class="docutils literal notranslate"><span class="pre">Map</span></code>, since in general large <em>k</em>-grams are a meaningful thing to talk about and there just don’t happen to be any for a shorter string.</p></li>
+<li><p>If you’re looking for information about the syntax of different operations on our container types, check out the <a class="reference external" href="https://cs101b.stickmind.com/cslib_docs/">Stanford C++ Library Documentation</a> page.</p></li>
+</ul>
+</section>
+<section id="milestone-two-normalize-frequencies">
+<h3>Milestone Two: Normalize Frequencies<a class="headerlink" href="#milestone-two-normalize-frequencies" title="Link to this heading">¶</a></h3>
+<p>We now have a <code class="docutils literal notranslate"><span class="pre">Map&lt;string,</span> <span class="pre">double&gt;</span></code> representing the trigrams in the original text. Once we have these frequencies, we can guess the text’s language by seeing which language’s trigram distribution it’s most similar to. There are many ways to define what “most similar to” means, but one of the most common ways to do this uses something called the <strong><em>cosine similarity</em></strong>, which is described below.</p>
+<p>First, an observation. Here are the trigram distributions for three pieces of text, each of which are written in English:</p>
+<p><strong><em>Distribution 1</em></strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">th&quot;:</span> <span class="pre">219</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;the&quot;:</span> <span class="pre">171</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;he</span> <span class="pre">&quot;:</span> <span class="pre">113</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ing&quot;:</span> <span class="pre">79</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">of&quot;:</span> <span class="pre">76</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ng</span> <span class="pre">&quot;:</span> <span class="pre">76</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;of</span> <span class="pre">&quot;:</span> <span class="pre">69</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">to&quot;:</span> <span class="pre">62</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;at</span> <span class="pre">&quot;:</span> <span class="pre">60</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;nd</span> <span class="pre">&quot;:</span> <span class="pre">60</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;acc&quot;:</span> <span class="pre">58</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;cin&quot;:</span> <span class="pre">58</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;cci&quot;:</span> <span class="pre">57</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;to</span> <span class="pre">&quot;:</span> <span class="pre">57</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;and&quot;:</span> <span class="pre">54</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;re</span> <span class="pre">&quot;:</span> <span class="pre">54</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">be&quot;:</span> <span class="pre">53</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">in&quot;:</span> <span class="pre">53</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;e</span> <span class="pre">t&quot;:</span> <span class="pre">53</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p><strong><em>Distribution 2</em></strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">th&quot;:</span> <span class="pre">495</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;the&quot;:</span> <span class="pre">388</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;he</span> <span class="pre">&quot;:</span> <span class="pre">351</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ing&quot;:</span> <span class="pre">231</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;nd</span> <span class="pre">&quot;:</span> <span class="pre">194</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ng</span> <span class="pre">&quot;:</span> <span class="pre">193</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">a</span> <span class="pre">&quot;:</span> <span class="pre">159</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ed</span> <span class="pre">&quot;:</span> <span class="pre">158</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">to&quot;:</span> <span class="pre">157</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">I</span> <span class="pre">&quot;:</span> <span class="pre">154</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">an&quot;:</span> <span class="pre">153</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;and&quot;:</span> <span class="pre">152</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;to</span> <span class="pre">&quot;:</span> <span class="pre">146</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;her&quot;:</span> <span class="pre">134</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;er</span> <span class="pre">&quot;:</span> <span class="pre">128</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;e</span> <span class="pre">t&quot;:</span> <span class="pre">126</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;re</span> <span class="pre">&quot;:</span> <span class="pre">124</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;is</span> <span class="pre">&quot;:</span> <span class="pre">121</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">of&quot;:</span> <span class="pre">117</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p><strong><em>Distribution 3</em></strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">th&quot;:</span> <span class="pre">510</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;he</span> <span class="pre">&quot;:</span> <span class="pre">371</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;the&quot;:</span> <span class="pre">339</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ed</span> <span class="pre">&quot;:</span> <span class="pre">269</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">to&quot;:</span> <span class="pre">257</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">an&quot;:</span> <span class="pre">222</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;to</span> <span class="pre">&quot;:</span> <span class="pre">217</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ing&quot;:</span> <span class="pre">208</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;nd</span> <span class="pre">&quot;:</span> <span class="pre">205</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ng</span> <span class="pre">&quot;:</span> <span class="pre">196</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;and&quot;:</span> <span class="pre">195</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">in&quot;:</span> <span class="pre">187</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;at</span> <span class="pre">&quot;:</span> <span class="pre">175</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;hat&quot;:</span> <span class="pre">174</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">a</span> <span class="pre">&quot;:</span> <span class="pre">171</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">of&quot;:</span> <span class="pre">159</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;is</span> <span class="pre">&quot;:</span> <span class="pre">158</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;as</span> <span class="pre">&quot;:</span> <span class="pre">154</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;tha&quot;:</span> <span class="pre">154</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p>In each case, we can see that the very most common trigrams are pretty much the same across the three texts (though the ordering is a bit different). However, notice that the numbers are generally increasing as we move from the first document to the third. The reason for that is simple – these were computed from progressively longer texts.</p>
+<p>To make the trigram frequencies more consistent across texts of different lengths, you will need to <strong><em>normalize</em></strong> the scores. Borrowing a technique from linear algebra, we’ll normalize scores as follows:</p>
+<ul class="simple">
+<li><p>Add up the squares of all the frequencies in the map.</p></li>
+<li><p>Divide each frequency by the square root of this number.</p></li>
+</ul>
+<p>As a very simplified example, suppose we have these trigrams:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;aaa&quot;:</span> <span class="pre">3</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;baa&quot;:</span> <span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;aab&quot;:</span> <span class="pre">1</span></code></p></li>
+</ul>
+<p>We’d compute the number <span class="math notranslate nohighlight">\(3^2 + 1^2 + 1^2 = 11\)</span>, then divide each number by the square root of eleven to get these new frequencies:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;aaa&quot;:</span> <span class="pre">0.904534</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;baa&quot;:</span> <span class="pre">0.301511</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;aab&quot;:</span> <span class="pre">0.301511</span></code></p></li>
+</ul>
+<p>Applying this same approach to the three distributions from above (including the frequencies of the less frequent <em>k</em>-grams that we didn’t show) gives the following:</p>
+<p><strong><em>Distribution 1</em></strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">th&quot;:</span> <span class="pre">0.40398</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;the&quot;:</span> <span class="pre">0.31503</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;he</span> <span class="pre">&quot;:</span> <span class="pre">0.20755</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ing&quot;:</span> <span class="pre">0.14639</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">of&quot;:</span> <span class="pre">0.14083</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ng</span> <span class="pre">&quot;:</span> <span class="pre">0.14083</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;of</span> <span class="pre">&quot;:</span> <span class="pre">0.12786</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">to&quot;:</span> <span class="pre">0.11489</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;at</span> <span class="pre">&quot;:</span> <span class="pre">0.11118</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;nd</span> <span class="pre">&quot;:</span> <span class="pre">0.11118</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;acc&quot;:</span> <span class="pre">0.10562</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;cin&quot;:</span> <span class="pre">0.10562</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;to</span> <span class="pre">&quot;:</span> <span class="pre">0.10562</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;cci&quot;:</span> <span class="pre">0.10377</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;and&quot;:</span> <span class="pre">0.10007</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;re</span> <span class="pre">&quot;:</span> <span class="pre">0.10007</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">be&quot;:</span> <span class="pre">0.09821</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;e</span> <span class="pre">t&quot;:</span> <span class="pre">0.09821</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ed</span> <span class="pre">&quot;:</span> <span class="pre">0.09821</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p><strong><em>Distribution 2</em></strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">th&quot;:</span> <span class="pre">0.37585</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;the&quot;:</span> <span class="pre">0.29460</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;he</span> <span class="pre">&quot;:</span> <span class="pre">0.26651</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ing&quot;:</span> <span class="pre">0.17539</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;nd</span> <span class="pre">&quot;:</span> <span class="pre">0.14730</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ng</span> <span class="pre">&quot;:</span> <span class="pre">0.14654</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">a</span> <span class="pre">&quot;:</span> <span class="pre">0.12072</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ed</span> <span class="pre">&quot;:</span> <span class="pre">0.11997</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">to&quot;:</span> <span class="pre">0.11921</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">I</span> <span class="pre">&quot;:</span> <span class="pre">0.11693</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">an&quot;:</span> <span class="pre">0.11617</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;and&quot;:</span> <span class="pre">0.11541</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;to</span> <span class="pre">&quot;:</span> <span class="pre">0.11085</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;her&quot;:</span> <span class="pre">0.10174</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;er</span> <span class="pre">&quot;:</span> <span class="pre">0.09719</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;e</span> <span class="pre">t&quot;:</span> <span class="pre">0.09567</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;re</span> <span class="pre">&quot;:</span> <span class="pre">0.09415</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;is</span> <span class="pre">&quot;:</span> <span class="pre">0.09187</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">of&quot;:</span> <span class="pre">0.08883</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p><strong><em>Distribution 3</em></strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">th&quot;:</span> <span class="pre">0.33214</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;he</span> <span class="pre">&quot;:</span> <span class="pre">0.24161</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;the&quot;:</span> <span class="pre">0.22077</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ed</span> <span class="pre">&quot;:</span> <span class="pre">0.17518</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">to&quot;:</span> <span class="pre">0.16737</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">an&quot;:</span> <span class="pre">0.14458</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;to</span> <span class="pre">&quot;:</span> <span class="pre">0.14132</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ing&quot;:</span> <span class="pre">0.13546</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;nd</span> <span class="pre">&quot;:</span> <span class="pre">0.13350</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ng</span> <span class="pre">&quot;:</span> <span class="pre">0.12764</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;and&quot;:</span> <span class="pre">0.12699</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">in&quot;:</span> <span class="pre">0.12178</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;at</span> <span class="pre">&quot;:</span> <span class="pre">0.11397</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;hat&quot;:</span> <span class="pre">0.11331</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">a</span> <span class="pre">&quot;:</span> <span class="pre">0.11136</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">of&quot;:</span> <span class="pre">0.10355</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;is</span> <span class="pre">&quot;:</span> <span class="pre">0.10289</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;as</span> <span class="pre">&quot;:</span> <span class="pre">0.10029</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;tha&quot;:</span> <span class="pre">0.10029</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p>With the scores normalized, these numbers are much closer to one another, indicating that they’re using fairly similar distributions of trigrams.</p>
+<p>Your next task is to implement a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">normalize</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">profile</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a trigram profile, then returns an normalized version of the profile.</p>
+<p>There is an important edge case you need to handle. If the input <code class="docutils literal notranslate"><span class="pre">Map</span></code> is empty or does not contain any nonzero values, then the calculation we’ve instructed you to do above would divide by zero. (Do you see why?) To address this, if the map doesn’t contain at least one nonzero value, you should use the <code class="docutils literal notranslate"><span class="pre">error()</span></code> function to report an error.</p>
+<div class="tip admonition">
+<p class="admonition-title">Milestone Two Requirеments</p>
+<ol class="arabic simple">
+<li><p>Implement the <code class="docutils literal notranslate"><span class="pre">normalize</span></code> function in <code class="docutils literal notranslate"><span class="pre">RosettaStone.cpp</span></code>.</p></li>
+<li><p>Use the provided tests to confirm that your code works correctly.</p></li>
+<li><p>Optionally, but not required: use <code class="docutils literal notranslate"><span class="pre">STUDENT_TEST</span></code> to add a test case or two of your own!</p></li>
+</ol>
+</div>
+<p>Some notes on this problem:</p>
+<ul class="simple">
+<li><p>There are no restrictions on what the keys in the map can be. Although you’ll ultimately be using this function in the context of trigrams, you should not assume that the keys will necessarily be strings of length three, nor that the keys could be a set of trigrams for a piece of text. Similarly, while it’s never possible to have a negative number of copies of a given trigram, your code should be able to handle negative values. In each case, sum up the squares of all the values, then divide each of the values by the square root of that sum.</p></li>
+<li><p>The keys in the resulting map should be the same as the keys in the input map. In other words, you should not add or remove keys.</p></li>
+<li><p>For those of you coming from Python: C++ doesn’t have a built-in exponentiation operator like <code class="docutils literal notranslate"><span class="pre">**</span></code>. Instead, to compute powers or square roots, include the header <code class="docutils literal notranslate"><span class="pre">&lt;cmath&gt;</span></code> and use the <code class="docutils literal notranslate"><span class="pre">pow</span></code> and <code class="docutils literal notranslate"><span class="pre">sqrt</span></code> functions.</p></li>
+<li><p>If you’re looking for information about the syntax of different operations on our container types, check out the <a class="reference external" href="https://cs101b.stickmind.com/cslib_docs/">Stanford C++ Library Documentation</a> page.</p></li>
+</ul>
+</section>
+<section id="milestone-three-filter-out-uncommon-trigrams">
+<h3>Milestone Three: Filter Out Uncommon Trigrams<a class="headerlink" href="#milestone-three-filter-out-uncommon-trigrams" title="Link to this heading">¶</a></h3>
+<p>While all texts written in a particular language will show a strong degree of similarity between their most frequent trigrams, the infrequent trigrams in two pieces of text written in the same language often differ greatly. For example, these infrequent trigrams often reflect uncommon words that appear a few times in a text.</p>
+<p>To address this, we’re going to ask you to write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">topKGramsIn</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">profile</span><span class="p">,</span>
+<span class="w">                                </span><span class="kt">int</span><span class="w"> </span><span class="n">numToKeep</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a <em>k</em>-gram profile and a maximum number of <em>k</em>-grams to keep, then returns a <code class="docutils literal notranslate"><span class="pre">Map</span></code> containing only the <code class="docutils literal notranslate"><span class="pre">numToKeep</span></code> most frequent <em>k</em>-grams in the profile. If <code class="docutils literal notranslate"><span class="pre">numToKeep</span></code> is bigger than the number of <em>k</em>-grams in the profile, you should return all the original <em>k</em>-grams. And if <code class="docutils literal notranslate"><span class="pre">numToKeep</span></code> is negative, you should report an <code class="docutils literal notranslate"><span class="pre">error()</span></code>, since that’s not feasible. (If <code class="docutils literal notranslate"><span class="pre">numToKeep</span></code> is zero, you should just return an empty map.)</p>
+<p>To do this, you’ll need some way to work with <em>k</em>-grams sorted by frequency. For that, we’ll introduce a new, useful container type that you’ll see later on in the quarter: a <strong><em>priority queue</em></strong>. If you include the header file <code class="docutils literal notranslate"><span class="pre">&quot;priorityqueue.h&quot;</span></code>, you’ll get access to the <a class="reference external" href="https://cs101b.stickmind.com/cslib_docs/PriorityQueue"><code class="docutils literal notranslate"><span class="pre">PriorityQueue</span></code></a> container type.</p>
+<p>Like a regular queue, the <a class="reference external" href="https://cs101b.stickmind.com/cslib_docs/PriorityQueue"><code class="docutils literal notranslate"><span class="pre">PriorityQueue</span></code></a> supports the <code class="docutils literal notranslate"><span class="pre">enqueue</span></code>, <code class="docutils literal notranslate"><span class="pre">dequeue</span></code>, <code class="docutils literal notranslate"><span class="pre">peek</span></code>, <code class="docutils literal notranslate"><span class="pre">size</span></code>, and <code class="docutils literal notranslate"><span class="pre">isEmpty</span></code> operations. The difference between a priority queue and a regular queue is the order in which the elements are dequeued. In a regular <code class="docutils literal notranslate"><span class="pre">Queue</span></code>, elements are lined up in sequential order, and calling <code class="docutils literal notranslate"><span class="pre">dequeue()</span></code> or <code class="docutils literal notranslate"><span class="pre">peek()</span></code> gives back the element added the longest time ago. In the <code class="docutils literal notranslate"><span class="pre">PriortyQueue</span></code>, each time you enqueue an element, you associate it with a number called its <strong><em>weight</em></strong>. The element that’s returned by <code class="docutils literal notranslate"><span class="pre">dequeue()</span></code> or <code class="docutils literal notranslate"><span class="pre">peek()</span></code> is the element that has the <strong><em>lowest weight</em></strong>. For example, let’s imagine we set up a <code class="docutils literal notranslate"><span class="pre">PriorityQueue</span></code> like this, holding a collection of past CS TAs:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">PriorityQueue</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pq</span><span class="p">;</span>
+<span class="n">pq</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="s">&quot;Amy&quot;</span><span class="p">,</span><span class="w">    </span><span class="mi">103</span><span class="p">);</span>
+<span class="n">pq</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="s">&quot;Ashley&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">101</span><span class="p">);</span>
+<span class="n">pq</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="s">&quot;Anna&quot;</span><span class="p">,</span><span class="w">   </span><span class="mi">110</span><span class="p">);</span>
+<span class="n">pq</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="s">&quot;Luna&quot;</span><span class="p">,</span><span class="w">   </span><span class="mi">161</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If we write</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">string</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pq</span><span class="p">.</span><span class="n">dequeue</span><span class="p">();</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>then the string printed out will be <code class="docutils literal notranslate"><span class="pre">&quot;Ashley&quot;</span></code>, since of the four elements enqueued, the weight associated with <code class="docutils literal notranslate"><span class="pre">Ashley</span></code> (101) was the lowest. Calling <code class="docutils literal notranslate"><span class="pre">pq.dequeue()</span></code> again will return <code class="docutils literal notranslate"><span class="pre">&quot;Amy&quot;</span></code>, since her associated weight (103) was the lowest of what remains. Calling <code class="docutils literal notranslate"><span class="pre">pq.dequeue()</span></code> a third time would return <code class="docutils literal notranslate"><span class="pre">&quot;Anna&quot;</span></code>.</p>
+<p>Let’s insert more values. If we call <code class="docutils literal notranslate"><span class="pre">pq.enqueue(&quot;Chioma&quot;,</span> <span class="pre">103)</span></code> and then <code class="docutils literal notranslate"><span class="pre">pq.dequeue()</span></code>, the return value would be the newly-added <code class="docutils literal notranslate"><span class="pre">&quot;Chioma&quot;</span></code>, because her associated weight is lower than all others. And note that <code class="docutils literal notranslate"><span class="pre">Chioma</span></code> was the most-recently-added TA here; just goes to show you that this is quite different from a regular <code class="docutils literal notranslate"><span class="pre">Queue</span></code>!</p>
+<p>We’re going to leave it to you to determine how to use the <code class="docutils literal notranslate"><span class="pre">PriorityQueue</span></code> type to find the most frequent <em>k</em>‑grams. There are many strategies you can use to do this. Something to think about: <code class="docutils literal notranslate"><span class="pre">PriorityQueue</span></code>s are great at removing items with <em>low</em> weight, and you want to find items of <em>high</em> weight.</p>
+<div class="tip admonition">
+<p class="admonition-title">Milestone Three Requirements</p>
+<ol class="arabic simple">
+<li><p>Implement the <code class="docutils literal notranslate"><span class="pre">topKGramsIn</span></code> function in <code class="docutils literal notranslate"><span class="pre">RosettaStone.cpp</span></code>.</p></li>
+<li><p>Use the provided tests to confirm that your code works correctly.</p></li>
+<li><p>Optionally, but not required: use <code class="docutils literal notranslate"><span class="pre">STUDENT_TEST</span></code> to add a test case or two of your own!</p></li>
+</ol>
+</div>
+<p>Some notes on this problem:</p>
+<ul class="simple">
+<li><p>Your solution needs to make use of the <code class="docutils literal notranslate"><span class="pre">PriorityQueue</span></code> type. While there are other ways to sort things in C++, for the purposes of this problem we’d prefer if you avoid them.</p></li>
+<li><p>If multiple <em>k</em>-grams are tied for having the same weight, you can break ties however you’d like.</p></li>
+<li><p>The input frequencies may or may not be normalized.</p></li>
+<li><p>Although this wouldn’t be possible in a <em>k</em>-grams setting, this function should work just fine even if some of the values in the map are zero or negative.</p></li>
+</ul>
+</section>
+<section id="milestone-four-implement-cosine-similarity">
+<h3>Milestone Four: Implement Cosine Similarity<a class="headerlink" href="#milestone-four-implement-cosine-similarity" title="Link to this heading">¶</a></h3>
+<p>At the end of the previous milestone, we saw this trio of trigram profiles for English texts:</p>
+<p><strong><em>Distribution 1</em></strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">th&quot;:</span> <span class="pre">0.40398</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;the&quot;:</span> <span class="pre">0.31503</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;he</span> <span class="pre">&quot;:</span> <span class="pre">0.20755</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ing&quot;:</span> <span class="pre">0.14639</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">of&quot;:</span> <span class="pre">0.14083</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ng</span> <span class="pre">&quot;:</span> <span class="pre">0.14083</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;of</span> <span class="pre">&quot;:</span> <span class="pre">0.12786</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">to&quot;:</span> <span class="pre">0.11489</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;at</span> <span class="pre">&quot;:</span> <span class="pre">0.11118</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;nd</span> <span class="pre">&quot;:</span> <span class="pre">0.11118</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;acc&quot;:</span> <span class="pre">0.10562</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;cin&quot;:</span> <span class="pre">0.10562</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;to</span> <span class="pre">&quot;:</span> <span class="pre">0.10562</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;cci&quot;:</span> <span class="pre">0.10377</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;and&quot;:</span> <span class="pre">0.10007</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;re</span> <span class="pre">&quot;:</span> <span class="pre">0.10007</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">be&quot;:</span> <span class="pre">0.09821</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;e</span> <span class="pre">t&quot;:</span> <span class="pre">0.09821</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ed</span> <span class="pre">&quot;:</span> <span class="pre">0.09821</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p><strong><em>Distribution 2</em></strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">th&quot;:</span> <span class="pre">0.37585</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;the&quot;:</span> <span class="pre">0.29460</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;he</span> <span class="pre">&quot;:</span> <span class="pre">0.26651</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ing&quot;:</span> <span class="pre">0.17539</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;nd</span> <span class="pre">&quot;:</span> <span class="pre">0.14730</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ng</span> <span class="pre">&quot;:</span> <span class="pre">0.14654</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">a</span> <span class="pre">&quot;:</span> <span class="pre">0.12072</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ed</span> <span class="pre">&quot;:</span> <span class="pre">0.11997</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">to&quot;:</span> <span class="pre">0.11921</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">I</span> <span class="pre">&quot;:</span> <span class="pre">0.11693</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">an&quot;:</span> <span class="pre">0.11617</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;and&quot;:</span> <span class="pre">0.11541</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;to</span> <span class="pre">&quot;:</span> <span class="pre">0.11085</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;her&quot;:</span> <span class="pre">0.10174</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;er</span> <span class="pre">&quot;:</span> <span class="pre">0.09719</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;e</span> <span class="pre">t&quot;:</span> <span class="pre">0.09567</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;re</span> <span class="pre">&quot;:</span> <span class="pre">0.09415</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;is</span> <span class="pre">&quot;:</span> <span class="pre">0.09187</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">of&quot;:</span> <span class="pre">0.08883</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p><strong><em>Distribution 3</em></strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">th&quot;:</span> <span class="pre">0.33214</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;he</span> <span class="pre">&quot;:</span> <span class="pre">0.24161</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;the&quot;:</span> <span class="pre">0.22077</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ed</span> <span class="pre">&quot;:</span> <span class="pre">0.17518</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">to&quot;:</span> <span class="pre">0.16737</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">an&quot;:</span> <span class="pre">0.14458</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;to</span> <span class="pre">&quot;:</span> <span class="pre">0.14132</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ing&quot;:</span> <span class="pre">0.13546</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;nd</span> <span class="pre">&quot;:</span> <span class="pre">0.13350</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ng</span> <span class="pre">&quot;:</span> <span class="pre">0.12764</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;and&quot;:</span> <span class="pre">0.12699</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">in&quot;:</span> <span class="pre">0.12178</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;at</span> <span class="pre">&quot;:</span> <span class="pre">0.11397</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;hat&quot;:</span> <span class="pre">0.11331</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">a</span> <span class="pre">&quot;:</span> <span class="pre">0.11136</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;</span> <span class="pre">of&quot;:</span> <span class="pre">0.10355</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;is</span> <span class="pre">&quot;:</span> <span class="pre">0.10289</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;as</span> <span class="pre">&quot;:</span> <span class="pre">0.10029</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;tha&quot;:</span> <span class="pre">0.10029</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">…</span></code></p></li>
+</ul>
+<p>We as humans can look at these numbers and say “yep, they’re pretty close,” but how could a computer do this? Suppose we have two trigram profiles <span class="math notranslate nohighlight">\(P_1\)</span> and <span class="math notranslate nohighlight">\(P_2\)</span> that have already been normalized. One measure we can use to determine how similar they are is to compute their <strong><em>cosine similarity</em></strong>, which can be computed as follows: for each trigram that appears in both <span class="math notranslate nohighlight">\(P_1\)</span> and <span class="math notranslate nohighlight">\(P_2\)</span> multiply the frequency of that trigram in <span class="math notranslate nohighlight">\(P_1\)</span> and <span class="math notranslate nohighlight">\(P_2\)</span> then add up all the numbers you found this way.</p>
+<p>As an example, consider these two (highly contrived, not actually real) trigram profiles:</p>
+<p><strong><em>Profile 1</em></strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;aaa&quot;:</span> <span class="pre">0.333</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;bbb&quot;:</span> <span class="pre">0.667</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ccc&quot;:</span> <span class="pre">0.667</span></code></p></li>
+</ul>
+<p><strong><em>Profile 2</em></strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;bbb&quot;:</span> <span class="pre">0.333</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ccc&quot;:</span> <span class="pre">0.667</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;ddd&quot;:</span> <span class="pre">0.667</span></code></p></li>
+</ul>
+<p>These two trigram sets have the trigrams <code class="docutils literal notranslate"><span class="pre">&quot;bbb&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;ccc&quot;</span></code> in common. We’d therefore find their cosine similarity by computing</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+&amp;\rm{(product\ of\ &quot;bbb&quot;\ frequencies) + (product\ of\ &quot;ccc&quot;\ frequencies)} \\
+&amp;= \rm{(0.667 \times 0.333)+(0.667 \times 0.667)} \\
+&amp;= \rm{0.667}
+\end{align}
+\end{split}\]</div>
+</div>
+<p>The frequencies of <code class="docutils literal notranslate"><span class="pre">&quot;aaa&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;ddd&quot;</span></code> aren’t relevant here, since those trigrams appear in only one of the two trigram sets.</p>
+<p>In the context of trigrams, cosine similarities range from 0 (the two documents have no trigrams in common) to 1 (the two documents have identical relative trigram frequencies).</p>
+<p>Your next task is to write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">double</span><span class="w"> </span><span class="nf">cosineSimilarityOf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">lhs</span><span class="p">,</span>
+<span class="w">                          </span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">rhs</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input two sets of normalized scores, then returns their cosine similarity using the formula given above.</p>
+<div class="tip admonition">
+<p class="admonition-title">Milestone Four Requirements</p>
+<ol class="arabic simple">
+<li><p>Implement the <code class="docutils literal notranslate"><span class="pre">cosineSimilarityOf</span></code> function in <code class="docutils literal notranslate"><span class="pre">RosettaStone.cpp</span></code>.</p></li>
+<li><p>Use the provided tests to confirm that your code works correctly.</p></li>
+<li><p>Optionally, but not required: use <code class="docutils literal notranslate"><span class="pre">STUDENT_TEST</span></code> to add a test case or two of your own!</p></li>
+</ol>
+</div>
+<p>Some notes:</p>
+<ul class="simple">
+<li><p>Although you’ll ultimately be applying this function to trigram profiles, your function should work in the case where the keys in the two maps are arbitrary strings. In other words, you shouldn’t assume that you’re just working with maps whose keys are all length-three strings.</p></li>
+<li><p>You can assume that the two sets of input scores are normalized and don’t need to handle the case where this isn’t true.</p></li>
+<li><p>If you’re looking for information about the syntax of different operations on our container types, check out the <a class="reference external" href="https://cs101b.stickmind.com/cslib_docs/">Stanford C++ Library Documentation</a> page.</p></li>
+</ul>
+</section>
+<section id="milestone-five-guess-a-texts-language">
+<h3>Milestone Five: Guess a Text’s Language<a class="headerlink" href="#milestone-five-guess-a-texts-language" title="Link to this heading">¶</a></h3>
+<p>At this point, you have the ability to take a text, extract its trigrams, and normalize its profile. You have the ability to take two normalized profiles and compare their scores against one another. All that’s left to do now is put everything together to guess the language of a text.</p>
+<p>Here’s how. Before releasing this assignment to you, we went online and got lots and lots of texts written in different languages. Each of the texts associated with a given language is called a <strong><em>corpus</em></strong> (plural <strong><em>corpora</em></strong>) and is designed to be large and diverse enough to give a representative sample of what that language looks like in practice. We then computed trigram profiles for each of those languages, giving a trigram profile for the language as a whole.</p>
+<p>To make an educated guess about what language a piece of text is written in, you can simply compute the similarity of that text’s profile against the profiles of all the different languages. Whichever language has the highest similarity to your text then gives the best guess of what language the text was written in.</p>
+<p>Your final task is to write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">string</span><span class="w"> </span><span class="nf">guessLanguageOf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">textProfile</span><span class="p">,</span>
+<span class="w">                       </span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">Corpus</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">corpora</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a text’s <em>k</em>-gram profile (which has been normalized and then trimmed to store only the most frequent <em>k</em>-grams) and a set of corpora for different languages. This function then returns the name of the language that has the highest cosine similarity to the text. As an edge case, if the set of corpora is empty, you should call <code class="docutils literal notranslate"><span class="pre">error()</span></code> to report an error, since in that case there aren’t any languages to pick from.</p>
+<p>You may have noticed that the last parameter to this function is a <code class="docutils literal notranslate"><span class="pre">Set&lt;Corpus&gt;</span></code> representing the text corpora. What exactly is a <code class="docutils literal notranslate"><span class="pre">Corpus</span></code>? In the <code class="docutils literal notranslate"><span class="pre">RosettaStone.h</span></code> header file, you’ll see that it’s defined like this:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">Corpus</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">name</span><span class="p">;</span><span class="w">                 </span><span class="c1">// Name of the language</span>
+<span class="w">    </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">profile</span><span class="p">;</span><span class="w"> </span><span class="c1">// Normalized and trimmed</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>This is a <strong><em>structure</em></strong>, a type representing a bunch of different objects all packaged together as one. This structure type groups a <code class="docutils literal notranslate"><span class="pre">string</span></code> named <code class="docutils literal notranslate"><span class="pre">name</span></code> (the name of the language) and a <code class="docutils literal notranslate"><span class="pre">Map&lt;string,</span> <span class="pre">double&gt;</span></code> named <code class="docutils literal notranslate"><span class="pre">profile</span></code> (its normalized trigram profile). The name <code class="docutils literal notranslate"><span class="pre">Corpus</span></code> refers to a type, just like <code class="docutils literal notranslate"><span class="pre">int</span></code> or <code class="docutils literal notranslate"><span class="pre">string</span></code>. You can create variables of type <code class="docutils literal notranslate"><span class="pre">Corpus</span></code> just as you can variables of any other type. For example, you could declare a variable of type <code class="docutils literal notranslate"><span class="pre">Corpus</span></code> named <code class="docutils literal notranslate"><span class="pre">english</span></code> like this:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Corpus</span><span class="w"> </span><span class="n">english</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>One you have a variable of type <code class="docutils literal notranslate"><span class="pre">Corpus</span></code>, you can access the constituent elements of the struct by using the dot operator. For example, you can write code like this:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Corpus</span><span class="w"> </span><span class="n">english</span><span class="p">;</span>
+<span class="n">english</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;American English&quot;</span><span class="p">;</span>
+<span class="n">english</span><span class="p">.</span><span class="n">profile</span><span class="p">[</span><span class="s">&quot;the&quot;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.13742</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Milestone Five Requirements</p>
+<ol class="arabic simple">
+<li><p>Implement the <code class="docutils literal notranslate"><span class="pre">guessLanguageOf</span></code> function in <code class="docutils literal notranslate"><span class="pre">RosettaStone.cpp</span></code>.</p></li>
+<li><p>Use the provided tests to confirm that your code works correctly.</p></li>
+<li><p>Optionally, but not required: use <code class="docutils literal notranslate"><span class="pre">STUDENT_TEST</span></code> to add a test case or two of your own!</p></li>
+</ol>
+</div>
+<p>Some notes on this part of the problem:</p>
+<ul class="simple">
+<li><p>You can assume that whoever is calling this function will already have normalized the frequencies of all the <em>k</em>-grams in the profile and each corpus and then filtered them down to just the most common <em>k</em>-grams. You do not need to - and should not - repeat these steps, since doing so will slow down your function.</p></li>
+<li><p>If there is a tie between two or more languages being the most similar, you can break the tie in whatever way you’d like.</p></li>
+<li><p>If you’re looking for information about the syntax of different operations on our container types, check out the <a class="reference external" href="https://cs101b.stickmind.com/cslib_docs/">Stanford C++ Library Documentation</a> page.</p></li>
+</ul>
+</section>
+<section id="milestone-six-explore-and-evaluate">
+<h3>Milestone Six: Explore and Evaluate<a class="headerlink" href="#milestone-six-explore-and-evaluate" title="Link to this heading">¶</a></h3>
+<p>You’ve just implemented a system to guess the languages of various pieces of texts. It’s now time to ask: how well does it work? When does it give good guesses? When does it do poorly? Questions like these are important, especially given the cultural and political significance of languages.</p>
+<p>Let’s begin with some cases where your program does a great job identifying languages. The following texts will all have their languages correctly identified.</p>
+<p>Run the “Rosetta Stone” demo from the top-level menu and use it to answer each of the following questions. Write your answers in the file <code class="docutils literal notranslate"><span class="pre">LanguageIdentification.txt</span></code>. As a note, assuming you’ve coded everything up correctly, the answers your program produces should be correct.</p>
+<ol class="arabic">
+<li><p>What language is this written in?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ᎤᎵᏍᏔᏴᏗ</span> <span class="n">ᎦᎵᏙᏗ</span> <span class="n">ᏭᎷᏤᎢ</span><span class="p">,</span> <span class="n">ᎤᏗᏔᎮ</span> <span class="n">ᎦᏁᎲ</span><span class="p">,</span> <span class="n">ᎤᏲᏏᏍᎩ</span> <span class="n">ᎤᏗᏔᎮ</span> <span class="n">ᎤᏅᏗ</span> <span class="n">ᏃᎴ</span> <span class="n">ᎤᎩᏍᏙᎡ</span>
+<span class="n">ᏑᎾᎴ</span> <span class="n">ᎠᎩᏍᏗ</span> <span class="n">ᎤᏂᏑᎸᏓ</span><span class="o">.</span> <span class="n">ᎣᏍᏓ</span> <span class="n">ᏄᎵᏍᏔᏁᎮ</span> <span class="n">ᎤᏩᏌ</span> <span class="n">ᎤᏪᏅᏒ</span> <span class="n">ᎡᏙᎲ</span><span class="o">.</span> <span class="n">ᎦᏅᏆᎶᏍᏗ</span> <span class="n">ᏭᏴᎮ</span>
+<span class="n">ᏣᏄᏏ</span> <span class="n">ᏃᎴ</span> <span class="n">ᏣᏁᎳ</span> <span class="n">ᎠᏂᏎᏂᏏ</span> <span class="n">ᏴᎩ</span><span class="p">,</span> <span class="n">ᎣᏍᏓ</span> <span class="n">ᏄᏩᏁᎴ</span> <span class="n">ᎠᏦᏴ</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><p>What language is this written in?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ᐁᐘᑯ ᐅᒪ ᐊᓯᓂᐏ ᒣᓂᑲᐣ ᑭᒥᓇᐘᐠ
+ᐃᓂᓂᐘᐠ ᒪᓂᑐᐸ ᑳᔭᒋᐠ᙮ ᐁᐘᑿᓂᐠ ᐅᑭ
+ᑲᓄᒋᐦᑕᒋᐠ ᐊᓯᓂᐏᐊᑐᐢᑮᓂᓂᐤ ᑲᑭᒥᓂᐦᒋᐠ
+ᐅᒣᓂᐤ᙮ ᐊᑿᓂ ᒥᑕᐦᑐᒥᑕᓇᐤ ᐊᐢᑭᐩ ᐊᓴᐩ
+ᐁᐊᑐᐢᑫᒋᐠ ᐅᑕ ᒪᓂᑐᐸ᙮
+</pre></div>
+</div>
+</li>
+<li><p>What language is this written in?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Penei</span> <span class="n">ka</span> <span class="n">manao</span> <span class="n">ana</span> <span class="n">o</span> <span class="n">kekahi</span> <span class="n">poe</span><span class="o">.</span> <span class="n">I</span> <span class="n">ke</span> <span class="n">kaua</span> <span class="n">ana</span> <span class="n">o</span> <span class="n">kekahi</span> <span class="n">aina</span>
+<span class="n">me</span> <span class="n">kekahi</span> <span class="n">aina</span><span class="p">,</span> <span class="n">o</span> <span class="n">ka</span> <span class="n">poe</span> <span class="n">i</span> <span class="n">hee</span><span class="p">,</span> <span class="n">makau</span> <span class="n">lakou</span> <span class="n">o</span> <span class="n">lukuia</span> <span class="n">mai</span> <span class="n">a</span> <span class="n">holo</span>
+<span class="n">wale</span> <span class="n">lakou</span> <span class="n">ma</span> <span class="n">ka</span> <span class="n">moana</span><span class="p">,</span> <span class="n">a</span> <span class="n">loaa</span> <span class="n">kahi</span> <span class="n">aina</span><span class="p">,</span> <span class="n">a</span> <span class="n">noho</span> <span class="n">iho</span> <span class="n">la</span> <span class="n">malaila</span><span class="p">,</span>
+<span class="n">a</span> <span class="n">pela</span> <span class="n">hou</span> <span class="n">no</span><span class="p">,</span> <span class="n">a</span> <span class="n">hiki</span> <span class="n">no</span> <span class="n">na</span> <span class="n">kanaka</span> <span class="n">ma</span> <span class="n">na</span> <span class="n">moku</span> <span class="n">a</span> <span class="n">pau</span><span class="o">.</span> <span class="n">I</span> <span class="n">ka</span> <span class="n">manao</span>
+<span class="n">o</span> <span class="n">kekahi</span> <span class="n">poe</span><span class="p">,</span> <span class="n">ua</span> <span class="n">pupuhi</span> <span class="n">wale</span> <span class="n">ia</span> <span class="n">na</span> <span class="n">waa</span> <span class="n">i</span> <span class="n">holo</span> <span class="n">ma</span> <span class="n">ka</span> <span class="n">moana</span> <span class="n">a</span> <span class="n">pae</span>
+<span class="n">wale</span> <span class="n">aku</span> <span class="n">i</span> <span class="n">kekahi</span> <span class="n">aina</span><span class="o">.</span> <span class="n">Ua</span> <span class="n">manao</span> <span class="n">wale</span> <span class="n">ia</span> <span class="n">keia</span> <span class="n">mau</span> <span class="n">mea</span><span class="p">,</span> <span class="n">aole</span> <span class="n">i</span>
+<span class="n">maopopo</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><p>What language is this written in?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Tsídiiłtsooí</span> <span class="n">binákʼee</span> <span class="n">halzhinígíí</span> <span class="n">éí</span> <span class="n">tsídii</span> <span class="n">tsídígíí</span> <span class="n">dah</span> <span class="n">yikahjí</span>
+<span class="n">atah</span> <span class="n">yisdzoh</span><span class="p">,</span> <span class="n">áádóó</span> <span class="n">éí</span> <span class="n">Náhookǫsjí</span> <span class="n">kéyah</span> <span class="n">dah</span> <span class="n">siʼánígíí</span> <span class="n">bikááʼgóó</span> <span class="n">hólǫ́</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><p>What language is this written in?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Negema</span> <span class="n">wangu</span> <span class="n">binti</span><span class="p">,</span> <span class="n">mchachefu</span> <span class="n">wa</span> <span class="n">sanati</span> <span class="n">upulike</span> <span class="n">wasiati</span> <span class="n">asa</span>
+<span class="n">ukanzingatia</span><span class="o">.</span> <span class="n">Maradhi</span> <span class="n">yamenshika</span> <span class="n">hatta</span> <span class="n">yametimu</span> <span class="n">mwaka</span> <span class="n">sikupata</span>
+<span class="n">kutamka</span> <span class="n">neno</span> <span class="n">lema</span> <span class="n">kukwambia</span><span class="o">.</span> <span class="n">Ndoo</span> <span class="n">mbee</span> <span class="n">ujilisi</span> <span class="n">na</span> <span class="n">wino</span> <span class="n">na</span>
+<span class="n">qaratasi</span> <span class="n">moyoni</span> <span class="n">nina</span> <span class="n">hadithi</span> <span class="n">nimependa</span> <span class="n">kukwambia</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><p>What language is this written in?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Acaam</span> <span class="n">ccaa</span> <span class="n">tiquij</span><span class="p">,</span> <span class="n">ziic</span> <span class="n">ziix</span> <span class="n">zo</span> <span class="n">quihit</span> <span class="n">áa</span> <span class="n">z</span> <span class="n">imhaa</span>
+<span class="n">ha</span><span class="o">.</span> <span class="n">Ziix</span> <span class="n">quih</span> <span class="n">isiihit</span> <span class="n">taa</span> <span class="n">x</span><span class="p">,</span> <span class="n">hehe</span> <span class="n">quih</span> <span class="n">istj</span> <span class="n">quih</span>
+<span class="n">cacat</span> <span class="n">quih</span> <span class="n">imiihit</span><span class="o">.</span> <span class="n">Hehe</span> <span class="ow">is</span> <span class="n">quih</span> <span class="n">cacat</span> <span class="n">quih</span> <span class="n">mos</span>
+<span class="n">imiihit</span><span class="o">.</span> <span class="n">Háx</span> <span class="n">quih</span> <span class="n">isiisi</span> <span class="n">taa</span> <span class="n">x</span><span class="p">,</span> <span class="n">hasahcapjö</span> <span class="n">cop</span> <span class="n">iif</span>
+<span class="n">com</span> <span class="n">cöitnip</span> <span class="n">x</span><span class="p">,</span> <span class="n">ix</span> <span class="n">cop</span> <span class="n">imiisi</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><p>What language is this written in?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Намрын</span> <span class="n">бороо</span> <span class="n">зөөлөн</span> <span class="n">шиврэхэд</span> <span class="n">аав</span> <span class="n">минь</span> <span class="n">дуртай</span>
+<span class="n">Насыг</span> <span class="n">нь</span> <span class="n">зөөж</span> <span class="n">буцсаар</span> <span class="n">л</span> <span class="n">байгаа</span> <span class="n">шувуудад</span> <span class="n">хайртай</span>
+<span class="n">Өөрөө</span> <span class="n">өтлөвч</span><span class="p">,</span> <span class="n">орчлонд</span> <span class="n">үлдэнэ</span> <span class="n">гэж</span> <span class="n">надад</span> <span class="n">хайртай</span>
+<span class="n">Өдрөөс</span> <span class="n">өдөрт</span> <span class="n">холдсоор</span> <span class="n">л</span> <span class="n">байгаа</span> <span class="n">аавдаа</span> <span class="n">би</span> <span class="n">хайртай</span>
+<span class="n">Шар</span> <span class="n">наран</span> <span class="n">улам</span> <span class="n">алслаад</span> <span class="n">л</span>
+</pre></div>
+</div>
+</li>
+<li><p>What language is this written in?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Illoqarfiiit</span> <span class="n">ilaanni</span> <span class="n">illorsuit</span> <span class="n">timersortarfiit</span><span class="p">,</span>
+<span class="n">eqaarsaartarfiillu</span><span class="p">,</span> <span class="n">tamarmik</span> <span class="n">pilersaarusiukkamik</span>
+<span class="n">nutarterneqarnissaat</span> <span class="n">aallartisarneqassasoq</span><span class="p">,</span>
+<span class="n">ullumikkut</span> <span class="n">piumasarisaasunut</span> <span class="n">naapertuuttun</span><span class="o">-</span><span class="n">ngorsarlugit</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><p>What language is this written in?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Akyinkyinakyinkyin ama mahu nneɛma,
+Asante Bonwire Kente nwene deɛ,
+Manhu bi da o,
+Kwame nim adeɛ yɔ
+Ne kente nwono na abɔ me gye
+Ne nsa; ne nan, n’asadua saa nie.
+</pre></div>
+</div>
+</li>
+<li><p>What language is this written in?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Bo</span><span class="p">:</span><span class="n">se</span><span class="p">:</span> <span class="n">nikya</span><span class="p">:</span><span class="n">w</span> <span class="n">do</span><span class="s1">&#39;n sehłdiday xo&#39;</span><span class="n">ji</span><span class="o">-</span><span class="n">nikya</span><span class="p">:</span><span class="n">w</span> <span class="n">łiqay</span><span class="o">.</span>
+<span class="n">Q</span><span class="s1">&#39;osta:n ye: na&#39;</span><span class="n">ułch</span><span class="s1">&#39;a:t ch&#39;</span><span class="n">inehwa</span><span class="p">:</span><span class="n">n</span> <span class="n">haya</span><span class="p">:</span><span class="n">ł</span> <span class="n">xongkin</span><span class="s1">&#39;-q&#39;</span><span class="n">it</span>
+<span class="n">me</span><span class="p">:</span><span class="n">ne</span><span class="p">:</span><span class="n">q</span><span class="s1">&#39;-ch&#39;</span><span class="ow">in</span><span class="s1">&#39; tse:-q&#39;</span><span class="n">i</span><span class="o">-</span><span class="n">ya</span><span class="p">:</span><span class="n">ng</span><span class="s1">&#39;ay ye: dahya:ng&#39;</span><span class="n">ay</span> <span class="o">-</span><span class="n">nehwa</span><span class="p">:</span><span class="n">n</span><span class="o">.</span>
+<span class="n">Haya</span><span class="p">:</span><span class="n">ł</span> <span class="n">tin</span> <span class="n">ch</span><span class="s1">&#39;ingkya:w xoke&#39;</span> <span class="s1">&#39;e&#39;</span><span class="n">n</span> <span class="n">łiwhing</span><span class="o">-</span><span class="n">xw</span> <span class="s1">&#39;unt&#39;</span><span class="n">e</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>It would be great if your program always correctly identified the language a text is written in. However, your tool isn’t perfect, and it will sometimes get languages wrong. This can happen for a variety of reasons. Your next task is to explore where this can happen.</p>
+<p>Run the “Rosetta Stone” demo from the top-level menu. Answer each of the following questions in the file <code class="docutils literal notranslate"><span class="pre">LanguageIdentification.txt:</span></code></p>
+<ol class="arabic" start="11">
+<li><p>This text by Robert Burns is written in Scots. What language does your program say it’s written in? (Sometimes, the trigrams from a text in one language will closely match the trigrams from a related language.)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">And</span> <span class="n">there</span><span class="s1">&#39;s a hand, my trusty fiere! and gie&#39;</span><span class="n">s</span> <span class="n">a</span> <span class="n">hand</span> <span class="n">o</span><span class="s1">&#39; thine! And we&#39;</span><span class="n">ll</span>
+<span class="n">tak</span><span class="s1">&#39; a right gude-willie waught, for auld lang syne.</span>
+</pre></div>
+</div>
+</li>
+<li><p>This text is written in English. What language does your program say it’s written in? (Short texts can have trigrams that do not match the general trigram distribution for texts in that language.)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">San</span> <span class="n">Jose</span> <span class="ow">is</span> <span class="ow">in</span> <span class="n">Santa</span> <span class="n">Clara</span> <span class="n">County</span><span class="p">,</span> <span class="n">California</span><span class="o">.</span>
+</pre></div>
+</div>
+</li>
+<li><p>This text is written in English. What language does your program say it’s written in? (Trigrams are case-sensitive. We derived the English trigrams from texts that were written in formal English, in which it’s very unusual to see long strings of capitalized letters. As a result, this text will be a low match against English.)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>IT WAS THE BEST OF TIMES, IT WAS THE WORST OF TIMES, IT WAS THE AGE OF
+WISDOM, IT WAS THE AGE OF FOOLISHNESS, IT WAS THE EPOCH OF BELIEF, IT
+WAS THE EPOCH OF INCREDULITY, IT WAS THE SEASON OF LIGHT, IT WAS THE
+SEASON OF DARKNESS, IT WAS THE SPRING OF HOPE, IT WAS THE WINTER OF
+DESPAIR, WE HAD EVERYTHING BEFORE US, WE HAD NOTHING BEFORE US, WE WERE
+ALL GOING DIRECT TO HEAVEN, WE WERE ALL GOING DIRECT THE OTHER WAY – IN
+SHORT, THE PERIOD WAS SO FAR LIKE THE PRESENT PERIOD, THAT SOME OF ITS
+NOISIEST AUTHORITIES INSISTED ON ITS BEING RECEIVED, FOR GOOD OR FOR
+EVIL, IN THE SUPERLATIVE DEGREE OF COMPARISON ONLY.
+</pre></div>
+</div>
+</li>
+<li><p>This song is written in Nepali. What language does your program say it’s written in? (Nepali is traditionally written with Devanagari script, and we used those texts to get our trigrams. In this example, it’s transliterated using a Latin-derived alphabet. Therefore, this will have a low match with Nepali.)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rātō</span> <span class="n">ṭikā</span> <span class="n">nidhārmā</span> <span class="n">ṭalakkai</span> <span class="n">ṭalkiyō</span>
+<span class="n">ḍhākā</span> <span class="n">ṭōpī</span> <span class="n">śiraimā</span> <span class="n">ḍhalakkai</span> <span class="n">ḍhalkiyō</span>
+<span class="n">rātō</span> <span class="n">ṭikā</span> <span class="n">nidhārmā</span> <span class="n">ṭalakka</span> <span class="n">ṭalkiyō</span>
+<span class="n">chāti</span> <span class="n">bhitra</span> <span class="n">māyākō</span> <span class="n">āgō</span> <span class="n">salkiyō</span>
+<span class="n">ē</span> <span class="n">bijulikō</span> <span class="n">tār</span> <span class="n">tār</span> <span class="n">tār</span> <span class="n">tār</span>
+<span class="n">phursad</span> <span class="n">bha</span><span class="s1">&#39;ē ē hajur bhēṭauṅ śanivār</span>
+<span class="n">phursad</span> <span class="n">bha</span><span class="s1">&#39;ē ē hajur bhēṭauṅ śanivār</span>
+<span class="n">ḍhākā</span> <span class="n">ṭōpī</span> <span class="n">śiraimā</span> <span class="n">ḍhalakka</span> <span class="n">ḍhalkiyō</span>
+<span class="n">māyā</span> <span class="n">khēlnē</span> <span class="n">khēlāḍī</span> <span class="n">jhulukkai</span> <span class="n">jhulkiyō</span>
+<span class="n">ē</span> <span class="n">bijulikō</span> <span class="n">tār</span> <span class="n">tār</span> <span class="n">tār</span> <span class="n">tār</span>
+<span class="n">phursad</span> <span class="n">chaina</span> <span class="n">ē</span> <span class="n">hajur</span> <span class="n">ā</span><span class="s1">&#39;uṅdō śanivār</span>
+<span class="n">phursad</span> <span class="n">chaina</span> <span class="n">ē</span> <span class="n">hajur</span> <span class="n">ā</span><span class="s1">&#39;uṅdō śanivār</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="milestone-seven-ethics-biased-training-data">
+<h3>Milestone Seven: Ethics: Biased Training Data<a class="headerlink" href="#milestone-seven-ethics-biased-training-data" title="Link to this heading">¶</a></h3>
+<p>In this section of the assignment, we’d like you to reflect on the code you’ve just written and dive deeper into some important questions about how it works.</p>
+<p>In retrospect, it might seem striking that the code you’ve written is able to determine the language of a piece of text. Nothing in your code looks for particular types of characters, or certain key words, etc. Rather, it works purely by computing some statistics about the text and comparing it against some reference corpora. You can see this most clearly in how the <code class="docutils literal notranslate"><span class="pre">guessLanguageOf</span></code> function is defined:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">string</span><span class="w"> </span><span class="nf">guessLanguageOf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">textProfile</span><span class="p">,</span>
+<span class="w">                       </span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">Corpus</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">corpora</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This function has no preconception of what languages are. It relies entirely on <code class="docutils literal notranslate"><span class="pre">corpora</span></code> for this information. This means that if the trigrams provided for a language were formed from a biased sample of the language - perhaps some texts that are not fully representative of how the language is used - the <code class="docutils literal notranslate"><span class="pre">guessLanguageOf</span></code> function will reflect those biases in its output.</p>
+<p>To illustrate this, let’s look at an example. The trigrams for English were derived from a large, publicly available text in English: a translation of the bible. Because this is the sole source for English trigrams, your <code class="docutils literal notranslate"><span class="pre">guessLanguageOf</span></code> function, when evaluating whether a text is written in English, is comparing the text’s trigrams against the bible’s trigrams. If you provide your tool a piece of text that is written in English, but not the style of English found in a bible translation, your tool may fail to recognize the language as English.</p>
+<div class="hint admonition">
+<p class="admonition-title">Answer the following question in the file <strong>ShortAnswers.txt</strong></p>
+<p><strong>Q1.</strong> Give two examples of texts that a native English speaker would readily identify as being written in English, but which use a writing style that is very dissimilar to that of a bible translation. The texts should each be at most 150 words long, and may be excerpted from longer texts. Please include a proper citation of where the text came from. (Here’s a link to <a class="reference external" href="https://www.acm.org/publications/authors/reference-formatting">information on how to cite sources</a> provided by the ACM, computing’s main professional organization.) Briefly explain why your texts meet those criteria. Your answer should be 3 - 6 sentences in length.</p>
+</div>
+<p>Many software systems that work with languages, whether that’s a translation app or a large language model like ChatGPT, work in a similar way. Like your <code class="docutils literal notranslate"><span class="pre">guessLanguageOf</span></code> function, those systems often work by building up statistical models of language based on provided data sets. Those data sets are called the <strong><em>training data</em></strong> for those systems, as it’s used to “train” the system what languages look like. Like your <code class="docutils literal notranslate"><span class="pre">guessLanguageOf</span></code> function, if those systems are not given representative samples of languages, they may produce incorrect answers.</p>
+<p>When the training data given to a program are not fully representative of the sorts of inputs those programs will need to handle, we say that the training data are <strong><em>biased</em></strong>. (The term “bias” here does not mean that there will be a particular political viewpoint encoded in the data; it just means that the training data don’t account for the full spectrum of possible inputs.)</p>
+<p>Training data sets can be biased for many reasons: logistical constraints (for example, ease and cost of gathering the data), legal restrictions (for example, copyright restrictions or protections for sensitive medical data), faulty assumptions (for example, that all people in a particular group have similar backgrounds or experiences), or even simple ignorance on the part of the developers. But regardless of the reason, biases in training data, when amplified by automated systems, can lead to real harms.</p>
+<div class="hint admonition">
+<p class="admonition-title">Answer the following question in the file <strong>ShortAnswers.txt</strong></p>
+<p><strong>Q2.</strong> Imagine a hypothetical translation app whose training data consisted of the full contents of Wikipedia. This means the algorithms in the translation system assume the style of writing found on Wikipedia is fully representative of all writing styles. Give an example of a piece of text where, in light of the bias in the training data, you would expect that</p>
+<ol class="arabic simple">
+<li><p>the app will do a poor job translating the text, and, simultaneously,</p></li>
+<li><p>there is a realistic situation in which this translation could lead to a person being harmed.</p></li>
+</ol>
+<p>Explain your reasoning, addressing both of the above points. Your answer should be 3 - 6 sentences in length.</p>
+</div>
+<p>There are roughly 8,000 spoken human languages. Many of these languages are underrepresented online relative to their number of speakers; this can happen either due to differences in internet access, or because there is no standard orthography, or for political reasons, etc.</p>
+<p>Consider the following scenario. You are working on a software system that works with language (say, a program like ChatGPT that can converse with users in their own language) and want to expand the number of languages your program can work with. You come across a language that has a large number of speakers, but where it is difficult to find good training data. Specifically, the only available texts online in that language are either</p>
+<ul class="simple">
+<li><p>not fully representative of how that language is spoken, or</p></li>
+<li><p>protected by copyright restrictions.</p></li>
+</ul>
+<p>For example, perhaps your sources consist solely of Twitter/X posts in that language, a bible translation, and blog posts whose copyright status are legally ambiguous.</p>
+<p>You now have a choice. If you use those texts as training data, you know that the resulting system could reflect the biases of the small sample of text available, or even potentially expose you to legal liability. On the other hand, if you don’t use those texts as training data, then your program’s performance on that language might be seriously compromised or entirely nonexistent. You need to make a judgment call about how to proceed.</p>
+<div class="hint admonition">
+<p class="admonition-title">Answer the following question in the file <strong>ShortAnswers.txt</strong></p>
+<p><strong>Q3</strong>: Outline some of the potential benefits of including the limited texts as training data for your program. As you do, think through who specifically would receive those benefits. Your answer should be 4 - 8 sentences in length.</p>
+<p><strong>Q4</strong>: Outline some of the potential downsides of including the limited texts as training data for your program. As you do, think through who specifically would be impacted by those downsides. Your answer should be 4 - 8 sentences in length.</p>
+<p><strong>Q5</strong>: Based on your answers to Q3 and Q4, how (if at all) would you use the limited texts as training data? Explain your answer in light of the benefits and harms you outlined in Q3 and Q4. Your answer should be 4 - 8 sentences in length.</p>
+</div>
+<p>The above examples illustrate that the sources of data we use as input to programs that process language can have profound effects on how those systems behave. If you find yourself working on such a system later on, take some time to reflect on what biases may be present in your training data and what steps you could take to mitigate those biases.</p>
+</section>
+</section>
+<section id="part-two-rising-tides">
+<h2>Part Two: Rising Tides<a class="headerlink" href="#part-two-rising-tides" title="Link to this heading">¶</a></h2>
+<section id="background-our-model">
+<h3>Background: Our Model<a class="headerlink" href="#background-our-model" title="Link to this heading">¶</a></h3>
+<p>Global sea levels have been rising, and the most recent data suggest that the rate at which sea levels are rising is increasing. This means that city planners in coastal areas need to start designing developments so that an extra meter of water doesn’t flood people out of their homes.</p>
+<p>Your task in this part of the assignment is to build a tool that models flooding due to sea level rise. To do so, we’re going to model terrains as grids of doubles, where each double represents the altitude of a particular square region on Earth. Higher values indicate higher elevations, while lower values indicate lower elevations. For example, take a look at the three grids to the right. Before moving on, take a minute to think over the following questions, which you don’t need to submit. Which picture represents a small hill? Which one represents a long, sloping incline? Which one represents a lowland area surrounded by levees?</p>
+<figure class="align-center" id="id2">
+<img alt="../../_images/SampleGrids.png" src="../../_images/SampleGrids.png" />
+<figcaption>
+<p><span class="caption-text"><em>Three sample grids. Each is a 7x7 grid of numbers.</em></span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>We can model the flow of water as follows. We’ll imagine that there’s a water source somewhere in the world and that we have a known height for the water. Water will then flow anywhere it can reach by moving in the four cardinal directions (up/down/left/right) without moving to a location at a higher elevation than the initial water height. For example, suppose that the upper-left corner of each of the three above worlds is the water source. Here’s what would be underwater given several different water heights:</p>
+<figure class="align-center" id="id3">
+<img alt="../../_images/Flooding1.png" src="../../_images/Flooding1.png" />
+<figcaption>
+<p><span class="caption-text"><em>Those three sample grids with different levels of water flooding them, in each case with the water emanating from the top-left corner of the world.</em></span><a class="headerlink" href="#id3" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>A few things to notice here. First, notice that the water height is independent of the height of the terrain at its starting point. For example, in the bottom row, the water height is always two meters, even though the terrain height of the upper-left corner is either 0m or -1m, depending on the world. Second, in the terrain used in the middle column, notice that the water stays above the upper diagonal line of 4’s, since we assume water can only move up, down, left, and right and therefore can’t move diagonally through the gaps. Although there’s a lot of terrain below the water height, it doesn’t end up under water until the height reaches that of the barrier.</p>
+<p>It’s possible for a grid to have multiple water sources. This might happen, for example, if we were looking at a zoomed-in region of the San Francisco Peninsula, we might have water to both the east and west of the region of land in the middle, and so we’d need to account for the possibility that the water level is rising on both sides. Here’s another set of images, this time showing where the water would be in the sample worlds above assume that both the top-left and bottom-right corner are water sources. (We’ll assume each water source has the same height.)</p>
+<figure class="align-center">
+<img alt="../../_images/Flooding2.png" src="../../_images/Flooding2.png" />
+</figure>
+<p>Notice that the water overtops the levees in the central world, completely flooding the area, as soon as the water height reaches three meters. The water line never changes, regardless of the current elevation. As such, water will never flood across cells at a higher elevation than the water line, but will flood across cells at the same height or below the water line</p>
+<p>Your task is to implement a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">floodedRegionsIn</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">terrain</span><span class="p">,</span>
+<span class="w">                            </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">GridLocation</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">sources</span><span class="p">,</span>
+<span class="w">                            </span><span class="kt">double</span><span class="w"> </span><span class="n">height</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a terrain (given as a <code class="docutils literal notranslate"><span class="pre">Grid&lt;double&gt;</span></code>), a list of locations of water sources (represented as a <code class="docutils literal notranslate"><span class="pre">Vector&lt;GridLocation&gt;</span></code>; more on GridLocation later), and the height of the water level, then returns a <code class="docutils literal notranslate"><span class="pre">Grid&lt;bool&gt;</span></code> indicating, for each spot in the terrain, whether it’s under water (<code class="docutils literal notranslate"><span class="pre">true</span></code>) or above the water (<code class="docutils literal notranslate"><span class="pre">false</span></code>).</p>
+<p>You may have noticed that we’re making use of the <code class="docutils literal notranslate"><span class="pre">GridLocation</span></code> type. This is a type representing a position in a <code class="docutils literal notranslate"><span class="pre">Grid</span></code>. You can create a <code class="docutils literal notranslate"><span class="pre">GridLocation</span></code> and access its row and column using this syntax:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">GridLocation</span><span class="w"> </span><span class="n">location</span><span class="p">;</span>
+<span class="n">location</span><span class="p">.</span><span class="n">row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">137</span><span class="p">;</span>
+<span class="n">location</span><span class="p">.</span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span>
+
+<span class="n">GridLocation</span><span class="w"> </span><span class="n">otherLocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">106</span><span class="p">,</span><span class="w"> </span><span class="mi">103</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">// Row 106, column 103</span>
+<span class="n">otherLocation</span><span class="p">.</span><span class="n">row</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="c1">// Increment the row.</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">otherLocation</span><span class="p">.</span><span class="n">col</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// Prints 103</span>
+</pre></div>
+</div>
+</section>
+<section id="background-breadth-first-search">
+<h3>Background: Breadth-First Search<a class="headerlink" href="#background-breadth-first-search" title="Link to this heading">¶</a></h3>
+<p>Now that we’ve talked about the types involved here, let’s address how to solve this problem. How, exactly, do you determine what’s going to be underwater? Doing so requires you to determine which grid locations are both (1) below the water level and (2) places water can flow to from one of the sources.</p>
+<p>Fortunately, there’s a beautiful algorithm you can use to solve this problem called <strong><em>breadth-first search</em></strong>. The idea is to simulate having the water flow out from each of the sources at greater and greater distances. First, you consider the water sources themselves. Then, you visit each location one step away from the water sources. Then, you visit each location two steps away from the water sources, then three steps, four steps, etc. In that way, the algorithm ends up eventually finding all places the water can flow to, and it does so fairly quickly!</p>
+<p>Breadth-first search is typically implemented by using a <strong><em>queue</em></strong> that will process every flooded location. The idea is the following: we begin by enqueuing each water source, or at least the sources that aren’t above the water line. That means that the queue ends up holding all the flooded locations zero steps away from the sources. We’ll then enqueue a next group of elements, corresponding to all the flooded locations one step away from the sources. Then we’ll enqueue all flooded locations two steps away from the sources, then three steps away, etc. Eventually, this process will end up visiting every flooded location in the map.</p>
+<p>Let’s make this a bit more concrete. To get the process started, you add to the queue each of the individual water sources that happen to be at least as high as the grid cell they’re located in. From then on, the algorithm operates by dequeuing a location from the front of the queue. Once you have that location, you look at each of the location’s neighbors in the four cardinal directions. For each of those neighbors, if that neighbor is already flooded, you don’t need to do anything because the search has already considered that square. Similarly, if that neighbor is above the water line, there’s nothing to do because that square shouldn’t end up under water. However, if neither of those conditions hold, you then add the neighbor to the queue, meaning “I’m going to process this one later on.” By delaying processing that neighbor, you get to incrementally explore at greater and greater distances from the water sources. The process stops once the queue is empty; when that happens, every location that needs to be considered will have been visited.</p>
+<p>At each step in this process, you’re removing the location from the queue that’s been sitting there the longest. Take a minute to convince yourself that this means that you’ll first visit everything zero steps from a water source, then one step from a water source, then two steps, etc.</p>
+<p>To spell out the individual steps of the algorithm, here’s some <strong><em>pseudocode</em></strong> for breadth-first search:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">create</span> <span class="n">an</span> <span class="n">empty</span> <span class="n">queue</span><span class="p">;</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">each</span> <span class="n">water</span> <span class="n">source</span> <span class="n">at</span> <span class="ow">or</span> <span class="n">below</span> <span class="n">the</span> <span class="n">water</span> <span class="n">level</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">flood</span> <span class="n">that</span> <span class="n">square</span><span class="p">;</span>
+    <span class="n">add</span> <span class="n">that</span> <span class="n">square</span> <span class="n">to</span> <span class="n">the</span> <span class="n">queue</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">while</span> <span class="p">(</span><span class="n">the</span> <span class="n">queue</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">empty</span><span class="p">)</span> <span class="p">{</span>
+   <span class="n">dequeue</span> <span class="n">a</span> <span class="n">position</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">front</span> <span class="n">of</span> <span class="n">the</span> <span class="n">queue</span><span class="p">;</span>
+
+   <span class="k">for</span> <span class="p">(</span><span class="n">each</span> <span class="n">square</span> <span class="n">adjacent</span> <span class="n">to</span> <span class="n">the</span> <span class="n">position</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">cardinal</span> <span class="n">direction</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">that</span> <span class="n">square</span> <span class="ow">is</span> <span class="n">at</span> <span class="ow">or</span> <span class="n">below</span> <span class="n">the</span> <span class="n">water</span> <span class="n">level</span> <span class="ow">and</span> <span class="n">isn</span><span class="s1">&#39;t yet flooded) {</span>
+         <span class="n">flood</span> <span class="n">that</span> <span class="n">square</span><span class="p">;</span>
+         <span class="n">add</span> <span class="n">that</span> <span class="n">square</span> <span class="n">to</span> <span class="n">the</span> <span class="n">queue</span><span class="p">;</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>As is generally the case with pseudocode, several of the operations that are expressed in English need to be fleshed out a bit. For example, the loop that reads</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">each</span> <span class="n">square</span> <span class="n">adjacent</span> <span class="n">to</span> <span class="n">the</span> <span class="n">position</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">cardinal</span> <span class="n">direction</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>is a conceptual description of the code that belongs there. It’s up to you to determine how to code this up; this might be a loop, or it might be several loops, or it may be something totally different. The basic idea, however, should still make sense. What you need to do is iterate over all the locations that are one position away from the current position. How you do that is up to you.</p>
+<p>It’s important to ensure that the code you write works correctly here, and to help you with that we’ve provided a suite of test cases with the starter files. These test cases look at a few examples, but they aren’t exhaustive. You’ll need to add at least one custom test case – and, preferably, more than one – using the handy <code class="docutils literal notranslate"><span class="pre">STUDENT_TEST</span></code> macro that you saw in the first programming assignment. We don’t recommend copying one of the test cases from above, since (1) that’s really tedious and time-consuming and (2) it’s better to more directly test particular tricky behaviors with smaller, more focused examples.</p>
+<p>To summarize, here’s what you need to do for this assignment:</p>
+<div class="hint admonition">
+<p class="admonition-title">Rising Tides Requirements</p>
+<ol class="arabic simple">
+<li><p>Implement the <code class="docutils literal notranslate"><span class="pre">floodedRegionsIn</span></code> function in <code class="docutils literal notranslate"><span class="pre">RisingTides.cpp</span></code>. Your code should use the breadth-first search algorithm outlined above in pseudocode to determine which regions are under water. Water flows up, down, left, and right and will submerge any region whose height is less than or equal to the global water level passed in as a parameter. Test as you go.</p></li>
+<li><p>Add in at least one custom test case into <code class="docutils literal notranslate"><span class="pre">RisingTidesTest.cpp</span></code> – preferably, not one of the ones we listed above – and if necessary revisit your code to correct any errors you find.</p></li>
+</ol>
+</div>
+<p>Some notes on this problem:</p>
+<ul class="simple">
+<li><p>Need a refresher on <code class="docutils literal notranslate"><span class="pre">Grid</span></code> type? Check the <a class="reference external" href="https://cs101b.stickmind.com/cslib_docs/">Stanford C++ Library Documentation</a>.</p></li>
+<li><p>The initial height of the water at a source may be below the level of the terrain there. If that happens, that water source doesn’t flood anything, including its initial terrain cell. (This is an edge case where both the “flood it” and “don’t flood it” options end up being weird, and for consistency we decided to tiebreak in the “don’t flood it” direction.)</p></li>
+<li><p>The heights of adjacent cells in the grid may have no relation to one another. For example, if you have the topography of <a class="reference external" href="https://en.wikipedia.org/wiki/Preikestolen">Preikestolen</a> in Norway, you might have a cell of altitude 0m immediately adjacent to a cell of altitude 604m. If you have a low-resolution scan of <a class="reference external" href="https://en.wikipedia.org/wiki/Mount_Whitney">Mount Whitney</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/Death_Valley">Death Valley</a>, you might have a cell of altitude 4,421m next to a cell of altitude -85m.</p></li>
+<li><p>Curious about an edge case? Check the examples above.</p></li>
+<li><p>Make sure, when passing large objects around, to do so by reference (or <code class="docutils literal notranslate"><span class="pre">const</span></code> reference, if appropriate) rather than by value. Copying large grids can take a very long time and make your code slow down appreciably.</p></li>
+</ul>
+<p>Once you’re passing all the tests, click the “Rising Tides” option to see your code in action! This demo uses your code to flood-fill the sample world you’ve chosen. Some of these sample worlds are large, and it might take a while for that flood-fill to finish. However, it should probably take no more than 30 seconds for the program to finish running your code.</p>
+<p>The demo app we’ve included will let you simulate changes to the sea levels for several geographical regions of the United States. The data here is mostly taken from the National Oceanographic and Atmospheric Administration (NOAA), which provides detailed topological maps for the US. Play around with the data sets – what do you find?</p>
+<p>We also have some maps from Mars, supplied by a Stanford student as an extension to their assignment! The Martian terrain includes many regions way above and way below 0 elevation, so try out some large positive and large negative altitudes to get the full experience here.</p>
+</section>
+</section>
+<section id="part-three-optional-extensions">
+<h2>Part Three: (Optional) Extensions<a class="headerlink" href="#part-three-optional-extensions" title="Link to this heading">¶</a></h2>
+<p>If you’d like to run wild with these assignments, go for it! Here are some suggestions for additional features to add.</p>
+<ul>
+<li><p><strong><em>Rosetta Stone:</em></strong> The starter files for this assignment include trigrams for over 200 languages. We made a reasonable effort to make sure those trigram files were reflective of how those languages are actually written, but there may be some trigram files derived from corpora that don’t adequately represent the language. Investigate the quality of the trigrams files for other languages and, if they seem off, find a new corpus and create a better trigrams file. Let us know how you did it so we can update our attributions file.</p>
+<p>We know for a fact that our list of languages is incomplete. Do you speak any languages that aren’t represented here? Build a corpus for it and send it our way, along with a description of how you came up with it.</p>
+<p>As you saw, the tool sometimes guesses the wrong language. When it does, is that because it’s completely and totally fooled, or because it thought two or more languages were a good match? Try changing the function that guesses languages to return a set of the top <em>n</em> matches for some value of <em>n</em> (say, the top five matches) along with its confidence in each. Tell us if you find anything interesting when you do!</p>
+</li>
+<li><p><strong><em>Rising Tides:</em></strong> The sample terrains here have their data taken from the NOAA, which is specific to the United States, but we’d love to see what other data sets you can find. Get some topographical data from other sources, modify it to fit our file format, and load it into the program. (You can find information about the file format in the <code class="docutils literal notranslate"><span class="pre">res/CreatingYourOwnTerrains.txt</span></code> file.) What information – either for good or for ill – does that forecast?</p>
+<p>Or, consider the following question: suppose you have a terrain map of your area and know your home’s position within that area. Can you determine how much higher the water can rise without flooding your home?</p>
+</li>
+</ul>
+</section>
+<section id="submission-instructions">
+<h2>Submission Instructions<a class="headerlink" href="#submission-instructions" title="Link to this heading">¶</a></h2>
+<p>Before you call it done, run through our <a class="reference external" href="https://cs101b.stickmind.com/resources/Submit-checklist.html" title="Submit checklist">submit checklist</a> to be sure all your <code class="docutils literal notranslate"><span class="pre">t</span></code>s are crossed and <code class="docutils literal notranslate"><span class="pre">i</span></code>s are dotted. Make sure your code follows our <a class="reference external" href="https://cs101b.stickmind.com/resources/Style-Guide.html" title="Style Guide">style guide</a>. Then upload your completed files for grading.</p>
+<p>Please submit only the files you edited; for this assignment, these files will be:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RosettaStone.cpp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LanguageIdentifications.txt</span></code> <em>(don’t forget this one!)</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ShortAnswers.txt</span></code> <em>(don’t forget this one!)</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RisingTides.cpp</span></code></p></li>
+</ul>
+<p>You don’t need to submit any of the other files in the project folder.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../../topic-3/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>下一页</span>
+                </div>
+                <div class="title">Topic 3. Recursion</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../section-2.1/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>上一页</span>
+                </div>
+                
+                <div class="title">Section 2. Containers and Recursion</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, <a href='https://www.stickmind.com/' target="_blank">StickMind</a>
+            </div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            本页目录
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Assignment 2. Fun with Collections</a><ul>
+<li><a class="reference internal" href="#starter-files">Starter Files</a></li>
+<li><a class="reference internal" href="#part-one-rosetta-stone">Part One: Rosetta Stone</a><ul>
+<li><a class="reference internal" href="#background-trigrams">Background: Trigrams</a></li>
+<li><a class="reference internal" href="#background-utf-8">Background: UTF-8</a></li>
+<li><a class="reference internal" href="#milestone-one-form-k-grams">Milestone One: Form k-Grams</a></li>
+<li><a class="reference internal" href="#milestone-two-normalize-frequencies">Milestone Two: Normalize Frequencies</a></li>
+<li><a class="reference internal" href="#milestone-three-filter-out-uncommon-trigrams">Milestone Three: Filter Out Uncommon Trigrams</a></li>
+<li><a class="reference internal" href="#milestone-four-implement-cosine-similarity">Milestone Four: Implement Cosine Similarity</a></li>
+<li><a class="reference internal" href="#milestone-five-guess-a-texts-language">Milestone Five: Guess a Text’s Language</a></li>
+<li><a class="reference internal" href="#milestone-six-explore-and-evaluate">Milestone Six: Explore and Evaluate</a></li>
+<li><a class="reference internal" href="#milestone-seven-ethics-biased-training-data">Milestone Seven: Ethics: Biased Training Data</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#part-two-rising-tides">Part Two: Rising Tides</a><ul>
+<li><a class="reference internal" href="#background-our-model">Background: Our Model</a></li>
+<li><a class="reference internal" href="#background-breadth-first-search">Background: Breadth-First Search</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#part-three-optional-extensions">Part Three: (Optional) Extensions</a></li>
+<li><a class="reference internal" href="#submission-instructions">Submission Instructions</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=7d86a446"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/tabs.js?v=3ee01567"></script>
+    <script>let toggleHintShow = '';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    </body>
+</html>

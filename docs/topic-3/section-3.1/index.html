@@ -1,0 +1,1157 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Assignment 3.1 A Visit to Recursia" href="../assign-3.1/index.html" /><link rel="prev" title="Topic 3. Recursion" href="../index.html" />
+
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+        <title>Section 3.1 Recursion and Iteration - CS101B Programming Abstractions</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pied-piper-admonition.css?v=e32e2275" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">CS101B Programming Abstractions</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">CS101B Programming Abstractions</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../resources/index.html">Resources</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Resources</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Workflow/index.html">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/PythonToCpp/index.html">Python to C++ Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Debugging/index.html">Debugging Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Testing/index.html">Testing Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-0/index.html">Introduction</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Introduction</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-0/assign-0/index.html">Assignment 0. Welcome to CS101B!</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-1/index.html">Topic 1. Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Topic 1. Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-1/section-1.1/index.html">Section 1.1 C++ and Recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-1/assign-1.1/index.html">Assignment 1. Welcome to C++</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-2/index.html">Topic 2. Containers</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Topic 2. Containers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-2/section-2.1/index.html">Section 2. Containers and Recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-2/assign-2.1/index.html">Assignment 2. Fun with Collections</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Topic 3. Recursion</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Topic 3. Recursion</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Section 3.1 Recursion and Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assign-3.1/index.html">Assignment 3.1 A Visit to Recursia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../section-3.2/index.html">Section 3.2 Recursion and Backtracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assign-3.2/index.html">Assignment 3.2 Recursion to the Rescue!</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-4/index.html">Topic 4. Algorithm and Abstraction</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Topic 4. Algorithm and Abstraction</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/section-4.1/index.html">Section 4.1 Big-O, Searching and Sorting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/section-4.2/index.html">Section 4.2 Class Design and Dynamic Memory Allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/assign-4.1/index.html">Assignment 4.1 Bag’O Big-O</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../topic-5/index.html">Topic 5. Data Structures</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>返回顶部</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section class="tex2jax_ignore mathjax_ignore" id="section-3-1-recursion-and-iteration">
+<h1>Section 3.1 Recursion and Iteration<a class="headerlink" href="#section-3-1-recursion-and-iteration" title="Link to this heading">¶</a></h1>
+<p>This week’s section exercises explore the ins and outs of content from week 3 – thinking recursively! These problems will help in gaining familiarity with recursive problem-solving.</p>
+<p><a class="reference download internal" download="" href="../../_downloads/3f54831bb6263b6f667fae867a8b5c8d/Section-3.1.zip"><span class="xref download myst">📦 Starter code</span></a></p>
+<section id="recursion-and-iteration">
+<h2>Recursion and Iteration<a class="headerlink" href="#recursion-and-iteration" title="Link to this heading">¶</a></h2>
+<section id="eating-a-chocolate-bar-take-two">
+<h3>Eating a Chocolate Bar, Take Two<a class="headerlink" href="#eating-a-chocolate-bar-take-two" title="Link to this heading">¶</a></h3>
+<p>Last week, you explored what it was like to eat a chocolate bar where, at each point in time, you could either eat one square or two. But who are we to tell you how many squares you can eat at once? You’re an adult, and you can make your own decisions! If you want to eat five squares at a time, or cram the whole chocolate bar in your mouth in a single bite, go for it!</p>
+<p>This increases the number of ways of eating the chocolate bar. For example, here are all the ways to eat a <span class="math notranslate nohighlight">\(1 \times 4\)</span> chocolate bar:</p>
+<ul class="simple">
+<li><p>1, 1, 1, 1</p></li>
+<li><p>1, 1, 2</p></li>
+<li><p>1, 2, 1</p></li>
+<li><p>1, 3</p></li>
+<li><p>2, 1, 1</p></li>
+<li><p>2, 2</p></li>
+<li><p>3, 1</p></li>
+<li><p>4</p></li>
+</ul>
+<p>As before, order matters. Last time, we wrote the following function, which counts the number of ways to eat a chocolate bar using bites of sizes 1 and 2.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">numWaysToEat</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Can&#39;t have a negative number of squares. */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Negative chocolate? YOU MONSTER!&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* If we have zero or one square, there&#39;s exactly one way to eat</span>
+<span class="cm">     * the chocolate.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Otherwise, we either eat one square, leaving numSquares - 1 more</span>
+<span class="cm">     * to eat, or we eat two squares, leaving numSquares - 2 to eat.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">numWaysToEat</span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">               </span><span class="n">numWaysToEat</span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ol class="arabic simple">
+<li><p>Modify this function so that it counts the total number of ways of eating the chocolate bar, not just with bites of size one and two.</p></li>
+</ol>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">In the case where all bites were of size 1 or 2, we fired off two recursive calls. Here, when there’s a variable number of recursive calls, we’ll use a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop to try all bite sizes and fire off the recursive call inside the loop.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">numWaysToEat</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Can&#39;t have a negative number of squares. */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Negative chocolate? YOU MONSTER!&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* If we have zero squares, there&#39;s exactly one way to eat the</span>
+<span class="cm">     * chocolate bar, which is to do nothing.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Otherwise, we will eat somewhere between 1 and numSquares</span>
+<span class="cm">     * squares in our next bite. If we eat biteSize pieces off of</span>
+<span class="cm">     * the chocolate bar, we&#39;ll be left with numSquares - biteSize</span>
+<span class="cm">     * pieces remaining. We need to add up all the ways to do this.</span>
+<span class="cm">     * Since we don&#39;t have a fixed number of recursive calls to</span>
+<span class="cm">     * make, we&#39;ll use a loop to do this.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">biteSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">biteSize</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">numSquares</span><span class="p">;</span><span class="w"> </span><span class="n">biteSize</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">numWaysToEat</span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">biteSize</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">Fun fact: this will always print out <span class="math notranslate nohighlight">\(2^{numSquares-1}\)</span> as its answer, except for when <code class="docutils literal notranslate"><span class="pre">numSquares</span></code> is zero and it prints . If you’re curious why that is, take Stanford CS103!</p>
+</div>
+</details><p>Last time, we wrote the following function to print out all the ways to eat a chocolate bar using bites of size 1 and 2:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/*</span> <span class="n">Print</span> <span class="nb">all</span> <span class="n">ways</span> <span class="n">to</span> <span class="n">eat</span> <span class="n">numSquares</span> <span class="n">more</span> <span class="n">squares</span><span class="p">,</span> <span class="n">given</span> <span class="n">that</span> <span class="n">we</span><span class="s1">&#39;ve</span>
+ <span class="o">*</span> <span class="n">already</span> <span class="n">taken</span> <span class="n">the</span> <span class="n">bites</span> <span class="n">given</span> <span class="ow">in</span> <span class="n">soFar</span><span class="o">.</span>
+ <span class="o">*/</span>
+<span class="n">void</span> <span class="n">printWaysToEatRec</span><span class="p">(</span><span class="nb">int</span> <span class="n">numSquares</span><span class="p">,</span> <span class="n">const</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="nb">int</span><span class="o">&gt;&amp;</span> <span class="n">soFar</span><span class="p">)</span> <span class="p">{</span>
+    <span class="o">/*</span> <span class="n">Base</span> <span class="n">Case</span><span class="p">:</span> <span class="n">If</span> <span class="n">there</span> <span class="n">are</span> <span class="n">no</span> <span class="n">squares</span> <span class="n">left</span><span class="p">,</span> <span class="n">the</span> <span class="n">only</span> <span class="n">option</span> <span class="ow">is</span> <span class="n">to</span> <span class="n">use</span>
+     <span class="o">*</span> <span class="n">the</span> <span class="n">bites</span> <span class="n">we</span><span class="s1">&#39;ve taken already in soFar.</span>
+     <span class="o">*/</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">numSquares</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">soFar</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="o">/*</span> <span class="n">Base</span> <span class="n">Case</span><span class="p">:</span> <span class="n">If</span> <span class="n">there</span> <span class="ow">is</span> <span class="n">one</span> <span class="n">square</span> <span class="n">lfet</span><span class="p">,</span> <span class="n">the</span> <span class="n">only</span> <span class="n">option</span> <span class="ow">is</span> <span class="n">to</span> <span class="n">eat</span>
+     <span class="o">*</span> <span class="n">that</span> <span class="n">square</span><span class="o">.</span>
+     <span class="o">*/</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">numSquares</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">soFar</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="o">/*</span> <span class="n">Otherwise</span><span class="p">,</span> <span class="n">we</span> <span class="n">take</span> <span class="n">take</span> <span class="n">bites</span> <span class="n">of</span> <span class="n">size</span> <span class="n">one</span> <span class="ow">or</span> <span class="n">of</span> <span class="n">size</span> <span class="n">two</span><span class="o">.</span> <span class="o">*/</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="n">printWaysToEatRec</span><span class="p">(</span><span class="n">numSquares</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">soFar</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="n">printWaysToEatRec</span><span class="p">(</span><span class="n">numSquares</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="n">soFar</span> <span class="o">+</span> <span class="mi">2</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">void</span> <span class="n">printWaysToEat</span><span class="p">(</span><span class="nb">int</span> <span class="n">numSquares</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">numSquares</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">error</span><span class="p">(</span><span class="s2">&quot;You owe me some chocolate!&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="o">/*</span> <span class="n">We</span> <span class="n">begin</span> <span class="n">without</span> <span class="n">having</span> <span class="n">made</span> <span class="nb">any</span> <span class="n">bites</span><span class="o">.</span> <span class="o">*/</span>
+    <span class="n">printWaysToEatRec</span><span class="p">(</span><span class="n">numSquares</span><span class="p">,</span> <span class="p">{});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Modify this code so that it prints all the ways to eat a chocolate bar with no restrictions on the number of squares per bite.</p></li>
+</ol>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">As above, the major change is a switch from two explicit recursive calls to using a <code class="docutils literal notranslate"><span class="pre">for</span></code> loop to list off the calls we need to make.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Print all ways to eat numSquares more squares, given that we&#39;ve</span>
+<span class="cm"> * already taken the bites given in soFar.</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">printWaysToEatRec</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">soFar</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base Case: If there are no squares left, the only option is to use</span>
+<span class="cm">     * the bites we&#39;ve taken already in soFar.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Otherwise, try all bite sizes. */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">biteSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">biteSize</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">numSquares</span><span class="p">;</span><span class="w"> </span><span class="n">biteSize</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">printWaysToEatRec</span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">biteSize</span><span class="p">,</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">biteSize</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">printWaysToEat</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">error</span><span class="p">(</span><span class="s">&quot;You owe me some chocolate!&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* We begin without having made any bites. */</span>
+<span class="w">    </span><span class="n">printWaysToEatRec</span><span class="p">(</span><span class="n">numSquares</span><span class="p">,</span><span class="w"> </span><span class="p">{});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details><p>Last time, we wrote this function that returns the a <code class="docutils literal notranslate"><span class="pre">Set</span></code> of all ways of eating the chocolate bar with bite sizes 1 or 2.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Returns all ways to eat numSquares more squares, given that we&#39;ve</span>
+<span class="cm"> * already taken the bites given in soFar.</span>
+<span class="cm"> */</span>
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">waysToEatRec</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">soFar</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base Case: If there are no squares left, the only option is to use</span>
+<span class="cm">     * the bites we&#39;ve taken already in soFar.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* There is one option here, namely, the set of bites we came up</span>
+<span class="cm">         * with in soFar. So if we return all the ways to eat the</span>
+<span class="cm">         * chocolate bar given that we&#39;ve committed to what&#39;s in soFar,</span>
+<span class="cm">         * we should return a set with just one item, and that one item</span>
+<span class="cm">         * should be soFar.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Base Case: If there is one square lfet, the only option is to eat</span>
+<span class="cm">     * that square.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* Take what we have, and extend it by eating one more bite. */</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Otherwise, we take take bites of size one or of size two. */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* Each individual recursive call returns a set containing the</span>
+<span class="cm">         * possibilities that arise from exploring that choice. We want</span>
+<span class="cm">         * to combine these together.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">waysToEatRec</span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">               </span><span class="n">waysToEatRec</span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">waysToEat</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">error</span><span class="p">(</span><span class="s">&quot;You owe me some chocolate!&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* We begin without having made any bites. */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">waysToEatRec</span><span class="p">(</span><span class="n">numSquares</span><span class="p">,</span><span class="w"> </span><span class="p">{});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Modify this function to allow bites of any sizes, not just 1 and 2.</p></li>
+</ol>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">This will feel like a mix between the first two approaches. In the first approach, we had to declare a local variable to track the sum from across all the recursive calls. In the second approach, we passed extra information down at each step to track what choices we’ve made so far. Particle acceleratoring them together gives this solution:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Returns all ways to eat numSquares more squares, given that we&#39;ve</span>
+<span class="cm"> * already taken the bites given in soFar.</span>
+<span class="cm"> */</span>
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">waysToEatRec</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">soFar</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base Case: If there are no squares left, the only option is to use</span>
+<span class="cm">     * the bites we&#39;ve taken already in soFar.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* There is one option here, namely, the set of bites we came up</span>
+<span class="cm">         * with in soFar. So if we return all the ways to eat the</span>
+<span class="cm">         * chocolate bar given that we&#39;ve committed to what&#39;s in soFar,</span>
+<span class="cm">         * we should return a set with just one item, and that one item</span>
+<span class="cm">         * should be soFar.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Otherwise, we have to take a bite. Try all sizes. */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">biteSize</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">biteSize</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">numSquares</span><span class="p">;</span><span class="w"> </span><span class="n">biteSize</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">waysToEatRec</span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">biteSize</span><span class="p">,</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">biteSize</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">waysToEat</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">error</span><span class="p">(</span><span class="s">&quot;You owe me some chocolate!&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* We begin without having made any bites. */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">waysToEatRec</span><span class="p">(</span><span class="n">numSquares</span><span class="p">,</span><span class="w"> </span><span class="p">{});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="tricky-recursion-tracing">
+<h3>Tricky Recursion Tracing<a class="headerlink" href="#tricky-recursion-tracing" title="Link to this heading">¶</a></h3>
+<p><em>Topics: Recursion call and return, Tracing</em></p>
+<p>Below is a recursive functions along with an initial call to that functions. Determine what value is returned from the function. As a note, the function contains a bug (or at least, highly misleading code) that makes it not behave in the way you might initially expect. In addition to tracing the function, make a note of what specifically that function does that’s Cruel and Unusual.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">batken</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">v</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">v</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">total</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">batken</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">subList</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">total</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// Determine what this outputs!</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">batken</span><span class="p">({</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">})</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+</pre></div>
+</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">An important detail to notice in this function is that there’s something broken with how the for loop works: <strong><em>the for loop can never execute more than once</em></strong>. That’s because the last line of the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop is a <code class="docutils literal notranslate"><span class="pre">return</span></code> statement, and a <code class="docutils literal notranslate"><span class="pre">return</span></code> statement ends the current function call. As a result, here’s what happens:</p>
+<ul class="simple">
+<li><p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">batken({1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4})</span></code> returns the value of <code class="docutils literal notranslate"><span class="pre">batken({2,</span> <span class="pre">3,</span> <span class="pre">4})</span></code></p></li>
+<li><p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">batken({2,</span> <span class="pre">3,</span> <span class="pre">4})</span></code> returns the value of <code class="docutils literal notranslate"><span class="pre">batken({3,</span> <span class="pre">4})</span></code></p></li>
+<li><p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">batken({3,</span> <span class="pre">4})</span></code> returns the value of <code class="docutils literal notranslate"><span class="pre">batken({4})</span></code></p></li>
+<li><p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">batken({4})</span></code> skips the for loop because the initial value of <code class="docutils literal notranslate"><span class="pre">i</span></code> is equal to the size of the vector, so then it proceeds to return 0.</p></li>
+</ul>
+<p class="sd-card-text">Therefore, the return value is zero. This leads to this piece of advice:</p>
+<p class="sd-card-text"><strong>It is exceedingly rare in <em>any</em> context, and in particular in the context of recursion, to have a for loop that ends with an unconditional return statement.</strong></p>
+</div>
+</details></section>
+</section>
+<section id="optimization-and-enumeration">
+<h2>Optimization and Enumeration<a class="headerlink" href="#optimization-and-enumeration" title="Link to this heading">¶</a></h2>
+<section id="splitting-the-bill">
+<h3>Splitting The Bill<a class="headerlink" href="#splitting-the-bill" title="Link to this heading">¶</a></h3>
+<p><em>Topic: Recursion, Combinations, Sets</em></p>
+<p>You’ve gone out for coffees with a bunch of your friends and the waiter has just brought back the bill. How should you pay for it? One option would be to draw straws and have the loser pay for the whole thing. Another option would be to have everyone pay evenly. A third option would be to have everyone pay for just what they ordered. And then there are a ton of other options that we haven’t even listed here!</p>
+<p>Your task is to write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">listPossiblePayments</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">people</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a total amount of money to pay (in dollars) and a set of all the people who ordered something, then lists off every possible way you could split the bill, assuming everyone pays a whole number of dollars. For example, if the bill was $4 and there were three people at the lunch (call them A, B, and C), your function might list off these options:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  A: $4,   B: $0,   C: $0
+  A: $3,   B: $1,   C: $0
+  A: $3,   B: $0,   C: $1
+  A: $2,   B: $2,   C: $0
+  A: $2,   B: $1,   C: $1
+  A: $2,   B: $0,   C: $1
+              …
+  A: $0,   B: $1,   C: $3
+  A: $0,   B: $0,   C: $4
+</pre></div>
+</div>
+<p>Some notes on this problem:</p>
+<ul class="simple">
+<li><p>The total amount owed will always be nonnegative. If the total owed is negative, you should use the <code class="docutils literal notranslate"><span class="pre">error()</span></code> function to report an error.</p></li>
+<li><p>There is always at least one person in the set of people. If not, you should report an error.</p></li>
+<li><p>You can list off the possible payment options in any order that you’d like. Just don’t list the same option twice.</p></li>
+<li><p>The output you produce should indicate which person pays which amount, but aside from that it doesn’t have to exactly match the format listed above. Anything that correctly reports the payment amounts will get the job done.</p></li>
+</ul>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">The insight that we used in our solution is that the first person has to pay <strong>some</strong> amount of money. We can’t say for certain how much it will be, but we know that it’s going to have some amount of money that’s between zero and the full total. We can then try out every possible way of having them pay that amount of money, which always leaves the remaining people to split up the part of the bill that the first person hasn’t paid.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * Lists off all ways that the set of people can pay a certain total, assuming</span>
+<span class="cm"> * that some number of people have already committed to a given set of payments.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param total The total amount to pay.</span>
+<span class="cm"> * @param people Who needs to pay.</span>
+<span class="cm"> * @param payments The payments that have been set up so far.</span>
+<span class="cm"> */</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">listPossiblePaymentsRec</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">people</span><span class="p">,</span>
+<span class="w">                             </span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">payments</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base case: if there&#39;s one person left, they have to pay the whole bill. */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">people</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">finalPayments</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">payments</span><span class="p">;</span>
+<span class="w">        </span><span class="n">finalPayments</span><span class="p">[</span><span class="n">people</span><span class="p">.</span><span class="n">first</span><span class="p">()]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">total</span><span class="p">;</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">finalPayments</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Recursive case: The first person has to pay some amount between 0 and the</span>
+<span class="cm">     * total amount. Try all of those possibilities.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">payment</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">payment</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">total</span><span class="p">;</span><span class="w"> </span><span class="n">payment</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="cm">/* Create a new assignment of people to payments in which this first</span>
+<span class="cm">             * person pays this amount.</span>
+<span class="cm">             */</span>
+<span class="w">            </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">updatedPayments</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">payments</span><span class="p">;</span>
+<span class="w">            </span><span class="n">updatedPayments</span><span class="p">[</span><span class="n">people</span><span class="p">.</span><span class="n">first</span><span class="p">()]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">payment</span><span class="p">;</span>
+<span class="w">            </span><span class="n">listPossiblePaymentsRec</span><span class="p">(</span><span class="n">total</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">payment</span><span class="p">,</span><span class="w"> </span><span class="n">people</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">people</span><span class="p">.</span><span class="n">first</span><span class="p">(),</span>
+<span class="w">                                    </span><span class="n">updatedPayments</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">listPossiblePayments</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">people</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Edge cases: we can&#39;t pay a negative total, and there must be at least one</span>
+<span class="cm">     * person.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">total</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Guess you&#39;re an employee?&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">people</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Dine and dash?&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">listPossiblePaymentsRec</span><span class="p">(</span><span class="n">total</span><span class="p">,</span><span class="w"> </span><span class="n">people</span><span class="p">,</span><span class="w"> </span><span class="p">{});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="avoiding-sampling-bias">
+<h3>Avoiding Sampling Bias<a class="headerlink" href="#avoiding-sampling-bias" title="Link to this heading">¶</a></h3>
+<p>One of the risks that comes up when conducting field surveys is <em>sampling bias</em>, that you accidentally survey a bunch of people with similar backgrounds, tastes, and life experiences and therefore end up with a highly skewed view of what people think, like, and feel. There are a number of ways to try to control for this. One option that’s viable given online social networks is to find a group of people of which no two are Facebook friends, then administer the survey to them. Since two people who are a part of some similar organization or group are likely to be Facebook friends, this way of sampling people ensures that you geta fairly wide distribution.</p>
+<p>For example, in the social network shown below (with lines representing friendships), the folks shaded in gray would be an unbiased group, as no two of them are friends of one another.</p>
+<p><img alt="There is a graph of 8 people, lets letter them A through H. Person A is unshaded and connected to Person B and Person C. Both Person B and Person C are shaded and both people are connected to Person D, but not to each other. Person D is unshaded. Person D is connected to Person E, Person F, and Person G. Person E and Person G are shaded, Person F is not shaded. BothPerson E and Person G are connected to Person F, but are not connected to each other. Person H is connected to Person F. Person H is shaded." src="../../_images/socialnetwork.jpg" /></p>
+<p>Your task is to write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">largestUnbiasedGroupIn</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">network</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a <code class="docutils literal notranslate"><span class="pre">Map</span></code> representing Facebook friendships (described later) and returns the largest group of people you can survey, subject to the restriction that you can’t survey any two people who are friends.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">network</span></code> parameter represents the social network. Each key is a person, and each person’s associ-ated value is the set of all the people they’re Facebook friends with. You can assume that friendship issymmetric, so if person <em>A</em> is a friend of person <em>B</em>, then person <em>B</em> is a friend of person <em>A</em>. Similarly, you can assume that no one is friends with themselves.</p>
+<p>Something to keep in mind: Your solution must not work by simply generating all possible groups of people and then checking at the end which ones are valid (i.e. whether no two people in the group are Facebook friends). This approach is far too slow to be practical.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">One way to solve this problem is to focus on a single person. If we choose this person, we’d want to pick, from the people who aren’t friends with that person, the greatest number of people that we can. If we exclude this person, we’d like to pick from the remaining people the greatest number of people that we can. One of those two options must be optimal, and it’s just a question of seeing which one’s better.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * Given a network and a group of permitted people to pick, returns the largest</span>
+<span class="cm"> * group you can pick subject to the constraint that you only pick people that</span>
+<span class="cm"> * are in the permitted group.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param network The social network.</span>
+<span class="cm"> * @param permissible Which people you can pick.</span>
+<span class="cm"> * @return The largest unbiased group that can be formed from those people.</span>
+<span class="cm"> */</span>
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">largestGroupInRec</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">network</span><span class="p">,</span>
+<span class="w">                              </span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">permissible</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base case: If you aren’t allowed to pick anyone, the biggest group you</span>
+<span class="cm">     * can choose has no people in it.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">permissible</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">{};</span>
+
+<span class="w">    </span><span class="cm">/* Recursive case: Pick a person and consider what happens if we do or do not</span>
+<span class="cm">     * include them.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">permissible</span><span class="p">.</span><span class="n">first</span><span class="p">();</span>
+
+<span class="w">    </span><span class="cm">/* If we exclude this person, pick the biggest group we can from the set of</span>
+<span class="cm">     * everyone except that person.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">without</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">largestGroupInRec</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="n">permissible</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">next</span><span class="p">);</span>
+
+<span class="w">    </span><span class="cm">/* If we include this person, pick the biggest group we can from the set of</span>
+<span class="cm">     * people who aren’t them and aren’t one of their friends, then add the</span>
+<span class="cm">     * initial person back in.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">largestGroupInRec</span><span class="p">(</span><span class="n">network</span><span class="p">,</span>
+<span class="w">                                  </span><span class="n">permissible</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">next</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">network</span><span class="p">[</span><span class="n">next</span><span class="p">])</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">next</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Return the better of the two options. This uses the ternary conditional</span>
+<span class="cm">     * operator ?:. The expression expr? x : y means &quot;if expr is true, then</span>
+<span class="cm">     * evaluate to x, and otherwise evaluate to y.&quot;</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">with</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">without</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="o">?</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">without</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">largestUnbiasedGroupIn</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">network</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">everyone</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">person</span><span class="o">:</span><span class="w"> </span><span class="n">network</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">everyone</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">person</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">largestGroupInRec</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="n">everyone</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="social-distancing-c-edition">
+<h3>Social Distancing, C++ Edition<a class="headerlink" href="#social-distancing-c-edition" title="Link to this heading">¶</a></h3>
+<p>There’s a checkout line at a local grocery store. It’s one meter wide, some number of meters long, and subdivided into one-meter-by-one-meter squares. Each of those squares is either empty or has a person standing in it. We can represent the state of the checkout line as a string made of the characters <code class="docutils literal notranslate"><span class="pre">'P'</span></code> and <code class="docutils literal notranslate"><span class="pre">'.'</span></code>, where <code class="docutils literal notranslate"><span class="pre">'P'</span></code> represents a square with a person in it and <code class="docutils literal notranslate"><span class="pre">'.'</span></code> represents a square with no one in it.</p>
+<p>Social distancing rules require there to be at least two meters of empty space between each pair of people. So, for example, the string:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">....</span><span class="n">P</span><span class="o">........</span><span class="n">P</span>
+</pre></div>
+</div>
+<p>has everyone obeying social distancing rules, while the string</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">.</span><span class="n">P</span>
+</pre></div>
+</div>
+<p>does not. Similarly, the string</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">....</span><span class="n">PP</span><span class="o">....</span><span class="n">P</span>
+</pre></div>
+</div>
+<p>does not obey social distancing rules.</p>
+<p>Your task is to write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">safeArrangementsOf</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">numPeople</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input the length of the line (in meters) and the number of people in the line, then returns all arrangements of the checkout line that maintain the social distancing requirements. For example, calling <code class="docutils literal notranslate"><span class="pre">safeArrangementsOf(12,</span> <span class="pre">4)</span></code> would return these strings:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">..</span>
+<span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">...</span><span class="n">P</span><span class="o">.</span>
+<span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">....</span><span class="n">P</span>
+<span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">...</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">.</span>
+<span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">...</span><span class="n">P</span><span class="o">...</span><span class="n">P</span>
+<span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">....</span><span class="n">P</span><span class="o">..</span><span class="n">P</span>
+<span class="n">P</span><span class="o">...</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">.</span>
+<span class="n">P</span><span class="o">...</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">...</span><span class="n">P</span>
+<span class="n">P</span><span class="o">...</span><span class="n">P</span><span class="o">...</span><span class="n">P</span><span class="o">..</span><span class="n">P</span>
+<span class="n">P</span><span class="o">....</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">..</span><span class="n">P</span>
+<span class="o">.</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">.</span>
+<span class="o">.</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">...</span><span class="n">P</span>
+<span class="o">.</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">...</span><span class="n">P</span><span class="o">..</span><span class="n">P</span>
+<span class="o">.</span><span class="n">P</span><span class="o">...</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">..</span><span class="n">P</span>
+<span class="o">..</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">..</span><span class="n">P</span><span class="o">..</span><span class="n">P</span>
+</pre></div>
+</div>
+<p>On the other hand, calling <code class="docutils literal notranslate"><span class="pre">safeArrangementsOf(8,</span> <span class="pre">4)</span></code> would return an empty set, since there’s no way to fit four people into a line eight meters long while ensuring everyone is at least two meters apart. (Do you see why?)</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">There are many ways to solve this problem. These first two solutions are based on the following insight. We’re going to build the line from the left to the right, and the recursive calls will progressively reduce the remaining size of the line until all squares in the line have been filled in. At each point, we have two choices:</p>
+<ul class="simple">
+<li><p class="sd-card-text">We can build another blank square. (You could optionally restrict this to say “we can build another blank square provided that we have enough space to fit everyone else,” which will speed things up a bit but isn’t strictly necessary given the problem statement.)</p></li>
+<li><p class="sd-card-text">We can place a person - provided that there are people left to place and provided that this doesn’t conflict with the previously-placed person.</p></li>
+</ul>
+<p class="sd-card-text">At the end, we’ll have our line of people. Provided that we placed everyone, we can use that way of filling in the line as one of our generated strings. But if we reach the end of the line and haven’t placed everyone - or if there’s no possible way to fit everyone in - we can stop looking and say that no solution exists down this branch.</p>
+<p class="sd-card-text">Here are two ways of implementing this solution. This first one uses the <code class="docutils literal notranslate"><span class="pre">endsWith</span></code> function, as suggested in the problem statement:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Given a target line length, a remaining number of people, and the line we&#39;ve</span>
+<span class="cm"> * assembled so far, produce a set of all ways of filling in the rest of the</span>
+<span class="cm"> * line to fit that many people.</span>
+<span class="cm"> */</span>
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">safeArrangementsRec</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">numPeople</span><span class="p">,</span>
+<span class="w">                                </span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">soFar</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base case: The line has reached its full length. */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">soFar</span><span class="p">.</span><span class="n">length</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">lineLength</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* Did we place everyone? If so, great! This is a solution. */</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numPeople</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="p">};</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="cm">/* Oops, we didn&#39;t fit everyone. There are no ways to extend this line</span>
+<span class="cm">         * into one that fits everyone.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* We can always lay down another empty spot. We could (should?) check to</span>
+<span class="cm">     * make sure that doing so doesn&#39;t leave the remainder of the line in a</span>
+<span class="cm">     * state where the remaining people can&#39;t be placed, but didn&#39;t do that</span>
+<span class="cm">     * here.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">safeArrangementsRec</span><span class="p">(</span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="n">numPeople</span><span class="p">,</span>
+<span class="w">                                             </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="p">);</span>
+
+<span class="w">    </span><span class="cm">/* We can sometimes lay down a person. Specifically, there has to be at</span>
+<span class="cm">     * least one person remaining, and the line can&#39;t end with a person or</span>
+<span class="cm">     * with a person two steps back.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numPeople</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">endsWith</span><span class="p">(</span><span class="n">soFar</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;P&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">endsWith</span><span class="p">(</span><span class="n">soFar</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;P.&quot;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* One fewer person needs to be placed. */</span>
+<span class="w">        </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">safeArrangementsRec</span><span class="p">(</span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="n">numPeople</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">                                      </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;P&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">safeArrangementsOf</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">numPeople</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">safeArrangementsRec</span><span class="p">(</span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="n">numPeople</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">This second solution instead includes an extra parameter indicating how far back you have to look to find the most recent person. Aside from that, the core recursive structure is the same.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Given a target line length, a remaining number of people, a partial line, and</span>
+<span class="cm"> * how far back in the line we have to look to find the most recent person,</span>
+<span class="cm"> * return a set of all ways to extend the line to hold the appropriate number of</span>
+<span class="cm"> * people.</span>
+<span class="cm"> */</span>
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">safeArrangementsRec</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">numPeople</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">soFar</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">distance</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base case: The line has reached its full length. */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">soFar</span><span class="p">.</span><span class="n">length</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">lineLength</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* Did we place everyone? If so, great! This is a solution. */</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numPeople</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="p">};</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="cm">/* Oops, we didn&#39;t fit everyone. There are no ways to extend this line</span>
+<span class="cm">         * into one that fits everyone.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* We can always lay down another empty spot. We could (should?) check to</span>
+<span class="cm">     * make sure that doing so doesn&#39;t leave the remainder of the line in a</span>
+<span class="cm">     * state where the remaining people can&#39;t be placed, but didn&#39;t do that</span>
+<span class="cm">     * here.</span>
+<span class="cm">     *</span>
+<span class="cm">     * Notice that the distance increases here, since we are now one step</span>
+<span class="cm">     * further away from the previous person.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">safeArrangementsRec</span><span class="p">(</span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="n">numPeople</span><span class="p">,</span>
+<span class="w">                                             </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">    </span><span class="cm">/* We can sometimes lay down a person. Specifically, do that if there is at</span>
+<span class="cm">     * least one person left and we&#39;re at least two steps away from the last</span>
+<span class="cm">     * person.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numPeople</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">distance</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* Distance in this recursive call resets to zero, since there&#39;s a</span>
+<span class="cm">         * person right at the end.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">safeArrangementsRec</span><span class="p">(</span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="n">numPeople</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">                                      </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;P&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">safeArrangementsOf</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">numPeople</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* At the beginning, there&#39;s no restriction on where the first person can go,</span>
+<span class="cm">     * so we pretend we&#39;re really far away from the last person.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">safeArrangementsRec</span><span class="p">(</span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="n">numPeople</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">Here’s a solution based on a different insight. Like the above solutions, this one works by either placing down a blank spot or placing down a person. However, when placing down a person, we consider two options:</p>
+<ul class="simple">
+<li><p class="sd-card-text">That person is the last person in the list. In that case, they can go anywhere in the remainder of the list, and so we’ll consider all ways of placing them down that way.</p></li>
+<li><p class="sd-card-text">That person is not the last person in the list. In that case, we place down the person, plus two blank spaces, to ensure adequate separation between them and the next person.</p></li>
+</ul>
+<p class="sd-card-text">This approach needs to make sure not to exceed the maximum space allowed in the line. There are many ways to do this, and our approach works by ensuring that there’s adequate space to place everyone, stopping as soon as we’re out of room.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Given the amount of remaining space in the line and the number of remaining</span>
+<span class="cm"> * people in the line, produce a set of all possible ways of completing the</span>
+<span class="cm"> * partial line provided into a valid socially-distanced arrangement.</span>
+<span class="cm"> */</span>
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">safeArrangementsRec</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">numPeople</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">soFar</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base case: If you can&#39;t fit everyone remaining in the line, then there</span>
+<span class="cm">     * is no way to extend what we have.</span>
+<span class="cm">     *</span>
+<span class="cm">     * The calculation shown here is derived from the insight that, with n</span>
+<span class="cm">     * people, you need at least enough space to hold the pattern P..P..P..P,</span>
+<span class="cm">     * n times. Here, (n-1) of the people take up three spots, and the last</span>
+<span class="cm">     * person takes up one spot.</span>
+<span class="cm">     *</span>
+<span class="cm">     * This also works in the case where there are zero people. The formula</span>
+<span class="cm">     * says we need at least -1 spots to hold zero people, and it&#39;s indeed true</span>
+<span class="cm">     * that every line with at least -1 spots remaining can hold zero more</span>
+<span class="cm">     * people.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">numPeople</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">lineLength</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">// Impossible.</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Base case: If there are no people left, then the rest of the line has to</span>
+<span class="cm">     * be empty.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numPeople</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">string</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">soFar</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">lineLength</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Base case: If there is just one person left, they can fill any of the</span>
+<span class="cm">     * remaining spots in the line. This case is different from the others</span>
+<span class="cm">     * because we do not have any restrictions on how many dots can come after</span>
+<span class="cm">     * this person.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numPeople</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+
+<span class="w">        </span><span class="cm">/* Try all places where the person can go. */</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">pSpot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">pSpot</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">lineLength</span><span class="p">;</span><span class="w"> </span><span class="n">pSpot</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">string</span><span class="w"> </span><span class="n">soln</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">soFar</span><span class="p">;</span>
+
+<span class="w">            </span><span class="cm">/* Append a tail to the line with the person at index pSpot. */</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">lineLength</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">pSpot</span><span class="p">)</span><span class="w"> </span><span class="n">soln</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s">&quot;P&quot;</span><span class="p">;</span>
+<span class="w">                </span><span class="k">else</span><span class="w"> </span><span class="n">soln</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">soln</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Recursive case: The next spot may either be empty or have the next person</span>
+<span class="cm">     * in it. If it&#39;s empty, we have one fewer place left to put people. If it&#39;s</span>
+<span class="cm">     * full, place down the person and two spaces, reducing the available room</span>
+<span class="cm">     * by three.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">safeArrangementsRec</span><span class="p">(</span><span class="n">lineLength</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">numPeople</span><span class="p">,</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;.&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">           </span><span class="n">safeArrangementsRec</span><span class="p">(</span><span class="n">lineLength</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">numPeople</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;P..&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">safeArrangementsOf</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">numPeople</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">safeArrangementsRec</span><span class="p">(</span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="n">numPeople</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">Here’s the last of the major solution routes we know of. This approach works based on the following insight. If we need to place a person down, there needs to be some number of blank spots before we see that person. We loop over all possible choices for how many blank spots we put down before we put down that person and try each option to see what we find. This basically takes what some of the above approaches are doing and shuffles around how the recursive calls work. Instead of branching with “place a person” or “don’t,” we only consider the “place a person” option, then decide how many “or don’ts” we’re going to do all at once. This strategy can be combined with several of the above ideas to produce different variants; here’s the one we think is easiest, which works by including an extra parameter indicating how much space we need to leave between us and the previous person (which is zero for the first person and two for everyone else.)</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Given the remaining amount of space, the remaining number of people, the line</span>
+<span class="cm"> * we&#39;ve built up thus far, and how much separation we need to enforce between the</span>
+<span class="cm"> * next person and the previous person, produce all ways of extending the current</span>
+<span class="cm"> * line into one that holds everyone.</span>
+<span class="cm"> */</span>
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">safeArrangementsRec</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">numPeople</span><span class="p">,</span>
+<span class="w">                                </span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">soFar</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">minDistance</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base case: No people left? Then pad the rest of the string and</span>
+<span class="cm">     * we&#39;re done!</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numPeople</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">string</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">soFar</span><span class="p">;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">lineLength</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="sc">&#39;.&#39;</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Base case: No space left? Since there&#39;s someone left, we are out of</span>
+<span class="cm">     * options and nothing will work.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">lineLength</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Recursive case: The next person must go somewhere. Where do we put</span>
+<span class="cm">     * them? Try all options and see what we find.</span>
+<span class="cm">     */</span>
+
+<span class="w">    </span><span class="cm">/* Prefix of dots to separate us from the previous person. */</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">prefix</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">minDistance</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">prefix</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="sc">&#39;.&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Keep expanding our prefix until we&#39;ve tried all options. */</span>
+<span class="w">    </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">prefix</span><span class="p">.</span><span class="n">length</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">lineLength</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* We use up the prefix space, plus space for the next person, and need</span>
+<span class="cm">         * to keep at least two units of space betwen the next person and this</span>
+<span class="cm">         * one.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">safeArrangementsRec</span><span class="p">(</span><span class="n">lineLength</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">prefix</span><span class="p">.</span><span class="n">length</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">                                      </span><span class="n">numPeople</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">                                      </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">prefix</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="sc">&#39;P&#39;</span><span class="p">,</span>
+<span class="w">                                      </span><span class="mi">2</span><span class="p">);</span>
+
+<span class="w">        </span><span class="cm">/* Expand the prefix. */</span>
+<span class="w">        </span><span class="n">prefix</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="sc">&#39;.&#39;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">safeArrangementsOf</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">numPeople</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">safeArrangementsRec</span><span class="p">(</span><span class="n">lineLength</span><span class="p">,</span><span class="w"> </span><span class="n">numPeople</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="change-we-can-believe-in">
+<h3>Change We Can Believe In<a class="headerlink" href="#change-we-can-believe-in" title="Link to this heading">¶</a></h3>
+<p><em>Topics: Sets, Recursion, Optimization</em></p>
+<p>In the US, as is the case in most countries, the best way to give change for any total is to use a <em>greedy strategy</em> - find the highest-denomination coin that’s less than the total amount, give one of those coins, and repeat. For example, to pay someone 97¢ in the US in cash, the best strategy would be to:</p>
+<ul class="simple">
+<li><p>give a half dollar (50¢ given, 47¢ remain), then</p></li>
+<li><p>give a quarter (75¢ given, 22¢ remain), then</p></li>
+<li><p>give a dime (85¢ given, 12¢ remain), then</p></li>
+<li><p>give a dime (95¢ given, 2¢ remain), then</p></li>
+<li><p>give a penny (96¢ given, 1¢ remain), then</p></li>
+<li><p>give another penny (97¢ given, 0¢ remain).</p></li>
+</ul>
+<p>This uses six total coins, and there’s no way to use fewer coins to achieve the same total.</p>
+<p>However, it’s possible to come up with coin systems where this greedy strategy doesn’t always use the fewest number of coins. For example, in the tiny country of Recursia, the residents have decided to use the denominations 1¢, 12¢, 14¢, and 63¢, for some strange reason. So suppose you need to give back 24¢ in change. The best way to do this would be to give back two 12¢ coins. However, with the greedy strategy of always picking the highest-denomination coin that’s less than the total, you’d pick a 14¢ coin and ten 1¢ coins for a total of eleven coins. That’s pretty bad!</p>
+<p>Your task is to write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fewestCoinsFor</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">cents</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">coins</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a number of cents and a <code class="docutils literal notranslate"><span class="pre">Set&lt;int&gt;</span></code> indicating the different denominations of coins used in a country, then returns the minimum number of coins required to make change for that total. In the case of US coins, this should always return the same number as the greedy approach, but in general it might return a lot fewer!</p>
+<p>And here’s a question to ponder: given a group of coins, how would you determine whether the greedy algorithm is always optimal for those coins?</p>
+<p>It’s possible that you won’t be able to make the total. For example, if you’re asked to make 1¢ and only have 2¢ coins, there’s no way to make the total. In that case, return <code class="docutils literal notranslate"><span class="pre">cents</span> <span class="pre">+</span> <span class="pre">1</span></code> as a sentinel value. This number is bigger than any amount that could actually be needed, and therefore signals to the user that the total can’t be made. On the other hand, if the input is illegal (say, asking for change for a negative number of cents), you should call <code class="docutils literal notranslate"><span class="pre">error</span></code> to report an error.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">The idea behind this solution is the following: if we need to make change for zero cents, the only (and, therefore, best!) option is to use 0 coins.</p>
+<p class="sd-card-text">Otherwise, we need to pay some amount. To do that, we’ll pick one of our coins - it doesn’t matter which - and ask how many times we’re going to use that coin. That will be some number between 0 and the amount to pay divided by the value of that coin. We’ll recursively explore each of these options, recording which one gives us the best result.</p>
+<p class="sd-card-text">Here’s what that might look like.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">fewestCoinsFor</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">cents</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">coins</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Can&#39;t have a negative number of cents. */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cents</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">error</span><span class="p">(</span><span class="s">&quot;You owe me money, not the other way around!&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Base case: You need no coins to give change for no cents. */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cents</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Base case: No coins exist. Then it&#39;s not possible to make the</span>
+<span class="cm">     * amount. In that case, give back a really large value as a</span>
+<span class="cm">     * sentinel.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">coins</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">cents</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Recursive case: Pick a coin, then try using each distinct number of</span>
+<span class="cm">     * copies of it that we can.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* The best we&#39;ve found so far. We initialize this to a large value so</span>
+<span class="cm">         * that it&#39;s replaced on the first iteration of the loop. Do you see</span>
+<span class="cm">         * why cents + 1 is a good choice?</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">bestSoFar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cents</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="w">        </span><span class="cm">/* Pick a coin. */</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">coin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">coins</span><span class="p">.</span><span class="n">first</span><span class="p">();</span>
+
+<span class="w">        </span><span class="cm">/* Try all amounts of it. */</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">copies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">copies</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">coin</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cents</span><span class="p">;</span><span class="w"> </span><span class="n">copies</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="cm">/* See what happens if we make this choice. Once we use this</span>
+<span class="cm">             * coin, we won&#39;t use the same coin again in the future.</span>
+<span class="cm">             */</span>
+<span class="w">            </span><span class="kt">int</span><span class="w"> </span><span class="n">thisChoice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">copies</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fewestCoinsFor</span><span class="p">(</span><span class="n">cents</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">copies</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">coin</span><span class="p">,</span>
+<span class="w">                                                     </span><span class="n">coins</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">coin</span><span class="p">);</span>
+
+<span class="w">            </span><span class="cm">/* Is this better than what we have so far? */</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">thisChoice</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">bestSoFar</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">bestSoFar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thisChoice</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="cm">/* Return whatever worked best. */</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">bestSoFar</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../assign-3.1/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>下一页</span>
+                </div>
+                <div class="title">Assignment 3.1 A Visit to Recursia</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>上一页</span>
+                </div>
+                
+                <div class="title">Topic 3. Recursion</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, <a href='https://www.stickmind.com/' target="_blank">StickMind</a>
+            </div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            本页目录
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Section 3.1 Recursion and Iteration</a><ul>
+<li><a class="reference internal" href="#recursion-and-iteration">Recursion and Iteration</a><ul>
+<li><a class="reference internal" href="#eating-a-chocolate-bar-take-two">Eating a Chocolate Bar, Take Two</a></li>
+<li><a class="reference internal" href="#tricky-recursion-tracing">Tricky Recursion Tracing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#optimization-and-enumeration">Optimization and Enumeration</a><ul>
+<li><a class="reference internal" href="#splitting-the-bill">Splitting The Bill</a></li>
+<li><a class="reference internal" href="#avoiding-sampling-bias">Avoiding Sampling Bias</a></li>
+<li><a class="reference internal" href="#social-distancing-c-edition">Social Distancing, C++ Edition</a></li>
+<li><a class="reference internal" href="#change-we-can-believe-in">Change We Can Believe In</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=7d86a446"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/tabs.js?v=3ee01567"></script>
+    <script>let toggleHintShow = '';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    </body>
+</html>

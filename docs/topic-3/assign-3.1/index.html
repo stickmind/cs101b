@@ -1,0 +1,938 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Section 3.2 Recursion and Backtracking" href="../section-3.2/index.html" /><link rel="prev" title="Section 3.1 Recursion and Iteration" href="../section-3.1/index.html" />
+
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+        <title>Assignment 3.1 A Visit to Recursia - CS101B Programming Abstractions</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pied-piper-admonition.css?v=e32e2275" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">CS101B Programming Abstractions</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">CS101B Programming Abstractions</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../resources/index.html">Resources</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Resources</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Workflow/index.html">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/PythonToCpp/index.html">Python to C++ Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Debugging/index.html">Debugging Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Testing/index.html">Testing Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-0/index.html">Introduction</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Introduction</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-0/assign-0/index.html">Assignment 0. Welcome to CS101B!</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-1/index.html">Topic 1. Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Topic 1. Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-1/section-1.1/index.html">Section 1.1 C++ and Recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-1/assign-1.1/index.html">Assignment 1. Welcome to C++</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-2/index.html">Topic 2. Containers</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Topic 2. Containers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-2/section-2.1/index.html">Section 2. Containers and Recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-2/assign-2.1/index.html">Assignment 2. Fun with Collections</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Topic 3. Recursion</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Topic 3. Recursion</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../section-3.1/index.html">Section 3.1 Recursion and Iteration</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Assignment 3.1 A Visit to Recursia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../section-3.2/index.html">Section 3.2 Recursion and Backtracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assign-3.2/index.html">Assignment 3.2 Recursion to the Rescue!</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-4/index.html">Topic 4. Algorithm and Abstraction</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Topic 4. Algorithm and Abstraction</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/section-4.1/index.html">Section 4.1 Big-O, Searching and Sorting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/section-4.2/index.html">Section 4.2 Class Design and Dynamic Memory Allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/assign-4.1/index.html">Assignment 4.1 Bag’O Big-O</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../topic-5/index.html">Topic 5. Data Structures</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>返回顶部</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section class="tex2jax_ignore mathjax_ignore" id="assignment-3-1-a-visit-to-recursia">
+<h1>Assignment 3.1 A Visit to Recursia<a class="headerlink" href="#assignment-3-1-a-visit-to-recursia" title="Link to this heading">¶</a></h1>
+<p>You have set sail for Recursia, a land famous for its flag, its mountains, its language, and its temple. Your journey will take you on a grand tour of the skills and techniques necessary to solve problems recursively.</p>
+<p>This assignment has one debugger exercise and three coding components and you have seven days to complete it. This assignment will be manageable if you start early and make slow and steady progress. Here’s a recommended timetable:</p>
+<ul class="simple">
+<li><p>Complete the Flag of Recursia within one day of this assignment going out.</p></li>
+<li><p>Complete the Mountains of Recursia within two days of this assignment going out.</p></li>
+<li><p>Complete Speaking Recursian within four days of this assignment going out.</p></li>
+<li><p>Complete the Temple of Recursia within seven days of this assignment going out.</p></li>
+</ul>
+<p>As always, feel free to get in touch with us if you need any assistance. We’re happy to help out!</p>
+<section id="starter-files">
+<h2>Starter Files<a class="headerlink" href="#starter-files" title="Link to this heading">¶</a></h2>
+<p>We provide a ZIP of the starter project. Download the zip, extract the files, and open the project in VS Code.</p>
+<p>📦 <a class="reference download internal" download="" href="../../_downloads/489a95de279feb0259f72a3ea609fd2f/Assignment-3.1.zip"><span class="xref download myst">Starter code</span></a></p>
+</section>
+<section id="d-graphics-primer">
+<h2>2D Graphics Primer<a class="headerlink" href="#d-graphics-primer" title="Link to this heading">¶</a></h2>
+<p>This assignment will require you to work with 2D graphics. Here’s a quick overview of what you need to know.</p>
+<p>Our graphics code uses the standard 2D coordinate system used throughout computing. The upper-left corner of the window is at position <span class="math notranslate nohighlight">\((0, 0)\)</span>, with the <span class="math notranslate nohighlight">\(x\)</span> axis running from left to right and the <span class="math notranslate nohighlight">\(y\)</span> axis running top to bottom. Just like the normal Cartesian coordinate system, <span class="math notranslate nohighlight">\(x\)</span> values increase as you move from left to run. However, <span class="math notranslate nohighlight">\(y\)</span> values increase from top to bottom, so <span class="math notranslate nohighlight">\(y\)</span> values get larger as you move down the screen. Here’s a visual showing how this works:</p>
+<figure class="align-default" id="id7">
+<img alt="../../_images/GraphicsPrimer.png" src="../../_images/GraphicsPrimer.png" />
+<figcaption>
+<p><span class="caption-text">Overview of the graphics system</span><a class="headerlink" href="#id7" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>You will need to work with two custom types in the course of this assignment. The first type is a <code class="docutils literal notranslate"><span class="pre">Point</span></code> <code class="docutils literal notranslate"><span class="pre">struct</span></code>, shown here:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">Point</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Point</span></code> type just stores an <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> coordinate. You can define and manipulate <code class="docutils literal notranslate"><span class="pre">Point</span></code>s like this:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* The point (137, 42). */</span>
+<span class="n">Point</span><span class="w"> </span><span class="n">pt</span><span class="p">;</span>
+<span class="n">pt</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">137</span><span class="p">;</span>
+<span class="n">pt</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="p">;</span>
+
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">pt</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// Prints { 137, 42 }</span>
+
+<span class="cm">/* We can also define points like this. */</span>
+<span class="n">Point</span><span class="w"> </span><span class="n">otherPt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">137</span><span class="p">,</span><span class="w"> </span><span class="mi">42</span><span class="w"> </span><span class="p">};</span>
+</pre></div>
+</div>
+<p>We use the <code class="docutils literal notranslate"><span class="pre">int</span></code> type when working with <code class="docutils literal notranslate"><span class="pre">Point</span></code>s because the display is broken down into individual pixels at discrete coordinates.</p>
+<p>The other type you’ll need is the <code class="docutils literal notranslate"><span class="pre">Rectangle</span></code> type, defined here:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">Rectangle</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Coordinate of the upper-left corner of the rectangle. */</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Dimensions of the rectangle. */</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">width</span><span class="p">,</span><span class="w"> </span><span class="n">height</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>We define the rectangle with an <span class="math notranslate nohighlight">\((x, y)\)</span> point in space denoting the rectangle’s upper-left corner, along with the width and height of the rectangle. For example, here’s how to make a rectangle whose upper-left corner is <span class="math notranslate nohighlight">\((100, 20)\)</span> and whose lower-right corner is <span class="math notranslate nohighlight">\((150, 50)\)</span>:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Rectangle</span><span class="w"> </span><span class="n">rect</span><span class="p">;</span>
+<span class="n">rect</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+<span class="n">rect</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+<span class="n">rect</span><span class="p">.</span><span class="n">width</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span><span class="p">;</span>
+<span class="n">rect</span><span class="p">.</span><span class="n">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span><span class="p">;</span>
+
+<span class="cm">/* We can also do this: */</span>
+<span class="n">Rectangle</span><span class="w"> </span><span class="n">rect2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="p">};</span>
+</pre></div>
+</div>
+</section>
+<section id="part-one-the-flag-of-recursia">
+<h2>Part One: The Flag of Recursia<a class="headerlink" href="#part-one-the-flag-of-recursia" title="Link to this heading">¶</a></h2>
+<p>As your ship nears the coastline, your first indicator that you’ve arrived in Recursia is the large number of Recursian flags flying above its stately buildings. The Flag of Recursia, shown below, is designed in the style of Islamic <a class="reference external" href="https://en.wikipedia.org/wiki/Girih">girih</a> patterns:</p>
+<figure class="align-default" id="id8">
+<img alt="../../_images/FlagOfRecursia.png" src="../../_images/FlagOfRecursia.png" />
+<figcaption>
+<p><span class="caption-text">Wow! What a pretty flag.</span><a class="headerlink" href="#id8" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>In this part of the assignment, you’ll use the debugger to trace through a working implementation of a <code class="docutils literal notranslate"><span class="pre">drawFlagOfRecursia</span></code> function that draws the Flag of Recursia. In doing so, you’ll learn how to use the debugger to walk through recursive functions, an invaluable skill that will enable you to tease out gnarly bugs in tight recursive code. To clarify, <strong><em>you will not write any code</em></strong> for this portion of the assignment.</p>
+<p>Let’s begin with an overview of how the flag is designed. The intricate patterns on the flag are constructed entirely from triangles. Specifically, the figure is made of two different shapes of isoceles triangles. The first one, which we call the <em>acute triangle</em>, has an apex angle of <span class="math notranslate nohighlight">\(36°\)</span>. The other, the <em>obtuse triangle</em>, has an apex angle of <span class="math notranslate nohighlight">\(180°\)</span>.<a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> They’re shown below:</p>
+<figure class="align-default" id="id9">
+<img alt="../../_images/TwoTriangles.png" src="../../_images/TwoTriangles.png" />
+<figcaption>
+<p><span class="caption-text">The acute and obtuse triangles.</span><a class="headerlink" href="#id9" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The acute triangle on the left is drawn cardinal red, while the obtuse triangle on the right is drawn sandstone white.</p>
+<p>These two triangles are chosen because they can each be subdivided into a combination of smaller acute and obtuse triangles. Specifically, the red acute triangle can be subdivided into one acute and one obtuse triangle, and the white obtuse triangle can be subdivided into two obtuse triangles and one acute triangle. This is shown here:</p>
+<figure class="align-default" id="id10">
+<img alt="../../_images/OneSubdivision.gif" src="../../_images/OneSubdivision.gif" />
+<figcaption>
+<p><span class="caption-text">Subdividing each triangle.</span><a class="headerlink" href="#id10" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>By starting with an acute triangle or obtuse triangle and repeatedly subdividing, we obtain more and more intricate figures, as shown here:</p>
+<figure class="align-default" id="id11">
+<img alt="../../_images/DeepSubdivision.gif" src="../../_images/DeepSubdivision.gif" />
+<figcaption>
+<p><span class="caption-text">Really subdividing the triangles.</span><a class="headerlink" href="#id11" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Flag of Recursia is then formed from a wheel of ten acute triangles, each subdivided at a different level. Here’s the central figure of the flag with with the ten triangles marked out:</p>
+<figure class="align-default" id="id12">
+<img alt="../../_images/FlagSubdivided.png" src="../../_images/FlagSubdivided.png" />
+<figcaption>
+<p><span class="caption-text">The center of the flag, subdivided into pieces.</span><a class="headerlink" href="#id12" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Now that you’ve seen how the flag is structured, let’s walk through the code that draws it in the debugger.</p>
+<section id="what-you-need-to-do">
+<h3>What You Need To Do<a class="headerlink" href="#what-you-need-to-do" title="Link to this heading">¶</a></h3>
+<p>We’ve provided you with a <code class="docutils literal notranslate"><span class="pre">FlagOfRecursia.cpp</span></code> file, which includes a complete working implementation of the following function:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">drawFlagOfRecursia</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Rectangle</span><span class="o">&amp;</span><span class="w"> </span><span class="n">bounds</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This function takes as input a 2D rectangle on screen where the Flag of Recursia should be drawn, then draws the flag there and returns the number of triangles drawn. To familiarize yourself with the starter program, run the “Flag of Recursia” demo from the main program. Click the “Go!” button to draw the flag, and marvel at how effective the recursion is at drawing such a complex figure.</p>
+<p>Now, let’s bust out the debugger. Do the following:</p>
+<ol class="arabic simple">
+<li><p>Open <code class="docutils literal notranslate"><span class="pre">FlagOfRecursia.cpp</span></code> and set a breakpoint on line 119 inside of <code class="docutils literal notranslate"><span class="pre">drawFlagOfRecursia</span></code>.</p></li>
+<li><p>Run the program in debug mode, choose the “Flag of Recursia” option from the menu at the top of the program. Don’t click the “Go!” button yet.</p></li>
+<li><p>Resize the program and VS Code windows so that they’re visible at the same time. (When the debugger engages, it halts execution of the running program so that you can inspect what’s going on. This means the graphics window might not be operational – you might find that you can’t drag it around, or resize it, or move it, etc.)</p></li>
+<li><p>Click the “Go!” button in the demo program to trigger the breakpoint.</p></li>
+</ol>
+<p>If you’ve done everything correctly, at this point you’ll see a yellow arrow pointing at the line containing the breakpoint, and the local variables panel will pop up. Investigate the pane in the debugger that shows local variables and their values. Because <code class="docutils literal notranslate"><span class="pre">numTriangles</span></code> has not yet been initialized, its value is unspecified; it might be 0, or it might be a random garbage value. The same is true of <code class="docutils literal notranslate"><span class="pre">center</span></code> and <code class="docutils literal notranslate"><span class="pre">decagonPoints</span></code>. However, you should be able to inspect the <code class="docutils literal notranslate"><span class="pre">bounds</span></code> parameter. Clicking the dropdown triangle next to its name will reveal the position and dimensions of the rectangle to fill in.</p>
+<p>You should now be able to answer the following question. To do so, edit the file <code class="docutils literal notranslate"><span class="pre">DebuggerAnswers.txt</span></code> with your answers:</p>
+<div class="warning admonition">
+<p class="admonition-title">Question 1</p>
+<p>Some function in our starter code called <code class="docutils literal notranslate"><span class="pre">drawFlagOfRecursia</span></code>. What file was that function defined in, and what was the name of that function? (Hint: use the call stack!)</p>
+</div>
+<p>The debugger has a control panel that allows you to manually advance through code one step at a time once you’ve hit a breakpoint. The control panel looks like this:</p>
+<figure class="align-default" id="id13">
+<img alt="../../_images/toolbar.png" src="../../_images/toolbar.png" />
+<figcaption>
+<p><span class="caption-text">Screenshot of step controls from <a class="reference external" href="https://code.visualstudio.com/Docs/editor/debugging#_debug-actions">VS Code debugger</a></span><a class="headerlink" href="#id13" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The six icons from left to right are the controls for <strong>Continue</strong>, <strong>Step Over</strong>, <strong>Step Into</strong>, <strong>Step Out</strong>, <strong>Restart</strong> and <strong>Stop</strong>. If you hover the mouse over an icon in VS Code, a tool tip will pop up with a label to remind you of which control is which.</p>
+<p>You will now use the Step Over button to execute this function one line at a time. As a reminder from Assignment 0, the Step Over button tells the debugger to execute the current line of code. Each time you click it, the program will run the current line and move to the next. There’s no way to “rewind” the program back to where it was before; think of “Step Over” as a way of hitting “unpause” followed by a quick “pause” once you hit the next line.</p>
+<p>To see Step Over in action, do the following:</p>
+<ol class="arabic simple">
+<li><p>Press Step Over to execute Line 119. <code class="docutils literal notranslate"><span class="pre">decagonPoints</span></code> will now contain ten items, which you can inspect in the Locals pane. The yellow cursor should now point at Line 120.</p></li>
+<li><p>Press Step Over to execute Line 120. <code class="docutils literal notranslate"><span class="pre">center</span></code> will now have its <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> fields set. The yellow cursor should now be at Line 121.</p></li>
+<li><p>Press Step Over to execute Line 123. <code class="docutils literal notranslate"><span class="pre">numTriangles</span></code> will now have the value 0.</p></li>
+<li><p>Repeatedly press Step Over to execute the triangle-drawing loop one line at a time. Each time you Step Over through Line 132’s call to <code class="docutils literal notranslate"><span class="pre">drawAcuteTriangle</span></code>, you should see one more wedge of the Flag of Recursia drawn to the graphics window. You will also see the value of <code class="docutils literal notranslate"><span class="pre">numTriangles</span></code> update whenever you Step Over line 133.</p></li>
+<li><p>Once the cursor reaches Line 136, stop clicking Step Over.</p></li>
+</ol>
+<p>You should now be ready to answer the following question in <code class="docutils literal notranslate"><span class="pre">DebuggerAnswers.txt</span></code>.</p>
+<div class="warning admonition">
+<p class="admonition-title">Question 2</p>
+<p>How many total triangles did the <code class="docutils literal notranslate"><span class="pre">drawFlagOfRecursia</span></code> function draw?</p>
+</div>
+<p>We’ll now see how to use the Step Into and Step Out buttons. To do so, we’ll need to restart the program. Do the following:</p>
+<ol class="arabic simple">
+<li><p>Hit the red “stop” button from the debugger control panel. The program will stop running.</p></li>
+<li><p>Run the program again with the debugger engaged.</p></li>
+<li><p>Click “Flag of Recursia” from the top menu.</p></li>
+<li><p>Resize the program window and Qt Creator so that both are visible.</p></li>
+<li><p>Click the “Go!” button to engage the debugger.</p></li>
+</ol>
+<p>If you’ve done everything correctly, the debugger will engage and the yellow cursor will be pointing at Line 119.</p>
+<p>The Step Over button runs the current line of the program. We are now going to use the <strong><em>Step Into</em></strong> button. When you click Step Into, the debugger will enter whatever function is being called on the current line of the program. This allows you to inspect what’s going on inside a called function. (If the current line is not a function call, Step Into and Step Over do the same thing.)</p>
+<p>Do the following:</p>
+<ul class="simple">
+<li><p>Click Step Into to enter the <code class="docutils literal notranslate"><span class="pre">placeDecagonIn</span></code> function. If you’ve done this correctly, the yellow cursor will now be in the <code class="docutils literal notranslate"><span class="pre">placeDecagonIn</span></code> function.</p></li>
+</ul>
+<p>As you can see, we are now inside the <code class="docutils literal notranslate"><span class="pre">placeDecagonIn</span></code> function. You could, if you wanted to, use Step Over to walk through this function one line at a time. We aren’t interested in this function for now, though, and clicking “Step Over” repeatedly would take a long time.</p>
+<p>To get out of this function and return to <code class="docutils literal notranslate"><span class="pre">drawFlagOfRecursia</span></code>, we’ll use the <strong><em>Step Out</em></strong> button. The Step Out button tells the debugger to let the current function finish running, then pause the program again once we reach the spot where that function was called. It’s a good way to get the debugger to quickly finish the current function and get back to the caller in the event that you entered a function you didn’t mean to.</p>
+<p>Do the following:</p>
+<ol class="arabic simple">
+<li><p>Click Step Out once. You should be back inside <code class="docutils literal notranslate"><span class="pre">drawFlagOfRecursia</span></code>.</p></li>
+<li><p>Use Step Over until the yellow cursor is pointing at Line 126.</p></li>
+<li><p>Press Step Into. You should end up at some very strange looking code inside <code class="docutils literal notranslate"><span class="pre">vector.h</span></code>.</p></li>
+</ol>
+<p>It’s common, when using Step Into, for the debugger to descend into code you didn’t write and didn’t intend to debug. When this happens, remember that you can always press Step Out to leave that function and back up a level.</p>
+<p>With that in mind, do the following:</p>
+<ol class="arabic simple">
+<li><p>Press Step Out to return to <code class="docutils literal notranslate"><span class="pre">drawFlagOfRecursia</span></code>.</p></li>
+<li><p>Press Step Over repeatedly until the cursor reaches Line 132 on the seventh iteration of the <code class="docutils literal notranslate"><span class="pre">for</span></code> loop, which happens when <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">=</span> <span class="pre">6</span></code>.</p></li>
+<li><p>Press Step Into to enter the code for <code class="docutils literal notranslate"><span class="pre">drawAcuteTriangle</span></code>.</p></li>
+</ol>
+<p>If you have done everything correctly at this point, you should be inside <code class="docutils literal notranslate"><span class="pre">drawAcuteTriangle</span></code> and the <code class="docutils literal notranslate"><span class="pre">order</span></code> parameter should be 6.</p>
+<p>The code in <code class="docutils literal notranslate"><span class="pre">drawAcuteTriangle</span></code> makes two calls: one recursive call to <code class="docutils literal notranslate"><span class="pre">drawAcuteTriangle</span></code>, and one other call to <code class="docutils literal notranslate"><span class="pre">drawObtuseTriangle</span></code>. Each time those functions are called, more triangles will be drawn on the screen, and the value of <code class="docutils literal notranslate"><span class="pre">trianglesDrawn</span></code> will increase.</p>
+<p>Your task is to determine how many triangles the recursive call to <code class="docutils literal notranslate"><span class="pre">drawAcuteTriangle</span></code> on Line 45 makes. Use the debugger controls however you’d like to accomplish this. Then, answer the following question:</p>
+<div class="warning admonition">
+<p class="admonition-title">Question 3</p>
+<p>How many triangles did the recursive call to <code class="docutils literal notranslate"><span class="pre">drawAcuteTriangle</span></code> make? We are specifically interested in the recursive call made on Line 45.</p>
+</div>
+<p>At this point, you can continue to use the debugger to explore what’s going on. Do your own tracing and exploration to solidify your understanding of recursion and its mechanics. Watch the triangles being drawn and consider how this relates to the sequence of recursive calls. Observe how stack frames are added and removed from the debugger call stack. Select different levels on the call stack to see the value of the parameters and the nesting of recursive calls. Here are some suggestions for how stepping can help:</p>
+<ul class="simple">
+<li><p>Stepping <strong>over</strong> a recursive call can be helpful when thinking holistically. A recursive call is simply a “magic” black box that completely handles the smaller subproblem.</p></li>
+<li><p>Stepping <strong>into</strong> a recursive call allows you to trace the nitty-gritty details of moving from an outer recursive call to the inner call.</p></li>
+<li><p>Stepping <strong>out</strong> of a recursive call allows you to follow along with the action when backtracking from an inner recursive call to the outer one.</p></li>
+</ul>
+</section>
+</section>
+<section id="part-two-the-mountains-of-recursia">
+<h2>Part Two: The Mountains of Recursia<a class="headerlink" href="#part-two-the-mountains-of-recursia" title="Link to this heading">¶</a></h2>
+<p>Having studied the Flag of Recursia, the next sight that catches your eyes are the great Mountains of Recursia. These mountain ranges dominate the skyline and look like this:</p>
+<p><img alt="What beautiful mountains!" src="../../_images/MountainsOfRecursia.png" /></p>
+<p>The contours of these mountains are constructed using a simple recursive algorithm. Here’s how it works. We begin with two points in 2D space called the <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">right</span></code> points. We then compute the midpoint of those two points. Next, we adjust the vertical (<em>y</em>) component of the midpoint by a random amount, either by shifting it up (negative <em>y</em> direction) or down (positive <em>y</em> direction). This will create the texture of the mountain range. Finally, we repeat this process recursively by constructing two smaller mountain ranges: one from the <code class="docutils literal notranslate"><span class="pre">left</span></code> point to the adjusted midpoint, and one from the adjusted midpoint to the <code class="docutils literal notranslate"><span class="pre">right</span></code> point. Here is an animation showing these steps:</p>
+<p><img alt="TODO: Accessible description" src="../../_images/MountainSubdivision.gif" /></p>
+<p>As our base case, if we need to construct a mountain range between a <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">right</span></code> point that are “sufficiently close,” we simply form the mountain range as a straight line from <code class="docutils literal notranslate"><span class="pre">left</span></code> to <code class="docutils literal notranslate"><span class="pre">right</span></code>. Specifically, if the difference in the <em>x</em> coordinates between <code class="docutils literal notranslate"><span class="pre">right</span></code> and <code class="docutils literal notranslate"><span class="pre">left</span></code> is three or less, we make a line directly from <code class="docutils literal notranslate"><span class="pre">left</span></code> to <code class="docutils literal notranslate"><span class="pre">right</span></code> with no intervening points.</p>
+<p>Your task is to write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">Point</span><span class="o">&gt;</span><span class="w"> </span><span class="n">makeMountainRange</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Point</span><span class="o">&amp;</span><span class="w"> </span><span class="n">left</span><span class="p">,</span>
+<span class="w">                                </span><span class="k">const</span><span class="w"> </span><span class="n">Point</span><span class="o">&amp;</span><span class="w"> </span><span class="n">right</span><span class="p">,</span>
+<span class="w">                                </span><span class="kt">int</span><span class="w"> </span><span class="n">amplitude</span><span class="p">,</span>
+<span class="w">                                </span><span class="kt">double</span><span class="w"> </span><span class="n">decayRate</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that works as follows. The <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">right</span></code> parameters are the locations of the left and right points described above. The <code class="docutils literal notranslate"><span class="pre">amplitude</span></code> parameter indicates how much vertical offset might will be added to the midpoint. Specifically, after you’ve computed the midpoint of <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">right</span></code>, you should adjust the midpoint’s <em>y</em> coordinate by adding a random integer between <code class="docutils literal notranslate"><span class="pre">-amplitude</span></code> to <code class="docutils literal notranslate"><span class="pre">+amplitude</span></code>, inclusive.</p>
+<p>The last parameter, <code class="docutils literal notranslate"><span class="pre">decayRate</span></code>, changes the amplitude as the recursion unfolds. Specifically, when you recursively construct the two smaller mountain ranges, you should use as your amplitude the value <code class="docutils literal notranslate"><span class="pre">amplitude</span> <span class="pre">*</span> <span class="pre">decayRate</span></code>. If <code class="docutils literal notranslate"><span class="pre">decayRate</span></code> is 1, then each smaller mountain range has the same amplitude as the overall mountain range, giving extremely jagged peaks. If <code class="docutils literal notranslate"><span class="pre">decayRate</span></code> is smaller than 1, each sub-mountain-range will have progressively smaller amplitude, giving a smoother look.</p>
+<p>In lecture, and in Part One of this assignment, the graphical recursive functions we wrote drew directly on the screen. The <code class="docutils literal notranslate"><span class="pre">makeMountainRange</span></code> function works differently. Instead of drawing anything to the screen, it returns a list (<code class="docutils literal notranslate"><span class="pre">Vector</span></code>) of the points that make up the contour of the mountain range. This <code class="docutils literal notranslate"><span class="pre">Vector</span></code> contains the <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">right</span></code> points, plus the adjusted midpoints formed as the recursion unfolds. These points should be sorted from left to right by their <em>x</em> coordinates so that if they’re followed from left to right, they trace out the ridgeline.</p>
+<p>Why return the points rather than drawing them? There are two main reasons. First, this makes it easier to test your code. You can store the generated mountain range as <code class="docutils literal notranslate"><span class="pre">Vector&lt;Point&gt;</span></code> and then inspect the points in test cases to ensure they’re in the right place. If we instead just drew the points onto the screen, we wouldn’t be able to do this. Second, getting the points as <code class="docutils literal notranslate"><span class="pre">Vector</span></code> gives us more flexibility with how we draw the points. We can directly connect them with lines, or fill the region beneath them with a color, or use smooth curves between them, or change the colors of the lines between them, etc., all based on our use case.</p>
+<p>One final detail about <code class="docutils literal notranslate"><span class="pre">makeMountainRange</span></code>: the function should call <code class="docutils literal notranslate"><span class="pre">error()</span></code> to report an error if any of the following are true:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">left</span></code> point is to the <code class="docutils literal notranslate"><span class="pre">right</span></code> of the <code class="docutils literal notranslate"><span class="pre">right</span></code> point. (It’s okay if they have the same <code class="docutils literal notranslate"><span class="pre">x</span></code> coordinate.)</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">amplitude</span></code> value is negative.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">decayRate</span></code> parameter is negative or greater than one.</p></li>
+</ul>
+<p>To summarize, here’s what you need to do:</p>
+<div class="hint admonition">
+<p class="admonition-title">Mountains of Recursia Requirements</p>
+<ol class="arabic simple">
+<li><p>Implement the function <code class="docutils literal notranslate"><span class="pre">makeMountainRange</span></code> in the file <code class="docutils literal notranslate"><span class="pre">MountainsOfRecursia.cpp</span></code>.</p></li>
+<li><p>Run our provided tests to check whether your implementation works correctly.</p></li>
+<li><p>(Optional) Choose the “Mountains of Recursia” demo from the top-level menu to see what your code produces. Drag the two circles to change the left and right points of the range, adjust the sliders to your desired parameters, and click the button to generate a new mountain range.</p></li>
+</ol>
+</div>
+<p>Some notes on this problem:</p>
+<ul class="simple">
+<li><p>You must implement <code class="docutils literal notranslate"><span class="pre">makeMountainRange</span></code> recursively. Loops are permissible, but your function must be recursive.</p></li>
+<li><p>You may want to use some of the functions from the <code class="docutils literal notranslate"><span class="pre">&quot;random.h&quot;</span></code> header file. Check out <a class="reference external" href="https://cs101b.stickmind.com/cslib_docs/">the documentation</a> for more details.</p></li>
+<li><p>You are welcome to make <code class="docutils literal notranslate"><span class="pre">makeMountainRange</span></code> a wrapper function if you’d like. (More generally, unless stated otherwise, any time we ask you to write a function, you can make it a wrapper function and introduce as many helper functions as you’d like.) However, many solutions to this problem will not require a wrapper, so don’t feel compelled to write one.</p></li>
+<li><p>As a refresher, the midpoint of the two points <span class="math notranslate nohighlight">\((x_0, y_0)\)</span> and <span class="math notranslate nohighlight">\((x_1, y_1)\)</span> is given by the formula <span class="math notranslate nohighlight">\((\frac{x_0 + x_1}{2}, \frac{y_0 + y_1}{2})\)</span>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Point</span></code> type uses <code class="docutils literal notranslate"><span class="pre">int</span></code>s for its coordinates rather than <code class="docutils literal notranslate"><span class="pre">double</span></code>s. If you try computing the midpoint of, say, <span class="math notranslate nohighlight">\((3, 3)\)</span> and <span class="math notranslate nohighlight">\((10, 10)\)</span>, this means you cannot store the true midpoint <span class="math notranslate nohighlight">\((\frac{13}{2}, \frac{13}{2})\)</span> exactly. You don’t need to worry about this.</p></li>
+<li><p>Each of the two recursive calls you make will return a <code class="docutils literal notranslate"><span class="pre">Vector&lt;Point&gt;</span></code> containing the points making up the smaller mountain range. Importantly, the last point of the <code class="docutils literal notranslate"><span class="pre">Vector</span></code> from the left subrange and the first point of the <code class="docutils literal notranslate"><span class="pre">Vector</span></code> making up the right subrange will both be the midpoint. However, the <code class="docutils literal notranslate"><span class="pre">Vector</span></code> you ultimately will return should only include one copy of the midpoint.</p></li>
+<li><p>You should not need to do anything fancy to sort the points in your returned <code class="docutils literal notranslate"><span class="pre">Vector</span></code> from left to right.</p></li>
+</ul>
+</section>
+<section id="part-three-speaking-recursian">
+<h2>Part Three: Speaking Recursian<a class="headerlink" href="#part-three-speaking-recursian" title="Link to this heading">¶</a></h2>
+<p>You’ve disembarked at Recursia’s main port and your hosts are happy to receive you! They only speak the local language, Recursian. Fortunately, you’ve already taken the time to learn the language, and you’d like to show off your skills.</p>
+<p>Recursian is a <a class="reference external" href="https://en.wikipedia.org/wiki/Polynesian_languages">Polynesian language</a>. There are three vowels and six consonants in Recursian:</p>
+<ul class="simple">
+<li><p>Vowels: <code class="docutils literal notranslate"><span class="pre">e</span> <span class="pre">i</span> <span class="pre">u</span></code></p></li>
+<li><p>Consonants: <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">k</span> <span class="pre">n</span> <span class="pre">r</span> <span class="pre">s</span> <span class="pre">'</span></code></p></li>
+</ul>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">'</span></code> character is a consonant in Recursian; it’s a <a class="reference external" href="https://en.wikipedia.org/wiki/%CA%BBOkina#Names">common feature</a> of Polynesian languages.<a class="footnote-reference brackets" href="#id4" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a></p>
+<p>Words in Recursian consist of zero or more syllables. Each syllable consists of a consonant followed by a vowel. There is one exception - the first syllable in a Recursian word can consist of a single vowel. So, for example, <code class="docutils literal notranslate"><span class="pre">&quot;ke'ubiku&quot;</span></code> is a four-syllable word (<code class="docutils literal notranslate"><span class="pre">ke</span></code>, <code class="docutils literal notranslate"><span class="pre">'u</span></code>, <code class="docutils literal notranslate"><span class="pre">bi</span></code>, <code class="docutils literal notranslate"><span class="pre">ku</span></code>) and <code class="docutils literal notranslate"><span class="pre">&quot;ukeke'ubi&quot;</span></code> is a five-syllable word (<code class="docutils literal notranslate"><span class="pre">u</span></code>, <code class="docutils literal notranslate"><span class="pre">ke</span></code>, <code class="docutils literal notranslate"><span class="pre">ke</span></code>, <code class="docutils literal notranslate"><span class="pre">'u</span></code>, <code class="docutils literal notranslate"><span class="pre">bi</span></code>).<a class="footnote-reference brackets" href="#id6" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a> And in fact, every string that meets these requirements is considered a word in the Recursian language.</p>
+<p>Write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">allRecursianWords</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSyllables</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a number of syllables, then returns a <code class="docutils literal notranslate"><span class="pre">Vector&lt;string&gt;</span></code> consisting of every possible Recursian word that can be made with the given number of syllables. The order of the words within that <code class="docutils literal notranslate"><span class="pre">Vector</span></code> doesn’t matter, but every word should appear once and only once. The value of <code class="docutils literal notranslate"><span class="pre">numSyllables</span></code> may be zero, but if it’s negative, call <code class="docutils literal notranslate"><span class="pre">error</span></code> to report an error.</p>
+<p>This is a recursive enumeration problem and will require you to combine loops and recursion together. You do not need to write a lot of code, but you will need to be intentional with how you proceed. Here are some hints to get you thinking along the right lines:</p>
+<ol class="arabic simple">
+<li><p>You can fill in a syllable with any combination of a consonant and a vowel (or, if it’s the first syllable, with any vowel). Use recursion to explore each possible combination to see what you find.</p></li>
+<li><p>Draw out a decision tree before you start coding anything up. The decision tree here won’t exactly match subsets or permutations, but many of the insights from those problems will still be applicable here.</p></li>
+<li><p>Think about the general pattern we’ve seen: keep track of what decisions you have made so far and what decisions you haven’t made yet.</p></li>
+</ol>
+<p>We have provided you with a good range of test cases, but we haven’t covered everything. You will need to write at least one custom test case.</p>
+<p>To summarize, here’s what you need to do:</p>
+<div class="hint admonition">
+<p class="admonition-title">Speaking Recursian Requirements:</p>
+<ol class="arabic simple">
+<li><p>Implement the <code class="docutils literal notranslate"><span class="pre">allRecursianWords</span></code> function in <code class="docutils literal notranslate"><span class="pre">SpeakingRecursian.cpp</span></code>.</p></li>
+<li><p>Add at least one custom test case, then test your code thoroughly using our provided tests.</p></li>
+<li><p>(Optional) Run the demo app to see what the Recursian language looks like.</p></li>
+</ol>
+</div>
+<p>Some notes on this problem:</p>
+<ul class="simple">
+<li><p>You must implement this function recursively. Loops are permissible, but your function must be recursive.</p></li>
+<li><p>The order in which you return the words does not matter, as long as every word appears once and exactly once.</p></li>
+<li><p>The empty string is considered a word with zero syllables.</p></li>
+<li><p>All letters in the word you return should be lower-case.</p></li>
+<li><p>A Fun and Endearing Quirk of C++ that you may (or may not) encounter when coding this one up: in C++, addition is left-associative, so <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">+</span> <span class="pre">b</span> <span class="pre">+</span> <span class="pre">c</span></code> is interpreted as <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">+</span> <span class="pre">(b</span> <span class="pre">+</span> <span class="pre">c)</span></code>. If <code class="docutils literal notranslate"><span class="pre">ch1</span></code> and <code class="docutils literal notranslate"><span class="pre">ch2</span></code> are <code class="docutils literal notranslate"><span class="pre">char</span></code>s and <code class="docutils literal notranslate"><span class="pre">s</span></code> is a string, this means that <code class="docutils literal notranslate"><span class="pre">ch1</span> <span class="pre">+</span> <span class="pre">ch2</span> <span class="pre">+</span> <span class="pre">s</span></code> is grouped as <code class="docutils literal notranslate"><span class="pre">(ch1</span> <span class="pre">+</span> <span class="pre">ch2)</span> <span class="pre">+</span> <span class="pre">s</span></code>, which does <em>not</em> mean “concatenate <code class="docutils literal notranslate"><span class="pre">ch1</span></code>, then <code class="docutils literal notranslate"><span class="pre">ch2</span></code>, then <code class="docutils literal notranslate"><span class="pre">s</span></code>” and instead means “take the internal numeric values of <code class="docutils literal notranslate"><span class="pre">ch1</span></code> and <code class="docutils literal notranslate"><span class="pre">ch2</span></code>, add them together to form an <code class="docutils literal notranslate"><span class="pre">int</span></code>, then try to concatenate that with <code class="docutils literal notranslate"><span class="pre">s</span></code>.” This will result in a compile-time error. You can get around this by explicitly adding parentheses as <code class="docutils literal notranslate"><span class="pre">ch1</span> <span class="pre">+</span> <span class="pre">(ch2</span> <span class="pre">+</span> <span class="pre">s)</span></code>.</p></li>
+<li><p>There are <em>lots</em> of Recursian words. Specifically, for any <span class="math notranslate nohighlight">\(n \geq 1\)</span>, there are exactly <span class="math notranslate nohighlight">\(21·18^{n-1}\)</span> words. To put that in perspective, this means that there are <span class="math notranslate nohighlight">\(14,431,090,114,56\)</span> ten-syllable Recursian words, way more than can fit into your computer’s memory. We won’t call your function on inputs that big, and if you’re writing your own test cases, we don’t advise calling this function on inputs larger than five.</p></li>
+<li><p>Our test coverage is designed to help you identify bugs in your code, but it is not fully comprehensive. Read over the tests we have and think through what we do and don’t cover. You need to write at least one test case, and choosing it to cover a gap in our tests will make it far less likely that your code contains an error.</p></li>
+</ul>
+</section>
+<section id="part-four-the-temple-of-recursia">
+<h2>Part Four: The Temple of Recursia<a class="headerlink" href="#part-four-the-temple-of-recursia" title="Link to this heading">¶</a></h2>
+<p>Your hosts on Recursia are delighted to hear that you want to visit the island’s grandest attraction, the famed Temple of Recursia. The Temple of Recursia is a massive temple designed in <a class="reference external" href="https://en.wikipedia.org/wiki/Khmer_architecture">Khmer style</a>. Here’s a photo:</p>
+<p><img alt="Wow! What a temple." src="../../_images/FullTemple.png" /></p>
+<p>Your task is to implement a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">Rectangle</span><span class="o">&gt;</span><span class="w"> </span><span class="n">makeTemple</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Rectangle</span><span class="o">&amp;</span><span class="w"> </span><span class="n">bounds</span><span class="p">,</span>
+<span class="w">                             </span><span class="k">const</span><span class="w"> </span><span class="n">TempleParameters</span><span class="o">&amp;</span><span class="w"> </span><span class="n">params</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input the bounding box into which to draw the temple (<code class="docutils literal notranslate"><span class="pre">bounds</span></code>) and some information about the size and shape of the temple (<code class="docutils literal notranslate"><span class="pre">params</span></code>, described later), then returns a <code class="docutils literal notranslate"><span class="pre">Vector&lt;Rectangle&gt;</span></code> consisting of all the rectangles that make up the temple. As was the case in Part Two of this assignment, this function returns the rectangles to be drawn and does not actually draw anything on the screen.</p>
+<p>To help you code this one up, we’ve broken the task down into four smaller milestones. As you work through these milestones, you’ll add increasing levels of detail to the temple, concluding with the intricate picture shown above.</p>
+<section id="milestone-one-make-the-base">
+<h3>Milestone One: Make the Base<a class="headerlink" href="#milestone-one-make-the-base" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">makeTemple</span></code> function takes as input a <code class="docutils literal notranslate"><span class="pre">Rectangle</span></code> called <code class="docutils literal notranslate"><span class="pre">bounds</span></code> denoting where the temple should be drawn. The first step in creating the temple is to draw the temple base. This is a rectangle that is flush against the bottom of the bounding box and centered horizontally. Schematically, it looks like this:</p>
+<p><img alt="A schematic showing the temple base." src="../../_images/TempleBaseSchematic.png" /></p>
+<p>How big should the base be? To determine this, we’ll look to the second parameter to <code class="docutils literal notranslate"><span class="pre">makeTemple</span></code>, which is an object of type <code class="docutils literal notranslate"><span class="pre">TempleParameters</span></code>. This is a <code class="docutils literal notranslate"><span class="pre">struct</span></code> that contains information determining the relative sizes and shapes of the pieces of the temple. It’s defined in the <code class="docutils literal notranslate"><span class="pre">&quot;TempleOfRecursia.h&quot;</span></code> header file. If you open that header file now, you’ll see that there are a lot of different data members defined inside <code class="docutils literal notranslate"><span class="pre">TempleParameters</span></code>. Don’t worry - you are not expected to understand all of them right now. Instead, as you work through the milestones, we will incrementally describe more and more of the fields.</p>
+<p>For this milestone, you will need to read the following fields of <code class="docutils literal notranslate"><span class="pre">TempleParameters</span></code>, which give information about how wide and tall the base of the temple should be:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">TempleParameters</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* How wide is the base, relative to the width of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">baseWidth</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How tall is the base, relative to the height of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">baseHeight</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Other fields you won&#39;t need to reference yet. */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">baseWidth</span></code> dictates how wide the base is. It’s specified as a real number (a <code class="docutils literal notranslate"><span class="pre">double</span></code>) between 0 and 1 representing the fraction of the width of the bounding box dedicated to the base. So, for example, if <code class="docutils literal notranslate"><span class="pre">params.baseWidth</span></code> is 0.5, it means that the width of the base of the temple is half the width of the bounding box. If <code class="docutils literal notranslate"><span class="pre">params.baseWidth</span></code> is 1.0, it means the width of the base is the same as the width of the bounding box. Similarly, <code class="docutils literal notranslate"><span class="pre">baseHeight</span></code> says how tall the base is, expressed as a real number between 0 and 1 indicating how tall the base is relative to the bounding box. If <code class="docutils literal notranslate"><span class="pre">params.baseHeight</span></code> is 0.25, for example, then the base is 25% the height of the bounding box. Regardless of its size, the base should be positioned flush against the bottom of the bounding box and centered horizontally.</p>
+<p>As your first milestone, write code in <code class="docutils literal notranslate"><span class="pre">makeTemple</span></code> that returns a <code class="docutils literal notranslate"><span class="pre">Vector&lt;Rectangle&gt;</span></code> holding a single rectangle representing the base of the temple. Specifically, you should do the following:</p>
+<div class="hint admonition">
+<p class="admonition-title">Milestone One Requirements</p>
+<ol class="arabic simple">
+<li><p>Write code in <code class="docutils literal notranslate"><span class="pre">makeTemple</span></code> to return a <code class="docutils literal notranslate"><span class="pre">Vector</span></code> consisting of just the base of the temple.</p></li>
+<li><p>Run our provided tests to validate your code. You should pass all the tests for Milestone One but fail the remaining tests.</p></li>
+</ol>
+</div>
+<p>Some notes on this problem:</p>
+<ul class="simple">
+<li><p><strong><em>Draw pictures!</em></strong> To complete this milestone, you will need to do some algebra to determine the <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> coordinates of the base. This is a lot easier to do if you draw a picture and annotate it with positions in space.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Rectangle</span></code> you get as the <code class="docutils literal notranslate"><span class="pre">bounds</span></code> of the temple does not necessarily need to have its upper-left corner at the origin (0, 0). There are also no constraints on how wide or tall it will be, except that you can assume its width and height are positive.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Rectangle</span></code> type uses <code class="docutils literal notranslate"><span class="pre">int</span></code> coordinates, which can lead to rounding errors. For example, if the width of the bounding rectangle is 33 and the base ends up being 20 pixels wide, then you can’t perfectly center it horizontally. For the purposes of this assignment, our test cases assume that you will use the default C++ behavior of rounding toward zero.</p></li>
+<li><p>You can assume that <code class="docutils literal notranslate"><span class="pre">baseWidth</span></code> and <code class="docutils literal notranslate"><span class="pre">baseHeight</span></code> are between 0 and 1, inclusive. You don’t need to call <code class="docutils literal notranslate"><span class="pre">error()</span></code> if this is not the case.</p></li>
+<li><p>You do not need to use recursion just yet. That will come up in Milestone Three.</p></li>
+</ul>
+</section>
+<section id="milestone-two-make-the-column">
+<h3>Milestone Two: Make the Column<a class="headerlink" href="#milestone-two-make-the-column" title="Link to this heading">¶</a></h3>
+<p>You now have the base of the Temple of Recursia. Sitting on top of the base is a column. Here’s a schematic showing where the column is in relationship to the bounding box and the base:</p>
+<p><img alt="A schematic showing the temple column." src="../../_images/TempleColumnSchematic.png" /></p>
+<p>Like the base, the column is centered horizontally. Whereas the base was flush against the bottom of the bounding rectangle, the column is flush against the top of the base.</p>
+<p>To determine how wide and tall the column should be, you’ll need to look inside <code class="docutils literal notranslate"><span class="pre">TempleParameters</span></code>:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">TempleParameters</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* How wide is the base, relative to the width of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">baseWidth</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How tall is the base, relative to the height of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">baseHeight</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How wide is the column, relative to the width of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">columnWidth</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How tall is the column, relative to the height of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">columnHeight</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Other fields you won&#39;t need to reference yet. */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>As with the base, the width and height of the column are proportional fractions of the width and height of the bounding box. The exact proportions are given by the <code class="docutils literal notranslate"><span class="pre">columnWidth</span></code> and <code class="docutils literal notranslate"><span class="pre">columnHeight</span></code> fields of <code class="docutils literal notranslate"><span class="pre">TempleParameters</span></code>.</p>
+<p>Update <code class="docutils literal notranslate"><span class="pre">makeTemple</span></code> so that it returns a <code class="docutils literal notranslate"><span class="pre">Vector&lt;Rectangle&gt;</span></code> containing two rectangles, the base and the column, in that order.</p>
+<div class="hint admonition">
+<p class="admonition-title">Milestone Two Requirements</p>
+<ol class="arabic simple">
+<li><p>Update <code class="docutils literal notranslate"><span class="pre">makeTemple</span></code> to return a <code class="docutils literal notranslate"><span class="pre">Vector</span></code> containing the base and the column, in that order.</p></li>
+<li><p>Run our provided tests to validate your code. You should pass all the tests for Milestone Two but fail the remaining tests.</p></li>
+</ol>
+</div>
+<p>Some notes on this problem:</p>
+<ul class="simple">
+<li><p>As you add code to an existing function, you may find it helpful to <em>refactor</em> your code by writing new helper functions. Otherwise, your function will start to get longer and more error-prone.</p></li>
+<li><p>As with the previous milestone, you don’t need to worry about rounding errors arising from multiplying <code class="docutils literal notranslate"><span class="pre">int</span></code>s and <code class="docutils literal notranslate"><span class="pre">double</span></code>s.</p></li>
+<li><p>It’s technically possible for you to get “silly” values of the <code class="docutils literal notranslate"><span class="pre">columnWidth</span></code> and <code class="docutils literal notranslate"><span class="pre">columnHeight</span></code> parameters. For example, the column might be wider than the base, or the combined height of the base and the column might exceed the height of the <code class="docutils literal notranslate"><span class="pre">bounds</span></code> parameter. You do not need to call <code class="docutils literal notranslate"><span class="pre">error()</span></code> in these cases; just create rectangles of the appropriate proportions even if those proportions are silly.</p></li>
+<li><p>You do not need to use recursion yet. That will show up in the next milestone.</p></li>
+</ul>
+</section>
+<section id="milestone-three-recursively-stack-temples">
+<h3>Milestone Three: Recursively Stack Temples<a class="headerlink" href="#milestone-three-recursively-stack-temples" title="Link to this heading">¶</a></h3>
+<p>As its name suggests, the Temple of Recursia’s architecture is recursive. In particular, there’s a smaller, upper copy of the temple sitting on top of the column. The position of the bounding box for this upper temple is shown here:</p>
+<p><img alt="A schematic showing the position of the upper temple." src="../../_images/TempleUpperSchematic.png" /></p>
+<p>The upper temple’s bounding box has the same width as the column and should be placed flush on top of the column. To determine the height of the bounding box for the upper temple, you’ll need to use another field of the <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">TempleParameters</span></code>:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">TempleParameters</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* How wide is the base, relative to the width of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">baseWidth</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How tall is the base, relative to the height of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">baseHeight</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How wide is the column, relative to the width of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">columnWidth</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How tall is the column, relative to the height of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">columnHeight</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How tall is the upper temple, relative to the height of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">upperTempleHeight</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Other fields you won&#39;t need to reference yet. */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>This is a relative height field, like <code class="docutils literal notranslate"><span class="pre">baseHeight</span></code> and <code class="docutils literal notranslate"><span class="pre">columnHeight</span></code>, giving the fraction of the height of the bounding box to use when sizing the upper temple’s bounding box.</p>
+<p>As the name “Temple of Recursia” suggests, the upper temple is a smaller copy of the original temple, which means that there may be an even smaller temple sitting atop the upper temple, and there might be another temple sitting atop that, etc. To control how many levels of temples there are, you’ll need to make use of the <code class="docutils literal notranslate"><span class="pre">order</span></code> field in <code class="docutils literal notranslate"><span class="pre">TempleParameters</span></code>:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">TempleParameters</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* How wide is the base, relative to the width of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">baseWidth</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How tall is the base, relative to the height of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">baseHeight</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How wide is the column, relative to the width of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">columnWidth</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How tall is the column, relative to the height of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">columnHeight</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How tall is the upper temple, relative to the height of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">upperTempleHeight</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Order of the figure. An order-0 temple is nothing at all. An order-n</span>
+<span class="cm">     * temple is a base and column with an order-(n-1) temple placed on top</span>
+<span class="cm">     * of it.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">order</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Other fields you won&#39;t need to reference yet. */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>You will need to update your implementation of <code class="docutils literal notranslate"><span class="pre">makeTemple</span></code> so that it properly handles the <code class="docutils literal notranslate"><span class="pre">order</span></code> parameter. Specifically:</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">order</span></code> is negative, call <code class="docutils literal notranslate"><span class="pre">error()</span></code> to report an error.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">order</span></code> is zero, there is nothing to draw and you should return an empty <code class="docutils literal notranslate"><span class="pre">Vector</span></code>.</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">order</span></code> is positive, make the base and column as before, then make an up temple of order <code class="docutils literal notranslate"><span class="pre">order</span> <span class="pre">-</span> <span class="pre">1</span></code> on top of its column.</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">Vector</span></code> you return should have its rectangles in the following order: first the base, then the column, and then all the rectangles from the upper temples.</p>
+<p>To summarize, here’s what you need to do:</p>
+<div class="hint admonition">
+<p class="admonition-title">Milestone Three Requirements</p>
+<ol class="arabic simple">
+<li><p>Change <code class="docutils literal notranslate"><span class="pre">makeTemple</span></code> so that it recursively stacks temples atop one another as described above.</p></li>
+<li><p>Run our provided tests to validate your code. You should pass all the tests for Milestone Three but fail the remaining tests.</p></li>
+</ol>
+</div>
+<p>Some notes on this problem:</p>
+<ul class="simple">
+<li><p>As you’re adding more functionality, your <code class="docutils literal notranslate"><span class="pre">makeTemple</span></code> function may start to get on the long side. Decomposition is your friend here. If your code is getting lengthy, split it apart into multiple smaller functions.</p></li>
+<li><p>It is possible that the upper temple height will be so large that it extends beyond the top of the <code class="docutils literal notranslate"><span class="pre">bounds</span></code> box (for example, if <code class="docutils literal notranslate"><span class="pre">baseHeight</span></code> is 0.2, <code class="docutils literal notranslate"><span class="pre">columnHeight</span></code> is 0.4, and <code class="docutils literal notranslate"><span class="pre">upperTempleHeight</span></code> is 0.6). You don’t need to worry about this case, and it’s okay if your temple overflows out the top of its bounding box.</p></li>
+<li><p>Do not modify the function signature for <code class="docutils literal notranslate"><span class="pre">makeTemple</span></code> by adding, removing, or changing parameters. However, you are free to make <code class="docutils literal notranslate"><span class="pre">makeTemple</span></code> a wrapper function if you would like.</p></li>
+<li><p>While you cannot modify the <code class="docutils literal notranslate"><span class="pre">TempleParameters</span></code> object passed into <code class="docutils literal notranslate"><span class="pre">makeTemple</span></code>, you can create your own <code class="docutils literal notranslate"><span class="pre">TempleParameters</span></code> variable that’s a copy of it by writing something to the effect of <code class="docutils literal notranslate"><span class="pre">TempleParameters</span> <span class="pre">newParams</span> <span class="pre">=</span> <span class="pre">params;</span></code> and then modify the new parameters.</p></li>
+<li><p>If you get back different rectangles than the ones in the test cases, we recommend getting out a sheet of paper and working through the examples from the test case by hand. By doing the algebra yourself to position everything, you can see where things should be and why, and can use that to better diagnose any incorrect positions.</p></li>
+<li><p>The debugger is your friend here. If your code produces the wrong rectangles, set a breakpoint and use a mix of “step over” and “step into” to figure out where things are going wrong. Proceed slowly. If you’ve worked out on a sheet of paper where all the rectangles should be for a given example, you can read the local variables window to make sure that the positions you’re calculating match what they’re supposed to be.</p></li>
+</ul>
+</section>
+<section id="milestone-four-add-smaller-temples">
+<h3>Milestone Four: Add Smaller Temples<a class="headerlink" href="#milestone-four-add-smaller-temples" title="Link to this heading">¶</a></h3>
+<p>Your Temple of Recursia is now shaped like a single spire: there’s a base and column, topped with a base and column, topped with another base and column, etc. To make the temple truly grand, we’ll add one last architectural feature: a series of smaller temples sitting on top of the base and in front of the column. The smaller temples should be positioned so that they are evenly-spaced across the top of the base. Here are examples of where the smaller temples would go, based on whether there are 2, 3, or 4 smaller temples:</p>
+<p><img alt="Positions of the smaller temples on the base" src="../../_images/TempleSmallSchematic.gif" /></p>
+<p>To determine how many small temples there should be, as well as how large they are, we’ll need the final three fields of <code class="docutils literal notranslate"><span class="pre">TempleParameters</span></code>:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">TempleParameters</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* How wide is the base, relative to the width of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">baseWidth</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How tall is the base, relative to the height of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">baseHeight</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How wide is the column, relative to the width of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">columnWidth</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How tall is the column, relative to the height of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">columnHeight</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How tall is the upper temple, relative to the height of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">upperTempleHeight</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Order of the figure. An order-0 temple is nothing at all. An order-n</span>
+<span class="cm">     * temple is a base and column with an order-(n-1) temple placed on top</span>
+<span class="cm">     * of it.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">order</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How many smaller temples are there? (Will always be at least two.) */</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">numSmallTemples</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How wide is each smaller temples, relative to the width of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">smallTempleWidth</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* How tall is each smaller temples, relative to the height of the bounding box? */</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">smallTempleHeight</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Although in the above examples we talked about there only being 2, 3, or 4 smaller temples, your function should support any number of smaller temples greater than or equal to two. Each small temple should be positioned directly on top of the base and spaced apart evenly. The rectangles from the temples should be added to the result <code class="docutils literal notranslate"><span class="pre">Vector</span></code> after the rectangles from the upper temple, and ordered from left to right.</p>
+<p>Like the upper temple, each smaller temple’s order should be one less than the order of the overall temple figure. For example, an order-5 temple would have order-4 small temples along its base.</p>
+<p>It is possible - and, one could argue, desirable - that the rectangles from the small temples overlap the center column and the upper temple. This gives the temple more of a three-dimensional look, corresponding to the temple being laid out as a central spire ringed by smaller shrines.</p>
+<p>Here’s what you need to do:</p>
+<div class="hint admonition">
+<p class="admonition-title">Milestone Four Requirements</p>
+<ol class="arabic simple">
+<li><p>Change <code class="docutils literal notranslate"><span class="pre">makeTemple</span></code> so that it adds smaller temples along the baseline, as described above.</p></li>
+<li><p>Run our provided tests to validate your code. You should pass all the tests at this point.</p></li>
+<li><p>(Optional) Choose the “Temple of Recursia” option from the top-level menu to see your creation and adjust the parameters.</p></li>
+</ol>
+</div>
+<p>Some notes on this problem:</p>
+<ul class="simple">
+<li><p>Grab a sheet of paper and a pencil and draw some pictures to work out the coordinates of all the smaller temples. We recommend calculating the spacing between the temples.</p></li>
+<li><p>You should assume that the small temples will not overlap one another horizontally, though in practice that won’t necessarily be the case. If you’ve correctly worked out the math for the spacing between the smaller temples, your code will naturally (and aesthetically!) handle overlapping temples nicely.</p></li>
+<li><p>You can assume there will always be at least two smaller temples and don’t need to handle the case where this isn’t true.</p></li>
+<li><p>As with the previous sections, if you would normally need to store a fractional coordinate (for example, if an <span class="math notranslate nohighlight">\(x\)</span> coordinate for a small temple is supposed to be 11.5), it’s okay to round down when converting to an <code class="docutils literal notranslate"><span class="pre">int</span></code>.</p></li>
+<li><p>As in Milestone Three, if you are failing any test cases, work through that test case on a sheet of paper by hand to see where the rectangles should be. Then, use the debugger to walk through your code (use “step into,” “step over,” and “step out” to navigate the recursive calls) and see which coordinates you’re getting right and which coordinates are incorrect.</p></li>
+<li><p>If you have a compound expression in which you’re mixing <code class="docutils literal notranslate"><span class="pre">int</span></code>s and <code class="docutils literal notranslate"><span class="pre">double</span></code>s while performing division, make sure that you group the terms appropriately. For example, <code class="docutils literal notranslate"><span class="pre">double1</span> <span class="pre">*</span> <span class="pre">(int1</span> <span class="pre">/</span> <span class="pre">int2)</span></code> will do integer division (rounding down), but <code class="docutils literal notranslate"><span class="pre">(double1</span> <span class="pre">*</span> <span class="pre">int1)</span> <span class="pre">/</span> <span class="pre">int2</span></code> will do real-valued division because the numerator is a <code class="docutils literal notranslate"><span class="pre">double</span></code>.</p></li>
+</ul>
+</section>
+</section>
+<section id="optional-part-five-take-in-the-view">
+<h2>(Optional) Part Five: Take in the View!<a class="headerlink" href="#optional-part-five-take-in-the-view" title="Link to this heading">¶</a></h2>
+<p>The very last menu option in our provided app, the Grand View of Recursia, shows off the Temple of Recursia situated in a landscape surrounded by the Mountains of Recursia. Once you’ve gotten everything working and all the tests are passing, choose that option to marvel at how beautiful your recursive creations are. Isn’t that something? Now compare the intricasies of the image to how much code you wrote. Recursion is an incredibly powerful tool for describing and modeling complex structures in an incredibly small space!</p>
+</section>
+<section id="optional-part-six-extensions">
+<h2>(Optional) Part Six: Extensions<a class="headerlink" href="#optional-part-six-extensions" title="Link to this heading">¶</a></h2>
+<p>Each part of this assignment is designed to give you a sense of what’s possible with recursion. If you want to take these ideas and run wild, go for it! Here are some suggestions of ideas to try out if you want to keep exploring.</p>
+<p>As with all assignments, if you want to submit extensions, please submit two separate versions of your assignment: one without extensions that meets our requirements, and one with extensions that does whatever you’d like.</p>
+<ul>
+<li><p><strong><em>Flag of Recursia</em></strong>: The particular pattern of triangles used in the flag are a type of <a class="reference external" href="https://en.wikipedia.org/wiki/Penrose_tiling">Penrose tiling</a>; they can tile indefinitely in all directions without ever repeating the same pattern. They’re not the only way to tile space this way. Look up other ways of tiling space and see what sorts of geometric designs you can come up with.</p>
+<p>Do you think you have a better design for a Flag of Recursia? Feel free to throw away our flag and come up with something even better.</p>
+</li>
+<li><p><strong><em>Mountains of Recursia</em></strong>: The algorithm we had you code up to make the mountain range is an example of a <em>terrain generation algorithm</em>. There are lots of other terrain features you can generate using recursion - coastlines, trees, dunes, water waves, etc. Research and code up one of those algorithms. Alternatively, is there a way to adjust the algorithm we provided you so that it still makes a nice 2D mountain range, but does so more realistically?</p>
+<p>The mountain generation function you wrote creates the contour of the top of the mountain range. Real mountains have more detail in them: snowy peaks, treelines, rock cliffs, etc. Can you update your function to incorporate these details in a realistic way?</p>
+</li>
+<li><p><strong><em>Speaking Recursian</em></strong>: Because words in Recursian are made of fixed syllables, and there are only finitely many syllables, it should be possible in principle to create sound clips for each syllable and then create a program that can speak Recursian words aloud. Can you make something like this?</p>
+<p>The rules about syllable construction in Recursian are very simple <a class="reference external" href="https://en.wikipedia.org/wiki/Phonotactics">phonotactic</a> rules. Could you introduce other rules into Recursian about what sorts of syllables are allowed in relationship to one another? If so, how would the two recursive functions you wrote need to change?</p>
+<p>If you’re into linguistics, could you come up with a grammar and syntax for Recursian that (of course) has a nice recursive structure to it? If so, could you use that to define what a “Recursian sentence” would be, and then generate sample sentences?</p>
+</li>
+<li><p><strong><em>Temple of Recursia</em></strong>: The Temple of Recursia we had you design was just one possible example of recursion in architecture. Can you come up with alternative designs that are also recursive but that are more aesthetically pleasing or that draw on other architectural traditions?</p></li>
+</ul>
+</section>
+<section id="general-notes">
+<h2>General Notes<a class="headerlink" href="#general-notes" title="Link to this heading">¶</a></h2>
+<p>Here’s some clarifications, notifications, expectations, and recommendations for this assignment.</p>
+<ul class="simple">
+<li><p><strong><em>Your functions must actually use recursion;</em></strong> it defeats the point of the assignment to solve these problems iteratively! That being said, as you’ll see in lecture next week, it’s perfectly alright for recursive functions to contain loops. The main question is whether your solution fundamentally works by breaking problems down into smaller copies of themselves. If so, great! If not, you may want to revisit your solution.</p></li>
+<li><p><strong><em>Test your code thoroughly!</em></strong> We’ve included some test cases with the starter files, but they aren’t exhaustive. Be sure to add tests as you go!</p></li>
+<li><p><strong><em>Recursion can take some time to get used to,</em></strong> so don’t be dismayed if you can’t immediately sit down and solve these problems. Ask for advice and guidance if you need it. Once everything clicks, you’ll have a much deeper understanding of just how cool a technique this is. We’re here to help you get there!</p></li>
+</ul>
+</section>
+<section id="submission-instructions">
+<h2>Submission Instructions<a class="headerlink" href="#submission-instructions" title="Link to this heading">¶</a></h2>
+<p>Before you call it done, run through our <a class="reference external" href="https://cs101b.stickmind.com/resources/Submit-checklist.html" title="Submit checklist">submit checklist</a> to be sure all your <code class="docutils literal notranslate"><span class="pre">t</span></code>s are crossed and <code class="docutils literal notranslate"><span class="pre">i</span></code>s are dotted. Make sure your code follows our <a class="reference external" href="https://cs101b.stickmind.com/resources/Style-Guide.html" title="Style Guide">style guide</a>. Then upload your completed files for grading.</p>
+<p>Please submit only the files you edited; for this assignment, these files will be:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DebuggerAnswers.txt</span></code> <em>(Don’t forget this one!)</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MountainsOfRecursia.cpp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SpeakingRecursian.cpp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TempleOfRecursia.cpp</span></code></p></li>
+</ul>
+<p>You don’t need to submit any of the other files in the project folder.</p>
+</section>
+</section>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>The acute triangle is formally called the <a class="reference external" href="https://en.wikipedia.org/wiki/Golden_triangle_(mathematics)">golden triangle</a> and the obtuse triangle is formally called the <a class="reference external" href="https://en.wikipedia.org/wiki/Golden_triangle_(mathematics)#Golden_gnomon">golden gnomon</a>.</p>
+</aside>
+<aside class="footnote brackets" id="id4" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">2</a><span class="fn-bracket">]</span></span>
+<p>The proper character to use here would be <code class="docutils literal notranslate"><span class="pre">ʻ</span></code>, an inverted comma, rather than <code class="docutils literal notranslate"><span class="pre">'</span></code>, an apostrophe. However, due to the same limitations on C++ <code class="docutils literal notranslate"><span class="pre">char</span></code>s that you learned about in Assignment 2, we’ll use the apostrophe instead. This is definitely not ideal, but we’re okay with it because Recursian is a fictional language. If you were to write programs that worked with actual Polynesian languages, you should go out of your way to use the proper characters.</p>
+</aside>
+<aside class="footnote brackets" id="id6" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">3</a><span class="fn-bracket">]</span></span>
+<p>The Recursians call their language <code class="docutils literal notranslate"><span class="pre">&quot;rekurisini&quot;</span></code>; the name “Recursian” is an <a class="reference external" href="https://en.wikipedia.org/wiki/Endonym_and_exonym">exonym</a>.</p>
+</aside>
+</aside>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../section-3.2/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>下一页</span>
+                </div>
+                <div class="title">Section 3.2 Recursion and Backtracking</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../section-3.1/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>上一页</span>
+                </div>
+                
+                <div class="title">Section 3.1 Recursion and Iteration</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, <a href='https://www.stickmind.com/' target="_blank">StickMind</a>
+            </div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            本页目录
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Assignment 3.1 A Visit to Recursia</a><ul>
+<li><a class="reference internal" href="#starter-files">Starter Files</a></li>
+<li><a class="reference internal" href="#d-graphics-primer">2D Graphics Primer</a></li>
+<li><a class="reference internal" href="#part-one-the-flag-of-recursia">Part One: The Flag of Recursia</a><ul>
+<li><a class="reference internal" href="#what-you-need-to-do">What You Need To Do</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#part-two-the-mountains-of-recursia">Part Two: The Mountains of Recursia</a></li>
+<li><a class="reference internal" href="#part-three-speaking-recursian">Part Three: Speaking Recursian</a></li>
+<li><a class="reference internal" href="#part-four-the-temple-of-recursia">Part Four: The Temple of Recursia</a><ul>
+<li><a class="reference internal" href="#milestone-one-make-the-base">Milestone One: Make the Base</a></li>
+<li><a class="reference internal" href="#milestone-two-make-the-column">Milestone Two: Make the Column</a></li>
+<li><a class="reference internal" href="#milestone-three-recursively-stack-temples">Milestone Three: Recursively Stack Temples</a></li>
+<li><a class="reference internal" href="#milestone-four-add-smaller-temples">Milestone Four: Add Smaller Temples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#optional-part-five-take-in-the-view">(Optional) Part Five: Take in the View!</a></li>
+<li><a class="reference internal" href="#optional-part-six-extensions">(Optional) Part Six: Extensions</a></li>
+<li><a class="reference internal" href="#general-notes">General Notes</a></li>
+<li><a class="reference internal" href="#submission-instructions">Submission Instructions</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=7d86a446"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/tabs.js?v=3ee01567"></script>
+    <script>let toggleHintShow = '';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    </body>
+</html>

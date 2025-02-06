@@ -1,0 +1,1104 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Assignment 2. Fun with Collections" href="../assign-2.1/index.html" /><link rel="prev" title="Topic 2. Containers" href="../index.html" />
+
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+        <title>Section 2. Containers and Recursion - CS101B Programming Abstractions</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pied-piper-admonition.css?v=e32e2275" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">CS101B Programming Abstractions</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">CS101B Programming Abstractions</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../resources/index.html">Resources</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Resources</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Workflow/index.html">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/PythonToCpp/index.html">Python to C++ Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Debugging/index.html">Debugging Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Testing/index.html">Testing Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-0/index.html">Introduction</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Introduction</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-0/assign-0/index.html">Assignment 0. Welcome to CS101B!</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-1/index.html">Topic 1. Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Topic 1. Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-1/section-1.1/index.html">Section 1.1 C++ and Recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-1/assign-1.1/index.html">Assignment 1. Welcome to C++</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Topic 2. Containers</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Topic 2. Containers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Section 2. Containers and Recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assign-2.1/index.html">Assignment 2. Fun with Collections</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-3/index.html">Topic 3. Recursion</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Topic 3. Recursion</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/section-3.1/index.html">Section 3.1 Recursion and Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/assign-3.1/index.html">Assignment 3.1 A Visit to Recursia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/section-3.2/index.html">Section 3.2 Recursion and Backtracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/assign-3.2/index.html">Assignment 3.2 Recursion to the Rescue!</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-4/index.html">Topic 4. Algorithm and Abstraction</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Topic 4. Algorithm and Abstraction</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/section-4.1/index.html">Section 4.1 Big-O, Searching and Sorting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/section-4.2/index.html">Section 4.2 Class Design and Dynamic Memory Allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/assign-4.1/index.html">Assignment 4.1 Bag’O Big-O</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../topic-5/index.html">Topic 5. Data Structures</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>返回顶部</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section class="tex2jax_ignore mathjax_ignore" id="section-2-containers-and-recursion">
+<h1>Section 2. Containers and Recursion<a class="headerlink" href="#section-2-containers-and-recursion" title="Link to this heading">¶</a></h1>
+<p>This week in section you’ll be practicing with collection types and reference parameters. These problems will get you some good practice with topics that you’ll see in assignment 2 and beyond. There’s a starter package linked below. Have fun!</p>
+<p>📦 <a class="reference download internal" download="" href="../../_downloads/141c809b288a7ed0d9b09fe8c3a38cfa/Section-2.1.zip"><span class="xref download myst">Starter code</span></a></p>
+<section id="container-types">
+<h2>Container Types<a class="headerlink" href="#container-types" title="Link to this heading">¶</a></h2>
+<section id="iteration-station">
+<h3>Iteration Station<a class="headerlink" href="#iteration-station" title="Link to this heading">¶</a></h3>
+<p><em>Topics: Vectors, sets, stacks, range-based for loops, for loops, parameter passing</em></p>
+<p>Below are a bunch of functions that attempt to iterate over a container of some type. For each function, determine whether</p>
+<ul class="simple">
+<li><p>the function works correctly</p></li>
+<li><p>the function compiles, but doesn’t correctly iterate over the elements, or</p></li>
+<li><p>the function won’t even compile</p></li>
+</ul>
+<p>In each case make sure you can explain why!</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">iterateVec1</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">vals</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">vals</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">iterateVec2</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">vals</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">vals</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">vals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">iterateVec3</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">vals</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">vals</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">iterateStack1</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">iterateStack2</span><span class="p">(</span><span class="n">Stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">iterateStack3</span><span class="p">(</span><span class="n">Stack</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="o">!</span><span class="n">s</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">pop</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<ul class="simple">
+<li><p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">iterateVec1</span></code>: This one works just fine!</p></li>
+<li><p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">iterateVec2</span></code>: This code will likely crash at runtime. The variable <code class="docutils literal notranslate"><span class="pre">i</span></code> refers to a <em>value</em> in the <code class="docutils literal notranslate"><span class="pre">Vector</span></code>, not an <em>index</em> in the <code class="docutils literal notranslate"><span class="pre">Vector</span></code>, so using it as an index will jump to a spot that wasn’t designed to be an index.</p></li>
+<li><p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">iterateVec3</span></code>: This code works just fine!</p></li>
+<li><p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">iterateStack1</span></code>: This code won’t compile. The <code class="docutils literal notranslate"><span class="pre">Stack</span></code> here is passed in by <code class="docutils literal notranslate"><span class="pre">const</span></code> reference, which means that it can’t be modified. However, calling <code class="docutils literal notranslate"><span class="pre">.pop()</span></code> modifies the stack.</p></li>
+<li><p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">iterateStack2</span></code>: This one fails for a subtle reason. Each iteration of the loop decreases <code class="docutils literal notranslate"><span class="pre">s.size()</span></code> by one. Coupled with the fact that <code class="docutils literal notranslate"><span class="pre">i</span></code> is increasing by one at each point, this will only look at the first half of the stack.</p></li>
+<li><p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">iterateStack3</span></code>: This code works just fine! It does make a copy of the <code class="docutils literal notranslate"><span class="pre">Stack</span></code>, but that’s okay given that the only way to see everything in a stack is to destructively modify it.</p></li>
+</ul>
+</div>
+</details></section>
+<section id="debugging-deduplicating">
+<h3>Debugging Deduplicating<a class="headerlink" href="#debugging-deduplicating" title="Link to this heading">¶</a></h3>
+<p><em>(This problem by Marty Stepp)</em></p>
+<p>Consider the following <strong><em>incorrect</em></strong> C++ function, which accepts as input a <code class="docutils literal notranslate"><span class="pre">Vector&lt;string&gt;</span></code> and tries to modify it by removing adjacent duplicate elements:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">deduplicate</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vec</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">vec</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The intent behind this function is that we could do something like this:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">hiddenFigures</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s">&quot;Katherine Johnson&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;Katherine Johnson&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;Katherine Johnson&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;Mary Jackson&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;Dorothy Vaughan&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s">&quot;Dorothy Vaughan&quot;</span>
+<span class="p">};</span>
+
+<span class="n">deduplicate</span><span class="p">(</span><span class="n">hiddenFigures</span><span class="p">);</span>
+<span class="c1">// hiddenFigures = [&quot;Katherine Johnson&quot;, &quot;Mary Jackson&quot;, &quot;Dorothy Vaughan&quot;]?</span>
+</pre></div>
+</div>
+<p>The problem is that the above implementation of <code class="docutils literal notranslate"><span class="pre">deduplicate</span></code> does not work correctly. In particular, it contains three bugs. Find those bugs, explain what the problems are, then fix those errors.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">There are three errors here:</p>
+<ol class="arabic simple">
+<li><p class="sd-card-text">Calling <code class="docutils literal notranslate"><span class="pre">.remove()</span></code> on the <code class="docutils literal notranslate"><span class="pre">Vector</span></code> while iterating over it doesn’t work particularly nicely. Specifically, if you remove the element at index <code class="docutils literal notranslate"><span class="pre">i</span></code> and then increment <code class="docutils literal notranslate"><span class="pre">i</span></code> in the <code class="docutils literal notranslate"><span class="pre">for</span></code>loop, you’ll skip over the element that shifted into the position you were previously in.</p></li>
+<li><p class="sd-card-text">There’s an off-by-one-error here: when <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">=</span> <span class="pre">vec.size()</span> <span class="pre">-</span> <span class="pre">1</span></code>, the indexing <code class="docutils literal notranslate"><span class="pre">vec[i</span> <span class="pre">+</span> <span class="pre">1]</span></code> reads off the end of the <code class="docutils literal notranslate"><span class="pre">Vector</span></code></p></li>
+<li><p class="sd-card-text">The <code class="docutils literal notranslate"><span class="pre">Vector</span></code> is passed in by value, not by reference, so none of the changes made to it will persist to the caller.</p></li>
+</ol>
+<p class="sd-card-text">Here’s a corrected version of the code:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">deduplicate</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">vec</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Notice that we omitted the traditional i++ here</span>
+<span class="cm">     * in the for loop, we don&#39;t necessarily want to</span>
+<span class="cm">     * i++ on each iteration of the for loop.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">vec</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">;)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">vec</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">vec</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">i</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="boustrophedon-writing">
+<h3>Boustrophedon Writing<a class="headerlink" href="#boustrophedon-writing" title="Link to this heading">¶</a></h3>
+<p>Some languages, like English, are read from left-to-right. Others, like Arabic, are read from right-to-left. And some languages are sometimes in a pattern called <strong><em>boustrophedon</em></strong> where the direction of reading alternates from line to line. The first line is read left-to-right, the next right-to-left, then left-to-right, etc. For example, here’s <a class="reference external" href="https://www.poetryfoundation.org/poems/52955/the-end-and-the-beginning">some text</a> written in boustrophedon:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Those</span> <span class="n">wh</span>
+<span class="n">w</span> <span class="n">wenk</span> <span class="n">o</span>
+<span class="n">hat</span> <span class="n">was</span>
+<span class="n">no</span> <span class="n">gniog</span>
+<span class="n">here</span> <span class="n">mus</span>
+<span class="n">w</span> <span class="n">ekam</span> <span class="n">t</span>
+<span class="n">ay</span> <span class="k">for</span> <span class="n">t</span>
+<span class="n">onk</span> <span class="n">esoh</span>
+<span class="n">w</span> <span class="n">little</span>
+<span class="n">el</span> <span class="n">dnA</span> <span class="o">.</span>
+<span class="n">ss</span> <span class="n">than</span>
+ <span class="o">.</span><span class="n">elttil</span>
+<span class="n">And</span> <span class="n">fina</span>
+<span class="n">l</span> <span class="n">sa</span> <span class="n">yll</span>
+<span class="n">ittle</span> <span class="k">as</span>
+<span class="o">.</span><span class="n">gnihton</span>
+</pre></div>
+</div>
+<p>Write a function</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">string</span> <span class="n">fromBoustrophedon</span><span class="p">(</span><span class="n">const</span> <span class="n">Grid</span><span class="o">&lt;</span><span class="n">char</span><span class="o">&gt;&amp;</span> <span class="n">message</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a grid of letters written in boustrophedon, then returns a single string corresponding to the message in the grid. For example, calling <code class="docutils literal notranslate"><span class="pre">readBoustrophedon</span></code> on the above grid should return</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Those</span> <span class="n">who</span> <span class="n">knew</span> <span class="n">what</span> <span class="n">was</span> <span class="n">going</span> <span class="n">on</span> <span class="n">here</span> <span class="n">must</span> <span class="n">make</span> <span class="n">way</span> <span class="k">for</span> <span class="n">those</span> <span class="n">who</span> <span class="n">know</span> <span class="n">little</span><span class="o">.</span> <span class="n">And</span> <span class="n">less</span> <span class="n">than</span> <span class="n">little</span><span class="o">.</span> <span class="n">And</span> <span class="k">finally</span> <span class="k">as</span> <span class="n">little</span> <span class="k">as</span> <span class="n">nothing</span><span class="o">.</span>
+</pre></div>
+</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">There are many ways to do this. Here’s one.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">string</span><span class="w"> </span><span class="nf">fromBoustrophedon</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">message</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Walk down one row at a time. */</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">row</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">message</span><span class="p">.</span><span class="n">numRows</span><span class="p">();</span><span class="w"> </span><span class="n">row</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* Count upward across the columns, even though only half the time</span>
+<span class="cm">         * we&#39;ll read from left-to-right. For the right-to-left rows, we&#39;ll</span>
+<span class="cm">         * invert the position during our lookup.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">message</span><span class="p">.</span><span class="n">numCols</span><span class="p">();</span><span class="w"> </span><span class="n">col</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="cm">/* Even rows are left-to-right. */</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">row</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">message</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">];</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="cm">/* Odd rows are right-to-left. */</span>
+<span class="w">            </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">message</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">message</span><span class="p">.</span><span class="n">numCols</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">col</span><span class="p">];</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+<section id="containers">
+<h2>Containers<a class="headerlink" href="#containers" title="Link to this heading">¶</a></h2>
+<section id="whos-inside">
+<h3>Who’s Inside?<a class="headerlink" href="#whos-inside" title="Link to this heading">¶</a></h3>
+<p>To enter or leave Green Library, you need to swipe your ID card. Every time an ID card is swiped, it’s added to a <code class="docutils literal notranslate"><span class="pre">Vector&lt;int&gt;</span></code> so that there’s a record of every badge scan. Your task is to write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">peopleInsideGreen</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">idScans</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input that <code class="docutils literal notranslate"><span class="pre">Vector&lt;int&gt;</span></code>, then returns a <code class="docutils literal notranslate"><span class="pre">Set&lt;int&gt;</span></code> of all the IDs of people who are currently inside Green library. For example, suppose you got this sequence of ID scans:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">137</span><span class="p">,</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">161</span><span class="p">,</span> <span class="mi">261</span><span class="p">,</span> <span class="mi">137</span><span class="p">,</span> <span class="mi">106</span>
+</pre></div>
+</div>
+<p>This corresponds to the following:</p>
+<ul class="simple">
+<li><p>The person with ID number 137 swipes their card. Since they weren’t already in the building, it means they now are inside.</p></li>
+<li><p>The person with ID number 106 swipes their card. Since they weren’t already in the building, it means they now are inside.</p></li>
+<li><p>The person with ID number 137 swipes their card. Since they are currently in the building, it means they are now outside.</p></li>
+<li><p>The person with ID number 161 swipes their card. Since they weren’t already in the building, it means they now are inside.</p></li>
+<li><p>The person with ID number 261 swipes their card. Since they weren’t already in the building, it means they now are inside.</p></li>
+<li><p>The person with ID number 137 swipes their card. Since they weren’t already in the building, it means they now are inside.</p></li>
+<li><p>The person with ID number 106 swipes their card. Since they are currently in the building, it means they are now outside.</p></li>
+</ul>
+<p>Overall, this means that the people inside the building would be 137, 161, and 261.</p>
+<p>See if you can do this without using any container except the <code class="docutils literal notranslate"><span class="pre">Set</span></code> type, plus the <code class="docutils literal notranslate"><span class="pre">Vector</span></code> that you were given as input.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">We can keep track of who’s inside the building using a <code class="docutils literal notranslate"><span class="pre">Set&lt;int&gt;</span></code>. Whenever we see the next ID number, it toggles whether they’re in the set or not. (If they were inside, now they’re outside; if they were outside, now they’re inside.) Here’s what this looks like. Isn’t this elegant?</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">peopleInsideGreen</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">idScans</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">insiders</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Loop over all ID scans, toggling whether they&#39;re inside or outside. */</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">id</span><span class="o">:</span><span class="w"> </span><span class="n">idScans</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">insiders</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">id</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">insiders</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">id</span><span class="p">;</span><span class="w"> </span><span class="c1">// Now they&#39;re outside</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">insiders</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">id</span><span class="p">;</span><span class="w"> </span><span class="c1">// Now they&#39;re inside</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">insiders</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="the-new-org-chart">
+<h3>The New Org Chart<a class="headerlink" href="#the-new-org-chart" title="Link to this heading">¶</a></h3>
+<p><em>Topics: Maps, strings</em></p>
+<p>Suppose you have the organizational hierarchies of various companies showing who reports to who. For example, across three different companies, you might have this hierarchy information:</p>
+<p><img alt="3 examples of who reports to who in a company." src="../../_images/5.png" /></p>
+<p>In this diagram, person <em>e</em> reports directly to person <em>b</em>, who reports directly to person <em>a</em>, who is the CEO of her company and therefore doesn’t report to anyone.</p>
+<p>This hierarchical information can be represented as a <code class="docutils literal notranslate"><span class="pre">Map&lt;string,</span> <span class="pre">string&gt;</span></code> associating each person with their direct superior (that is, the person one level above them in the hierarchy). As an exception, the heads of each organization are not present in the <code class="docutils literal notranslate"><span class="pre">Map</span></code>, since they don’t report to anyone. For example, in the above picture, the key <em>h</em> would have value <em>g</em>, the key <em>g</em> would have value <em>d</em>, the key <em>d</em> would have value <em>a</em>, and <em>a</em> would not be a key in the map. Since person <em>u</em> is at the top of her own company, the letter <em>u</em> would not be a key in the map either.</p>
+<p>Given two people, you can tell whether they work for the same company by tracing from those people all the way up to their companies’ CEOs, then seeing whether those CEOs are the same person. For example, in the above diagram, person <em>e</em> and person <em>j</em> work at the same company because both of them report (indirectly) to <em>a</em>. Similarly, person <em>n</em> and person <em>k</em> are in the same organization, as are person <em>c</em> and person <em>d</em>. However, person <em>j</em> and person <em>m</em> are not in the same company, since person <em>j</em>’s company is headed by person <em>a</em> and person <em>m</em>’s company is headed by person <em>k</em>. Along similar lines, person <em>u</em> and person <em>b</em> are in different companies, since person <em>u</em> runs her own company (she doesn’t report to anyone) and person <em>b</em> works at a company headed by person <em>a</em>.</p>
+<p>Your job is to write a method:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">areAtSameCompany</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p1</span><span class="p">,</span>
+<span class="w">                      </span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p2</span><span class="p">,</span>
+<span class="w">                      </span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">bosses</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that accepts as input two people’s names and and a <code class="docutils literal notranslate"><span class="pre">Map</span></code> associating each person with their boss, then reports whether <code class="docutils literal notranslate"><span class="pre">p1</span></code> and <code class="docutils literal notranslate"><span class="pre">p2</span></code> work at the same company. You can assume the following:</p>
+<ul class="simple">
+<li><p>For simplicity, assume that each person has just one boss, that each company has just one CEO, and that no person works at two or more companies.</p></li>
+<li><p>Everyone, except for the heads of companies, appear as keys in the <code class="docutils literal notranslate"><span class="pre">Map</span></code>. Therefore, if someone doesn’t appear in the <code class="docutils literal notranslate"><span class="pre">Map</span></code>, you can assume that they are the head of a company.</p></li>
+<li><p>Names are case-sensitive, so “Katherine” and “KATHERINE” are considered different people.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p1</span></code> and <code class="docutils literal notranslate"><span class="pre">p2</span></code> may be the same person.</p></li>
+<li><p>There can be any number of levels of management between <code class="docutils literal notranslate"><span class="pre">p1</span></code> and her CEO and between <code class="docutils literal notranslate"><span class="pre">p2</span></code> and his CEO, including 0, and that number of levels doesn’t have to be the same.</p></li>
+</ul>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">One possible solution:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Given a person and the map of bosses, returns the CEO of the company</span>
+<span class="cm"> * that the indicated person works for</span>
+<span class="cm"> *</span>
+<span class="cm"> * We&#39;ve taken in person by value rather than by reference here because</span>
+<span class="cm"> * inside the body of the function we need to change its value, but we</span>
+<span class="cm"> * don&#39;t want to change the value back in the caller.</span>
+<span class="cm"> */</span>
+<span class="n">string</span><span class="w"> </span><span class="nf">ceoOf</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">person</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">bosses</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">bosses</span><span class="p">.</span><span class="n">containsKey</span><span class="p">(</span><span class="n">person</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">person</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bosses</span><span class="p">[</span><span class="n">person</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">person</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">areAtSameCompany</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p1</span><span class="p">,</span>
+<span class="w">                      </span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">p2</span><span class="p">,</span>
+<span class="w">                      </span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">bosses</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">ceoOf</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span><span class="w"> </span><span class="n">bosses</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">ceoOf</span><span class="p">(</span><span class="n">p2</span><span class="p">,</span><span class="w"> </span><span class="n">bosses</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="xzibit-words">
+<h3>Xzibit Words<a class="headerlink" href="#xzibit-words" title="Link to this heading">¶</a></h3>
+<p><em>Topics: Strings, lexicons</em></p>
+<p>Some words contain other words as substrings. For example, the word “pirates” contains a huge number of words as substrings:</p>
+<ul class="simple">
+<li><p>a</p></li>
+<li><p>at</p></li>
+<li><p>ate</p></li>
+<li><p>ates</p></li>
+<li><p>es</p></li>
+<li><p>i</p></li>
+<li><p>irate</p></li>
+<li><p>pi</p></li>
+<li><p>pirate</p></li>
+<li><p>pirates</p></li>
+<li><p>rat</p></li>
+<li><p>rate</p></li>
+<li><p>rates</p></li>
+</ul>
+<p>Note that “pirates” is a substring of itself. The word “pat” is not considered a substring of “pirates,” since even though all the letters of “pat” are present in “pirate” in the right order, they aren’t adjacent to one another.</p>
+<p>Write a function</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">string</span> <span class="n">mostXzibitWord</span><span class="p">(</span><span class="n">const</span> <span class="n">Lexicon</span><span class="o">&amp;</span> <span class="n">words</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that accepts as input a Lexicon of all words in English, then returns the word with the largest number of words contained as substrings.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">One possible solution:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">string</span><span class="w"> </span><span class="nf">mostXzibitWord</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Lexicon</span><span class="o">&amp;</span><span class="w"> </span><span class="n">words</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="cm">/* Track the best string we&#39;ve found so far and how many subwords it has. */</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">numSubwords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">word</span><span class="o">:</span><span class="w"> </span><span class="n">words</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* Store all the subwords we find. To avoid double-counting</span>
+<span class="cm">         * words, we&#39;ll hold this in a Lexicon.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="n">Lexicon</span><span class="w"> </span><span class="n">ourSubwords</span><span class="p">;</span>
+
+<span class="w">        </span><span class="cm">/* Consider all possible start positions. */</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">word</span><span class="p">.</span><span class="n">length</span><span class="p">();</span><span class="w"> </span><span class="n">start</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="cm">/* Consider all possible end positions. Note that we include</span>
+<span class="cm">             * the string length itself, since that way we can consider</span>
+<span class="cm">             * substrings that terminate at the end of the string.</span>
+<span class="cm">             */</span>
+<span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start</span><span class="p">;</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">word</span><span class="p">.</span><span class="n">length</span><span class="p">();</span><span class="w"> </span><span class="n">stop</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="cm">/* Note the C++ way of getting a substring. */</span>
+<span class="w">                </span><span class="n">string</span><span class="w"> </span><span class="n">candidate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">word</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">);</span>
+
+<span class="w">                </span><span class="cm">/* As an optimization, if this isn&#39;t a prefix of any legal</span>
+<span class="cm">                 * word, then there&#39;s no point in continuing to extend this</span>
+<span class="cm">                 * substring.</span>
+<span class="cm">                 */</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">words</span><span class="p">.</span><span class="n">containsPrefix</span><span class="p">(</span><span class="n">candidate</span><span class="p">))</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">                </span><span class="cm">/* If this is a word, then record it as a subword. */</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">words</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="n">candidate</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="n">ourSubwords</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">candidate</span><span class="p">);</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="cm">/* Having found all subwords, see if this is better than our</span>
+<span class="cm">         * best guess so far.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSubwords</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">ourSubwords</span><span class="p">.</span><span class="n">size</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">word</span><span class="p">;</span>
+<span class="w">            </span><span class="n">numSubwords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ourSubwords</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">In case you’re curious, the most Xzibit word is “anticholinesterases,” with 38 subwords!</p>
+</div>
+</details></section>
+<section id="the-core">
+<h3>The Core<a class="headerlink" href="#the-core" title="Link to this heading">¶</a></h3>
+<p>Social networks – Facebook, LinkedIn, Instagram, etc. – are popular <em>because</em> they’re popular. The more people that are on a network, the more valuable it is to join that network. This means that, generally speaking, once a network starts growing, it will tend to keep growing. At the same time, this means that if many people start <em>leaving</em> a social network, it will tend to cause other people to leave as well.</p>
+<p>Researchers who study social networks, many of whom work in our CS department, have methods to quantify how resilient social networks are as people begin exiting. One way to do this is to look at the <strong>k-core</strong> of the network. Given a number <em>k</em>, you can find the <em>k-core</em> of a social network as follows:</p>
+<ul class="simple">
+<li><p>If everyone has at least <em>k</em> friends on the network, then the <em>k-core</em> consists of everyone on that network.</p></li>
+<li><p>Otherwise, there’s some person who has fewer than <em>k</em> friends on the network. Delete them from the network and repeat this process.</p></li>
+</ul>
+<p>For example, here’s how we’d find the 3-core of the social network shown to the left. At each step, we pick a person with fewer than three friends in the network (shown in red) and remove them. We stop once everyone has three or more friends, and the remaining people form the 3-core.</p>
+<p><img alt="There are three graphs. The first graph has 6 people, who we will refer to as A-F. Person B is only friends with Person A and Person D and thus is highlighted in red. In the second graph, Person B has been removed. Person A is now highlighted in red as their only remaining friends are Person C and Person D. In the third graph, Person A has been removed so that now only C, D, E and F remain. Person C is friends with all three remaining people. Person D is friends with all 3 remaining people. Person E is friends with all 3 remaining people. Person F is friends with all three remaining people. Since they are all friends, no one is highlighted in red and thus noone is removed." src="../../_images/kgroup.jpg" /></p>
+<p>Intuitively, the <em>k-core</em> of a social network represents the people who are unlikely to leave – they’re tightly integrated into the network, and the people they’re friends with are tightly integrated as well.</p>
+<p>Your task is to write a function:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">kCoreOf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a social network (described below) and a number <em>k</em>, then returns the set of people in the <em>k-core</em> of that network.</p>
+<p>Here, the social network is represented as a <code class="docutils literal notranslate"><span class="pre">Map&lt;string,</span> <span class="pre">Set&lt;string&gt;&gt;</span></code>, where each key represents a person and each value is the set of people they’re friends with. You can assume that each person listed as a friend actually exists in the network and that friendship is symmetric: if <em>A</em> is friends with <em>B</em>, then <em>B</em> is also friends with <em>A</em>.</p>
+<p>In case it helps, you can assume no person’s name is the empty string.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">Here’s one possible way to solve this problem. This one works by repeatedly finding a person without at least k friends left in the core, then removing them from the core.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">allPeopleIn</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">network</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">person</span><span class="o">:</span><span class="w"> </span><span class="n">network</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">person</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">kCoreOf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Initially, assume everyone is in the core. */</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">core</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">allPeopleIn</span><span class="p">(</span><span class="n">network</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">string</span><span class="w"> </span><span class="n">lonelyPerson</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">isLonelyPerson</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">person</span><span class="o">:</span><span class="w"> </span><span class="n">core</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="cm">/* See how many people they&#39;re friends with who haven&#39;t yet been</span>
+<span class="cm">             * filtered out.</span>
+<span class="cm">             */</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">network</span><span class="p">[</span><span class="n">person</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">core</span><span class="p">).</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">lonelyPerson</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">person</span><span class="p">;</span>
+<span class="w">                </span><span class="n">isLonelyPerson</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isLonelyPerson</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="n">core</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">lonelyPerson</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">core</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">Here’s another solution. This one follows the same basic principle as the previous solution, except that instead of maintaining a set of people in the core and leaving the social network unchanged, this one actively modifies the social network whenever someone is removed.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">kCoreOf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">auto</span><span class="w"> </span><span class="n">coreNet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">network</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">string</span><span class="w"> </span><span class="n">lonelyPerson</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="n">isLonelyPerson</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">person</span><span class="o">:</span><span class="w"> </span><span class="n">coreNet</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="cm">/* See how many people they&#39;re friends with who haven&#39;t yet been</span>
+<span class="cm">             * filtered out.</span>
+<span class="cm">             */</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">coreNet</span><span class="p">[</span><span class="n">person</span><span class="p">].</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">lonelyPerson</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">person</span><span class="p">;</span>
+<span class="w">                </span><span class="n">isLonelyPerson</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">                </span><span class="k">break</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isLonelyPerson</span><span class="p">)</span><span class="w"> </span><span class="k">break</span><span class="p">;</span>
+
+<span class="w">        </span><span class="cm">/* Remove this person from the network, and make sure the remaining</span>
+<span class="cm">         * people don&#39;t consider them a friend.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">acquaintance</span><span class="o">:</span><span class="w"> </span><span class="n">coreNet</span><span class="p">[</span><span class="n">lonelyPerson</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">coreNet</span><span class="p">[</span><span class="n">acquaintance</span><span class="p">]</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">lonelyPerson</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">coreNet</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">lonelyPerson</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Build a set of all the remaining people. */</span>
+<span class="w">    </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">member</span><span class="o">:</span><span class="w"> </span><span class="n">coreNet</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">member</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">Here’s another route that works recursively. It’s essentially the first solution, but written recursively rather than iteratively.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">kCoreOfRec</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">,</span>
+<span class="w">                       </span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">remainingFolks</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">lonelyPerson</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">bool</span><span class="w"> </span><span class="n">isLonelyPerson</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">person</span><span class="o">:</span><span class="w"> </span><span class="n">remainingFolks</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* See how many people they&#39;re friends with who haven&#39;t yet been</span>
+<span class="cm">         * filtered out.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">network</span><span class="p">[</span><span class="n">person</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">remainingFolks</span><span class="p">).</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">lonelyPerson</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">person</span><span class="p">;</span>
+<span class="w">            </span><span class="n">isLonelyPerson</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">            </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Base case: If everyone has at least k friends, the remaining people form</span>
+<span class="cm">     * the core.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">isLonelyPerson</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">remainingFolks</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Recursive case: Otherwise, the lonely person isn&#39;t in the core, and we</span>
+<span class="cm">     * want the core of what&#39;s left if we remove them.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">kCoreOfRec</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">remainingFolks</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">lonelyPerson</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">kCoreOf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">everyone</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">person</span><span class="o">:</span><span class="w"> </span><span class="n">network</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">everyone</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">person</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">kCoreOfRec</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">everyone</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">This next solution uses a different perspective on the problem. For starters, note that no one in the network with fewer than k friends can possibly be in the k-core. So we could begin by making a candi-date k-core in the following way: build up a smaller network of people who purely have k or more friends in the original network. When doing this, we might find that some of those people no longer have k or more friends, since some of their friends might not have been copied into the network. We therefore repeat this process – copying over the people in the new network with k or more friends – until we converge on the k-core. We could do this either iteratively or recursively, and just for fun I’ve written it recursively here:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">kCoreOf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">network</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Build up a new social network consisting of everyone with k or more</span>
+<span class="cm">     * friends. For simplicity later on, we&#39;re going to make both a new Map</span>
+<span class="cm">     * representing the network and a new Set of the people in that network.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="n">Map</span><span class="o">&lt;</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">coreNetwork</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Set</span><span class="o">&lt;</span><span class="n">string</span><span class="o">&gt;</span><span class="w"> </span><span class="n">core</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Copy over the people with at least k friends. */</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">person</span><span class="o">:</span><span class="w"> </span><span class="n">network</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">network</span><span class="p">[</span><span class="n">person</span><span class="p">].</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">coreNetwork</span><span class="p">[</span><span class="n">person</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">network</span><span class="p">[</span><span class="n">person</span><span class="p">];</span>
+<span class="w">            </span><span class="n">core</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">person</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* If we copied everyone over, great! The set of everyone in the network is</span>
+<span class="cm">     * the k-core.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">core</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">network</span><span class="p">.</span><span class="n">size</span><span class="p">())</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">core</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Otherwise, someone didn&#39;t make it. We need to therefore take the new</span>
+<span class="cm">     * social network and filter down the friend lists purely to the people in</span>
+<span class="cm">     * the new network.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">person</span><span class="o">:</span><span class="w"> </span><span class="n">coreNetwork</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">       </span><span class="n">coreNetwork</span><span class="p">[</span><span class="n">person</span><span class="p">]</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="n">core</span><span class="p">;</span><span class="w"> </span><span class="c1">// Intersect friends with people in the core</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">kCoreOf</span><span class="p">(</span><span class="n">coreNetwork</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+<section id="recursion">
+<h2>Recursion<a class="headerlink" href="#recursion" title="Link to this heading">¶</a></h2>
+<section id="recursive-string-tracing">
+<h3>Recursive String Tracing<a class="headerlink" href="#recursive-string-tracing" title="Link to this heading">¶</a></h3>
+<p>Below is a recursive function that has been given a misleading name.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">string</span><span class="w"> </span><span class="nf">hoy</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">lawe</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">lawe</span><span class="p">.</span><span class="n">length</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">lawe</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">string</span><span class="w"> </span><span class="n">hawt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hoy</span><span class="p">(</span><span class="n">lawe</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">lawe</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">));</span>
+<span class="w">        </span><span class="n">string</span><span class="w"> </span><span class="n">may</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">hoy</span><span class="p">(</span><span class="n">lawe</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">lawe</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="p">));</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">may</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hawt</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Your task is to figure out what this recursive function does.</p>
+<ol class="arabic simple">
+<li><p>Trace through the calls <code class="docutils literal notranslate"><span class="pre">hoy(&quot;res&quot;)</span></code> and <code class="docutils literal notranslate"><span class="pre">hoy(&quot;sawt&quot;)</span></code>. What do these function calls return? We recommend drawing things out using the notecard analogy we often use in lecture.</p></li>
+</ol>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">hoy(&quot;res&quot;)</span></code> returns <code class="docutils literal notranslate"><span class="pre">&quot;ser&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">how(&quot;sawt&quot;)</span></code> returns <code class="docutils literal notranslate"><span class="pre">&quot;twas&quot;</span></code>.</p>
+</div>
+</details><ol class="arabic simple" start="2">
+<li><p>What does <code class="docutils literal notranslate"><span class="pre">hoy</span></code> do?</p></li>
+</ol>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">The <code class="docutils literal notranslate"><span class="pre">hoy</span></code> function returns the reverse of the input string. It splits the string in half, swaps the order of the two halves, then reverses each of the halves recursively.</p>
+</div>
+</details></section>
+<section id="eating-a-chocolate-bar">
+<h3>Eating a Chocolate Bar<a class="headerlink" href="#eating-a-chocolate-bar" title="Link to this heading">¶</a></h3>
+<p>You have a chocolate bar that’s subdivided into a row of <span class="math notranslate nohighlight">\(n\)</span> squares. You want to eat the candy bar from left to right. To do so, you’ll break off a piece, eat it, then break off another, eat that one, etc. This question is all about using recursion to see different ways of doing this and what that looks like from a C++ perspective.</p>
+<p>To start things off, let’s begin by enforcing a rule. You’ll eat the chocolate bar from left to right, and at each point you can either break off a single square or two squares. For example, suppose you have a chocolate bar with five pieces. You could break off a piece of size two, then a piece of size one, and then eat the remaining two squares. Or you could eat one square, then two squares, then one square, and then one more square. There are eight total ways you could eat this chocolate bar, which I’ll denote by listing out the sizes of the squares you’ll eat:</p>
+<ul class="simple">
+<li><p>1, 1, 1, 1, 1</p></li>
+<li><p>1, 1, 1, 2</p></li>
+<li><p>1, 1, 2, 1</p></li>
+<li><p>1, 2, 1, 1</p></li>
+<li><p>1, 2, 2</p></li>
+<li><p>2, 1, 1, 1</p></li>
+<li><p>2, 1, 2</p></li>
+<li><p>2, 2, 1</p></li>
+</ul>
+<p>Notice that order matters here. As a first step, let’s write some code to count how many ways you can eat a chocolate bar according to these rules.</p>
+<ol class="arabic">
+<li><p>Write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">numWaysToEat</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that returns the number of ways to eat a chocolate bar consisting of a row of <code class="docutils literal notranslate"><span class="pre">numSquares</span></code> squares, subject to the restriction that you can only eat one or two squares at a time. If the number of squares is negative, call <code class="docutils literal notranslate"><span class="pre">error</span></code> to report an error. (You <em>can</em> eat a chocolate bar with no squares, and there’s only one way to do it, which is to not eat anything at all.)</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">As with all good recursive solutions, let’s start by thinking about simple cases. If there are no squares in the chocolate bar, then there’s one way to eat it (do nothing). If there is one square, then the only option is to eat it.</p>
+<p class="sd-card-text">If you have two or more squares, you start having decisions to make. You could either eat one square first, or you could eat two squares first. Every way of eating the chocolate bar must start with one of those two options, and so if we count the number of ways to do the first option, and add in the number of ways to do the second option, we’ll have tried all possible options.</p>
+<p class="sd-card-text">That gives rise to the following solution:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">numWaysToEat</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Can&#39;t have a negative number of squares. */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Negative chocolate? YOU MONSTER!&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* If we have zero or one square, there&#39;s exactly one way to eat</span>
+<span class="cm">    * the chocolate.</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Otherwise, we either eat one square, leaving numSquares - 1 more</span>
+<span class="cm">    * to eat, or we eat two squares, leaving numSquares - 2 to eat.</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">numWaysToEat</span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">            </span><span class="n">numWaysToEat</span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">Some of you might recognize this solution as mirroring the Fibonacci sequence from the textbook. That’s not a coincidence! Surprisingly, the number of ways to eat the</p>
+<p class="sd-card-text">chocolate bar is , where is the th Fibonacci number.</p>
+</div>
+</details></li>
+</ol>
+<p>You’ve just found a way to count how many ways there are to eat the chocolate bar. But what if you wanted to list off all those ways? That involves similar logic, but it requires a bit more bookkeeping.</p>
+<ol class="arabic" start="2">
+<li><p>Write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">printWaysToEat</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes in the number of squares in the chocolate bar, then prints out all the ways to eat the chocolate bar. Each way of eating the chocolate bar can be described as a <code class="docutils literal notranslate"><span class="pre">Vector&lt;int&gt;</span></code> saying how big a bite you’re taking at each step. So, for example, <code class="docutils literal notranslate"><span class="pre">{3,1,4,1}</span></code> would be a way of describing eating a chocolate bar with nine squares by first eating three squares, then one square, then four squares, then one square. To print out one way of eating the chocolate bar, simply print out the <code class="docutils literal notranslate"><span class="pre">Vector&lt;int&gt;</span></code> it corresponds to.</p>
+<p>As before, call <code class="docutils literal notranslate"><span class="pre">error</span></code> to report errors on invalid inputs.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">In one sense, this function is inspired by the same logic as above. We know there’s one way to eat zero squares or one square. And for any other size, we either eat one square first or eat two squares first. But unlike before, where we just needed to know how many squares remain to be eaten, in this case we have to track what sequence of bites we’ve made so far so that we can remember how we got to each spot in the recursion tree. That will require us to have an extra parameter in our function, which means that we’re going to need to make <code class="docutils literal notranslate"><span class="pre">printWaysToEat</span></code> a wrapper. Here’s what that looks like:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Print all ways to eat numSquares more squares, given that we&#39;ve</span>
+<span class="cm">* already taken the bites given in soFar.</span>
+<span class="cm">*/</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">printWaysToEatRec</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">soFar</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base Case: If there are no squares left, the only option is to use</span>
+<span class="cm">    * the bites we&#39;ve taken already in soFar.</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Base Case: If there is one square lfet, the only option is to eat</span>
+<span class="cm">    * that square.</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Otherwise, we take take bites of size one or of size two. */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printWaysToEatRec</span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">        </span><span class="n">printWaysToEatRec</span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">printWaysToEat</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">error</span><span class="p">(</span><span class="s">&quot;You owe me some chocolate!&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* We begin without having made any bites. */</span>
+<span class="w">    </span><span class="n">printWaysToEatRec</span><span class="p">(</span><span class="n">numSquares</span><span class="p">,</span><span class="w"> </span><span class="p">{});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></li>
+</ol>
+<p>We can now print out all the ways to eat the chocolate bar. Fantastic! But what if we wanted to do something with those ways to eat the chocolate bar, rather than just printing them? In that case, it would be handy to return all of them.</p>
+<ol class="arabic" start="3">
+<li><p>Write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Set</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">waysToEat</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes in the number of squares in the chocolate bar, then returns a <code class="docutils literal notranslate"><span class="pre">Set</span></code> containing all the ways to eat a chocolate bar of that size. Each element of the <code class="docutils literal notranslate"><span class="pre">Set</span></code> should be a <code class="docutils literal notranslate"><span class="pre">Vector&lt;int&gt;</span></code> with the series of bites in it.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">As before, conceptually, we’re following the same basic idea: we can handle zero and one square as base cases, and the rest of the logic then focuses on either taking a bite of size one or a bite of size two.</p>
+<p class="sd-card-text">We already have logic in <code class="docutils literal notranslate"><span class="pre">printWaysToEat</span></code> that will <em>print</em> all the different ways to eat things. Now, we need to change things so that instead of just printing them out, we have to store them in a <code class="docutils literal notranslate"><span class="pre">Set</span></code> and return them. To do this, we’ll need to make a few adjustments. First, we need to add some <code class="docutils literal notranslate"><span class="pre">return</span></code> statements to our code to produce the values we need. Second, we’ll need to capture the return values from the recursive calls we make and aggregate things together.</p>
+<p class="sd-card-text">Here’s what this looks like:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Returns all ways to eat numSquares more squares, given that we&#39;ve</span>
+<span class="cm">* already taken the bites given in soFar.</span>
+<span class="cm">*/</span>
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">waysToEatRec</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">soFar</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base Case: If there are no squares left, the only option is to use</span>
+<span class="cm">    * the bites we&#39;ve taken already in soFar.</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* There is one option here, namely, the set of bites we came up</span>
+<span class="cm">        * with in soFar. So if we return all the ways to eat the</span>
+<span class="cm">        * chocolate bar given that we&#39;ve committed to what&#39;s in soFar,</span>
+<span class="cm">        * we should return a set with just one item, and that one item</span>
+<span class="cm">        * should be soFar.</span>
+<span class="cm">        */</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Base Case: If there is one square lfet, the only option is to eat</span>
+<span class="cm">    * that square.</span>
+<span class="cm">    */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* Take what we have, and extend it by eating one more bite. */</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Otherwise, we take take bites of size one or of size two. */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* Each individual recursive call returns a set containing the</span>
+<span class="cm">        * possibilities that arise from exploring that choice. We want</span>
+<span class="cm">        * to combine these together.</span>
+<span class="cm">        */</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">waysToEatRec</span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">            </span><span class="n">waysToEatRec</span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">Set</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">waysToEat</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numSquares</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numSquares</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">error</span><span class="p">(</span><span class="s">&quot;You owe me some chocolate!&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* We begin without having made any bites. */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">waysToEatRec</span><span class="p">(</span><span class="n">numSquares</span><span class="p">,</span><span class="w"> </span><span class="p">{});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></li>
+</ol>
+</section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../assign-2.1/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>下一页</span>
+                </div>
+                <div class="title">Assignment 2. Fun with Collections</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>上一页</span>
+                </div>
+                
+                <div class="title">Topic 2. Containers</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, <a href='https://www.stickmind.com/' target="_blank">StickMind</a>
+            </div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            本页目录
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Section 2. Containers and Recursion</a><ul>
+<li><a class="reference internal" href="#container-types">Container Types</a><ul>
+<li><a class="reference internal" href="#iteration-station">Iteration Station</a></li>
+<li><a class="reference internal" href="#debugging-deduplicating">Debugging Deduplicating</a></li>
+<li><a class="reference internal" href="#boustrophedon-writing">Boustrophedon Writing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#containers">Containers</a><ul>
+<li><a class="reference internal" href="#whos-inside">Who’s Inside?</a></li>
+<li><a class="reference internal" href="#the-new-org-chart">The New Org Chart</a></li>
+<li><a class="reference internal" href="#xzibit-words">Xzibit Words</a></li>
+<li><a class="reference internal" href="#the-core">The Core</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#recursion">Recursion</a><ul>
+<li><a class="reference internal" href="#recursive-string-tracing">Recursive String Tracing</a></li>
+<li><a class="reference internal" href="#eating-a-chocolate-bar">Eating a Chocolate Bar</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=7d86a446"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/tabs.js?v=3ee01567"></script>
+    <script>let toggleHintShow = '';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    </body>
+</html>

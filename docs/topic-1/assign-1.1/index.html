@@ -1,0 +1,670 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Topic 2. Containers" href="../../topic-2/index.html" /><link rel="prev" title="Section 1.1 C++ and Recursion" href="../section-1.1/index.html" />
+
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+        <title>Assignment 1. Welcome to C++ - CS101B Programming Abstractions</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pied-piper-admonition.css?v=e32e2275" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">CS101B Programming Abstractions</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">CS101B Programming Abstractions</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../resources/index.html">Resources</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Resources</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Workflow/index.html">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/PythonToCpp/index.html">Python to C++ Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Debugging/index.html">Debugging Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Testing/index.html">Testing Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-0/index.html">Introduction</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Introduction</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-0/assign-0/index.html">Assignment 0. Welcome to CS101B!</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Topic 1. Getting Started</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Topic 1. Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../section-1.1/index.html">Section 1.1 C++ and Recursion</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Assignment 1. Welcome to C++</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-2/index.html">Topic 2. Containers</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Topic 2. Containers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-2/section-2.1/index.html">Section 2. Containers and Recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-2/assign-2.1/index.html">Assignment 2. Fun with Collections</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-3/index.html">Topic 3. Recursion</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Topic 3. Recursion</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/section-3.1/index.html">Section 3.1 Recursion and Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/assign-3.1/index.html">Assignment 3.1 A Visit to Recursia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/section-3.2/index.html">Section 3.2 Recursion and Backtracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/assign-3.2/index.html">Assignment 3.2 Recursion to the Rescue!</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-4/index.html">Topic 4. Algorithm and Abstraction</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Topic 4. Algorithm and Abstraction</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/section-4.1/index.html">Section 4.1 Big-O, Searching and Sorting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/section-4.2/index.html">Section 4.2 Class Design and Dynamic Memory Allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/assign-4.1/index.html">Assignment 4.1 Bag’O Big-O</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../topic-5/index.html">Topic 5. Data Structures</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>返回顶部</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section class="tex2jax_ignore mathjax_ignore" id="assignment-1-welcome-to-c">
+<h1>Assignment 1. Welcome to C++<a class="headerlink" href="#assignment-1-welcome-to-c" title="Link to this heading">¶</a></h1>
+<p>Here it is – the first programming assignment of the course! This assignment is designed <strong>to get you comfortable designing and building software in C++</strong>. It consists of three problems that collectively play around with <strong>control structures, string processing, recursion, and problem decomposition</strong> in C++. By the time you’ve completed this assignment, you’ll be a lot more comfortable working in C++ and will be ready to start building larger projects.</p>
+<p>This assignment consists of three parts, of which two require writing code. This will be a lot to do if you start this assignment the night before it’s due, but if you <strong>make slow and steady progress on this assignment each day</strong> you should be in great shape. Here’s our recommended timetable:</p>
+<ul class="simple">
+<li><p>Complete <strong>Debugger Warmups</strong> the day this assignment is released. You don’t need to write any code for it; it’s just about working the debugger, something you practiced in Assignment Zero.</p></li>
+<li><p>Complete <strong>Fire</strong> within three days of this assignment going out.</p></li>
+<li><p>Complete <strong>Only Connect</strong> within seven days of this assignment being released.</p></li>
+</ul>
+<p>The last part of this assignment will involve writing recursive code, which can take some time to adjust to. That’s perfectly normal! We recommend leaving some extra buffer time there in case you need to ponder and tinker with that one.</p>
+<section id="starter-files">
+<h2>Starter Files<a class="headerlink" href="#starter-files" title="Link to this heading">¶</a></h2>
+<p>We provide a ZIP of the starter project. Download the zip, extract the files, and open the project in VS Code.</p>
+<p>📦 <a class="reference download internal" download="" href="../../_downloads/12b832401e8eb0d15c60e0c62b6c0458/Assignment-1.1.zip"><span class="xref download myst">Starter code</span></a></p>
+</section>
+<section id="part-one-debugger-warmups">
+<h2>Part One: Debugger Warmups<a class="headerlink" href="#part-one-debugger-warmups" title="Link to this heading">¶</a></h2>
+<p>Before diving into the rest of this assignment, we’d like you to work through two small debugger exercises to give yourself more familiarity with <strong>how to set breakpoints, read the value of local variables, and walk up and down the call stack</strong>.</p>
+<section id="milestone-one-call-stack-storytelling">
+<h3>Milestone One: Call Stack Storytelling<a class="headerlink" href="#milestone-one-call-stack-storytelling" title="Link to this heading">¶</a></h3>
+<p>The starter files for Assignment 1 include a piece of code that will generate a random story in which you’re the protagonist. By “random story,” we mean “no one else in the course is going to have the same story as you!” However, that story will live purely inside of a collection of local variables inside of a program, and the only way to read it will be to use the debugger.</p>
+<p>Open the file <code class="docutils literal notranslate"><span class="pre">DebuggerWarmups.cpp</span></code>. At the top of the file, you’ll see the following code:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* TODO: Fill this in with your name before reading the story. Otherwise</span>
+<span class="cm"> * you&#39;ll get the wrong story!</span>
+<span class="cm"> */</span>
+<span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="n">MyName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;(Your Name Here)&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Edit the string <code class="docutils literal notranslate"><span class="pre">MyName</span></code> so that it holds your full name (feel free to use a nickname if you’d like). Right below that constant, you’ll see the following:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">theEnd</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;THE END!&quot;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Set a breakpoint here. */</span>
+<span class="w">    </span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="n">text</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Set a breakpoint at the indicated position. Then, run the provided program with the debugger enabled (you saw how to do this in Assignment 0). Choose “Storytelling” from the top-level menu in the running program and click the button at the bottom of the window. This will call a series of functions that eventually will terminate at the function <code class="docutils literal notranslate"><span class="pre">theEnd</span></code> on the line where you set the breakpoint. The program should then pause at the place where the breakpoint occurs.</p>
+<p>You are now ready to start reading the story we generated for you! You can see the very last part of the story, <code class="docutils literal notranslate"><span class="pre">&quot;THE</span> <span class="pre">END!&quot;</span></code>, as the value of the local variable <code class="docutils literal notranslate"><span class="pre">text</span></code>. To see the earlier parts of the story, you’ll need to walk down the call stack and look at the local variables window. Each function that was called will put a part of the story into a local variable named <code class="docutils literal notranslate"><span class="pre">text</span></code> (remember that different functions can have variables with the same name, and those variables are all independent of one another). As you walk down the call stack, you’ll notice that you’ll be seeing the story told in reverse order, with the later parts of the story higher in the call stack and the earlier parts of the story lower in the call stack. The story itself is actually told in the correct order, but since more-recently-called functions show up higher in the call stack than less-recently-called functions, you’ll see the end of the story at the top of the call stack and the start of the story toward the bottom.</p>
+<p>Walk down the call stack until you find the function <code class="docutils literal notranslate"><span class="pre">tellStory</span></code>, then walk upwards from there to read your story. To show your section leader that you’ve read the story, you will write it down for them in the file comments at the top of <code class="docutils literal notranslate"><span class="pre">DebuggerWarmups.cpp</span></code>. To do so, scroll all the way up to the top of <code class="docutils literal notranslate"><span class="pre">DebuggerWarmups.cpp</span></code>. You will see a comment there, which may be collapsed by default. If it’s collapsed, go to Line 1 of the program and click the small triangle next to it to expand it out. Then, write the story you found as your answer to Q1. To recap, here’s what you need to do:</p>
+<div class="tip admonition">
+<p class="admonition-title">Milestone One Requirements</p>
+<ol class="arabic simple">
+<li><p>Edit the constant <code class="docutils literal notranslate"><span class="pre">MyName</span></code> at the top of <code class="docutils literal notranslate"><span class="pre">DebuggerWarmups.cpp</span></code> with a string containing your name. <strong><em>Don’t skip this step!</em></strong> If you forget to do this, you’ll get the wrong story!</p></li>
+<li><p>Set a breakpoint at the indicated line of the function <code class="docutils literal notranslate"><span class="pre">theEnd</span></code>.</p></li>
+<li><p>Run the provided starter files in debug mode. Choose the “Storytelling” option from the top-level menu in the program and click the “Go!” button. This will trigger the debugger at the breakpoint you set.</p></li>
+<li><p>Walk down the call stack until you find the stack frame for <code class="docutils literal notranslate"><span class="pre">tellStory</span></code>.</p></li>
+<li><p>Walk up the call stack, reading the values of the variables named <code class="docutils literal notranslate"><span class="pre">text</span></code>, to see your story.</p></li>
+<li><p>Write down your story as the answer to <strong>Q1</strong> in the file comments at the top of <code class="docutils literal notranslate"><span class="pre">DebuggerWarmups.cpp</span></code>.</p></li>
+</ol>
+</div>
+<p>Some notes on this problem:</p>
+<ul class="simple">
+<li><p>Once you’ve completed this exercise, <strong><em>do not change the value of <code class="docutils literal notranslate"><span class="pre">MyName</span></code></em></strong>. We use your name to determine which story to tell, and if you change it, the story you’ll have written down will not match the story the program generates!</p></li>
+<li><p>If the debugger doesn’t engage when you click the “Go!” button, it could mean that you forgot to set the breakpoint in the right place. It could also mean that you ran the program from VS Code with the big green “Run” button, which doesn’t turn on the debugger, rather than running the program with the debugger engaged. Fortunately, this is very easy to address! Check the instructions from Assignment 0 to see how to set a breakpoint or run the program with the debugger on.</p></li>
+<li><p>Aside from changing <code class="docutils literal notranslate"><span class="pre">MyName</span></code> and writing your answer in the file comments, you should not modify any of the code in <code class="docutils literal notranslate"><span class="pre">DebuggerWarmups.cpp</span></code>.</p></li>
+<li><p>We apologize if you find your story underwhelming. :-)</p></li>
+</ul>
+</section>
+<section id="milestone-two-stack-overflows">
+<h3>Milestone Two: Stack Overflows<a class="headerlink" href="#milestone-two-stack-overflows" title="Link to this heading">¶</a></h3>
+<p>Whenever a program calls a function, the computer sets aside memory called a <strong><em>stack frame</em></strong> for that function call in a region called the <strong><em>call stack</em></strong>. Whenever a function is called, it creates a new stack frame, and whenever a function returns, the space for that stack frame is recycled.</p>
+<p>As you saw in lecture on Friday, whenever a recursive function makes a recursive call, it creates a new stack frame, which in turn might make more stack frames, which in turn might make even more stack frames, etc. For example, when we computed <code class="docutils literal notranslate"><span class="pre">factorial(5)</span></code>, we ended up creating a net total of six stack frames: one for each of <code class="docutils literal notranslate"><span class="pre">factorial(5)</span></code>, <code class="docutils literal notranslate"><span class="pre">factorial(4)</span></code>, <code class="docutils literal notranslate"><span class="pre">factorial(3)</span></code>, <code class="docutils literal notranslate"><span class="pre">factorial(2)</span></code>, <code class="docutils literal notranslate"><span class="pre">factorial(1)</span></code>, and <code class="docutils literal notranslate"><span class="pre">factorial(0)</span></code>. They were automatically cleaned up as soon as those functions returned.</p>
+<p>But what would happen if you called <code class="docutils literal notranslate"><span class="pre">factorial</span></code> on a very large number, say, <code class="docutils literal notranslate"><span class="pre">factorial(7897987)</span></code>? This would create a lot of stack frames; specifically, it will make 7,897,988 of them (one for <code class="docutils literal notranslate"><span class="pre">factorial(7987987)</span></code>, one for <code class="docutils literal notranslate"><span class="pre">factorial(7987986)</span></code>, …, and one for <code class="docutils literal notranslate"><span class="pre">factorial(0)</span></code>). This is such a large number of stack frames that the call stack might not have space to store them (typically, the call stack can hold only a thousand or so stack frames at once). When too many stack frames need to be created at the same time, the result is a <strong><em>stack overflow</em></strong> and the program will crash.</p>
+<p>In the case of <code class="docutils literal notranslate"><span class="pre">factorial(7987987)</span></code>, a stack overflow occurs because we need a large but finite number of stack frames. In other cases, stack overflows arise due to programming errors. For example, consider the following (buggy!) implementation of the <code class="docutils literal notranslate"><span class="pre">sumOfDigitsOf</span></code> function from Lecture 2:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* This code is incorrect! Do not use it as a reference. */</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">sumOfDigitsOf</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">sumOfDigitsOf</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Let’s imagine that you try calling <code class="docutils literal notranslate"><span class="pre">sumOfDigitsOf(137)</span></code>. The initial stack frame looks like this:</p>
+<p><img alt="sumOfDigits1.png" src="../../_images/sumOfDigits1.png" /></p>
+<p>This stack frame calls <code class="docutils literal notranslate"><span class="pre">sumOfDigitsOf(n</span> <span class="pre">/</span> <span class="pre">10)</span></code>. The value of <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">/</span> <span class="pre">10</span></code> is <code class="docutils literal notranslate"><span class="pre">13</span></code> because of how C++ divides integers. Therefore, we fire off a call to <code class="docutils literal notranslate"><span class="pre">sumOfDigitsOf(13)</span></code>, as shown here:</p>
+<p><img alt="sumOfDigits2.png" src="../../_images/sumOfDigits2.png" /></p>
+<p>This now calls <code class="docutils literal notranslate"><span class="pre">sumOfDigitsOf(n</span> <span class="pre">/</span> <span class="pre">10)</span></code>, which is call to <code class="docutils literal notranslate"><span class="pre">sumOfDigitsOf(1)</span></code>:</p>
+<p><img alt="sumOfDigits3.png" src="../../_images/sumOfDigits3.png" /></p>
+<p>This now calls <code class="docutils literal notranslate"><span class="pre">sumOfDigitsOfn</span> <span class="pre">/</span> <span class="pre">10)</span></code>, which ends up calling <code class="docutils literal notranslate"><span class="pre">sumOfDigitsOf(0)</span></code>:</p>
+<p><img alt="sumOfDigits4.png" src="../../_images/sumOfDigits4.png" /></p>
+<p>This now calls <code class="docutils literal notranslate"><span class="pre">sumOfDigitsOf(n</span> <span class="pre">/</span> <span class="pre">10)</span></code>, which ends up calling <code class="docutils literal notranslate"><span class="pre">sumOfDigitsOf(0)</span></code> again, as shown here:</p>
+<p><img alt="sumOfDigits5.png" src="../../_images/sumOfDigits5.png" /></p>
+<p>This call makes yet another call to <code class="docutils literal notranslate"><span class="pre">sumOfDigitsOf(0)</span></code> for the same reason:</p>
+<p><img alt="sumOfDigits6.png" src="../../_images/sumOfDigits6.png" /></p>
+<p>And <em>that</em> call makes yet <em>another</em> call to <code class="docutils literal notranslate"><span class="pre">sumOfDigitsOf(0)</span></code>:</p>
+<p><img alt="sumOfDigits7.png" src="../../_images/sumOfDigits7.png" /></p>
+<p>As you can see, this recursion is off to the races. It’s like an infinite loop, but with function calls. This code will trigger a stack overflow because at some point it will exhaust the memory in the call stack.</p>
+<p>Another place you’ll see stack overflows is when you have a recursive function that, for some reason, misses or skips over its base case. For example, let’s suppose you want to write a function <code class="docutils literal notranslate"><span class="pre">isEven</span></code> that takes as input a number <em>n</em> and returns whether it’s an even number. You note that 0 is even (trust us, it is; take Stanford CS103 for details!) and, more generally, a number <em>n</em> is even precisely if <em>n</em> – 2 is even. For example, 2 is even because 2 – 2 = 0 is even, 4 is even because 4 – 2 = 2 is even, and 6 is even because 6 – 2 = 4 is even, etc. Based on this (correct) insight, you decide to write this (incorrect) recursive function:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* This code is incorrect! Do not use it as a reference. */</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">isEven</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">isEven</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now, what happens if you call <code class="docutils literal notranslate"><span class="pre">isEven(5)</span></code>? This initially looks like this:</p>
+<p><img alt="is-even-1.png" src="../../_images/is-even-1.png" /></p>
+<p>This call will call <code class="docutils literal notranslate"><span class="pre">isEven(3)</span></code>, as shown here:</p>
+<p><img alt="is-even-2.png" src="../../_images/is-even-2.png" /></p>
+<p>And that call then calls <code class="docutils literal notranslate"><span class="pre">isEven(1)</span></code>:</p>
+<p><img alt="is-even-3.png" src="../../_images/is-even-3.png" /></p>
+<p>And here’s where things go wrong. This function now calls <code class="docutils literal notranslate"><span class="pre">isEven(-1)</span></code>, skipping over the base case:</p>
+<p><img alt="is-even-4.png" src="../../_images/is-even-4.png" /></p>
+<p>This call then calls <code class="docutils literal notranslate"><span class="pre">isEven(-3)</span></code>:</p>
+<p><img alt="is-even-5.png" src="../../_images/is-even-5.png" /></p>
+<p>And we’re off to the Stack Overflow Races – <em>n</em> will keep getting more negative until we’re out of space.</p>
+<section id="step-one-see-a-stack-overflow">
+<h4>Step One: See a Stack Overflow<a class="headerlink" href="#step-one-see-a-stack-overflow" title="Link to this heading">¶</a></h4>
+<p>There are two different ways that you can run a C++ program through VS Code. The first is to run the program normally, which you can do by clicking the right-click menu “Run in Terminal” option. The second is to run the program with the debugger engaged, which you saw how to do in Assignment 0. The behavior of a program that triggers a stack overflow is different based on whether it’s running with the debugger on or off.</p>
+<p>To see this, run the provided starter files without the debugger engaged (that is, with the “Run in Terminal” option). Click the “Stack Overflows” option. You’ll see a message and a button at the bottom of the window that will trigger a stack overflow. Click that button and watch what happens. This is what it looks like when a C++ program crashes. What you see will depend on what operating system you’re using. <strong><em>Write down a description of what you saw happen as Q2 in the file comments of <code class="docutils literal notranslate"><span class="pre">DebuggerWarmups</span></code>.</em></strong> Now, if you see similar behavior in the future, you’ll be able to say “oh yeah, that probably means my program crashed.”</p>
+<p>Next, run the program again, but this time with the debugger turned on. Follow the same steps as above to trigger the stack overflow. This time, you should see the debugger pop up and point at a line in the program where the stack overflow occurred. You’ll also see the call stack, which should be filled with lots and lots of calls to the same function. Now that you’ve got the debugger engaged, you can investigate which function triggered the stack overflow and, ideally, to work out what went wrong. You don’t need to write anything down just yet. For now, hit the red “stop” button to close the program.</p>
+<p>Going forward, as you’re writing your first recursive functions, keep what you just saw in mind. If you see something that looks like your program crashed with a stack overflow, turn on the debugger and run it again. You’ll then be taken to the exact spot where the stack overflow occurred, and from there you can walk the call stack to see what’s up. Do you see multiple calls to a recursive function with the same parameters? Or a sequence of negative values getting more negative? That might indicate what’s going on.</p>
+</section>
+<section id="step-two-trace-a-stack-overflow">
+<h4>Step Two: Trace a Stack Overflow<a class="headerlink" href="#step-two-trace-a-stack-overflow" title="Link to this heading">¶</a></h4>
+<p>In this part of the assignment, we’ve included a recursive function that looks like this:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">triggerStackOverflow</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">triggerStackOverflow</span><span class="p">(</span><span class="n">kGotoTable</span><span class="p">[</span><span class="n">value</span><span class="p">]);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">kGotoTable</span></code> is a giant (1024-element) array of the numbers 0 through 1023 that have been randomly permuted. This function looks up its argument in the table, then makes a recursive call using that argument. As a result, the series of recursive calls made is extremely hard to predict by hand, and since the recursion never stops (do you see why?) this code will always trigger a stack overflow.</p>
+<p>Our starter code includes the option to call this function passing in some initial value that depends on the <code class="docutils literal notranslate"><span class="pre">MyName</span></code> constant you specified in the first part of the assignment. Run the provided starter code in debug mode and trigger the stack overflow. You’ll get an error message that depends on your OS (it could be something like “segmentation fault,” “access violation,” “stack overflow,” etc.) and the debugger should pop up. Walk up and down the call stack and inspect the sequence of values passed in as parameters to <code class="docutils literal notranslate"><span class="pre">triggerStackOverflow</span></code>.</p>
+<p>We’ve specifically crafted the numbers in <code class="docutils literal notranslate"><span class="pre">kGotoTable</span></code> so that the calls in <code class="docutils literal notranslate"><span class="pre">triggerStackOverflow</span></code> form a cycle. Your task in this part of the assignment is to tell us the sequence of the numbers in the cycle. For example, if the sequence was</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">triggerStackOverflow(137)</span></code> calls</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">triggerStackOverflow(106)</span></code>, which calls</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">triggerStackOverflow(271)</span></code>, which calls</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">triggerStackOverflow(137)</span></code>, which calls</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">triggerStackOverflow(106)</span></code>, which calls</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">triggerStackOverflow(271)</span></code>, which calls</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">triggerStackOverflow(137)</span></code>, which calls</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">triggerStackOverflow(106)</span></code>, which calls</p></li>
+</ul>
+<p>Then you would give us the cycle 137, 106, 271, 137.</p>
+<p>Once you’ve worked out the sequence of values, <strong><em>write them down as the answer to Q3 in the file comments of <code class="docutils literal notranslate"><span class="pre">DebuggerWarmups.cpp</span></code>.</em></strong></p>
+<p>Below is a quick summary of the deliverables for this part of the assignment. See the above sections for more details.</p>
+<div class="tip admonition">
+<p class="admonition-title">Milеstone Two Requirements</p>
+<ol class="arabic simple">
+<li><p>Run the provided program without the debugger engaged and trigger a stack overflow using the menu. In <strong>Q2</strong> of the file comments of <code class="docutils literal notranslate"><span class="pre">DebuggerWarmups.cpp</span></code>, describe what you saw happen when the stack overflow occurred. (We’re looking for a 2 - 3 sentence answer.)</p></li>
+<li><p>Run the provided program a second time with the debugger engaged and trigger a stack overflow using the menu. Walk up and down the call stack in the debugger, inspecting the arguments to the recursive call, to determine what the cycle of recursive calls is. Then, in <strong>Q3</strong> of the file comments of <code class="docutils literal notranslate"><span class="pre">DebuggerWarmups.cpp</span></code>, write down the cycle of numbers you found.</p></li>
+</ol>
+</div>
+<p>Some notes on this part of the assignment:</p>
+<ul class="simple">
+<li><p>The topmost entry on the call stack might be corrupted and either not show a value or show the wrong number. Don’t worry if that’s the case – just move down an entry in the stack.</p></li>
+<li><p>Remember that if function <em>A</em> calls function <em>B</em>, then function <em>B</em> will appear higher on the call stack than function <em>A</em> because function <em>B</em> was called more recently than function <em>A</em>. Make sure you don’t report the cycle in reverse order!</p></li>
+<li><p>When you run the program in Debug mode, VS Code will switch to “Run and Debug” panel, which has a bunch of windows and side panels to view information about the running program. That’s great when you’re debugging, and not so great when you’re just trying to write code. You can switch back to the regular code-writing view by clicking the “Explorer” button in the left side pane.</p></li>
+<li><p>Aside from writing your answers in the file comments, you shouldn’t need to edit any code in the course of solving this problem.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="part-two-fire">
+<h2>Part Two: Fire<a class="headerlink" href="#part-two-fire" title="Link to this heading">¶</a></h2>
+<p>(This problem is based on an <a class="reference external" href="https://fabiensanglard.net/doom_fire_psx/">article by Fabien Sanglard</a>)</p>
+<p>In this problem, you’ll write a simulation of fire and flames that looks surprisingly realistic. It’s all the more impressive when you realize just how little code is required to make it work. As a sneak peek, here’s what it looks like:</p>
+<p><img alt="The fire simulation" src="../../_images/fire.gif" /></p>
+<p>Here’s how the fire simulation works. We will represent the image as a <code class="docutils literal notranslate"><span class="pre">Grid&lt;int&gt;</span></code>, basically, a 2D grid of integers. We’ll use the following coordinate system: <strong>the top row of the grid is row 0, and the leftmost column is column 0</strong>. Rows increase from top to bottom, and columns increase from left to right.</p>
+<p><strong>Each grid cell holds an <code class="docutils literal notranslate"><span class="pre">int</span></code> that represents the temperature at the given point.</strong> The coolest temperature is 0, meaning “no fire at all,” with larger and larger numbers indicating hotter and hotter temperatures. At the beginning of the simulation, the temperature of each cell is 0, except for the bottom row, where it’s set to some nonzero “hot” value. We provide code to draw the fire that works by mapping each of these temperature values to a color so that hot cells appear white, cool cells appear red, and cold cells appear black. As a result, you’ll just be working with temperatures; we’ll handle the color logic.</p>
+<p><strong>At each step in the fire simulation, to simulate how hot air rises, you will copy the value of each grid cell (except cells in the top row) into some cell in the row above it</strong>. In particular, you will copy each cell’s value into one of the three cells that border it from above (directly above, diagonally above and to the left, or diagonally above and to the right). Those cells are shown here:</p>
+<p><img alt="A 2D grid of cells. One cell is highlighted. It has arrows pointing to three cells: one directly above, one diagonally above and to the left, and one diagonally above and to the right." src="../../_images/fire-grid.png" /></p>
+<p>There should be an equal chance of the cell’s value being copied into these three cells. That is, there should be a <span class="math notranslate nohighlight">\(\frac{1}{3}\)</span> chance of the value being copied diagonally up and to the left, a <span class="math notranslate nohighlight">\(\frac{1}{3}\)</span> chance of the value being copied directly upward, and a <span class="math notranslate nohighlight">\(\frac{1}{3}\)</span> chance of the value being copied diagonally up and to the right. Similarly, if you have a cell on the border of the world that has only two cells that border it from above, each of those cells should have a <span class="math notranslate nohighlight">\(\frac{1}{2}\)</span> chance of being selected. And in the rare case where a cell only has one cell bordering it from above, which can only happen in very narrow worlds, that cell’s value should always be copied to the cell directly above it.</p>
+<p>As hot air rises from a fire, it cools down. To simulate this effect, with probability <span class="math notranslate nohighlight">\(\frac{2}{3}\)</span>, the temperature of the copied cell should be decreased by one. (If the cell has temperature zero, it doesn’t cool down any further.)</p>
+<p>Putting it all together, here’s the update procedure:</p>
+<ol class="arabic simple">
+<li><p>Scan across the grid from the top to the bottom, starting in the row just below the top row, proceeding left to right across each row.</p></li>
+<li><p>For each grid cell, pick one of the three cells above it randomly, with each cell having an equal chance of being chosen, and copy the cell there.</p></li>
+<li><p>With <span class="math notranslate nohighlight">\(\frac{2}{3}\)</span> chance, decrease the temperature of the copy by one, assuming its temperature isn’t already zero.</p></li>
+</ol>
+<p>Surprisingly, that’s all that’s involved in making this work!</p>
+<p>Write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">updateFire</span><span class="p">(</span><span class="n">Grid</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">fire</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input the current state of the fire simulation, then updates the grid by advancing the simulation forward one step using the rules described above.</p>
+<p>This function works with the <code class="docutils literal notranslate"><span class="pre">Grid&lt;int&gt;</span></code> type, which we haven’t encountered in lecture. This is a type representing a fixed-size, two-dimensional grid of integers. You can access and manipulate the individual cells using statements like these:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">fire</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">137</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fire</span><span class="p">[</span><span class="n">row</span><span class="p">][</span><span class="n">col</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Row and column indices start at zero, and row 0, column 0 is in the upper-left corner of the screen. The rows increase from top to bottom and columns increase from left to right. Make sure not to read or write to a grid in an out-of-bounds location. Doing so will cause the program to crash with an error message.</p>
+<p>For more information about the <code class="docutils literal notranslate"><span class="pre">Grid</span></code> type, read over the <a class="reference external" href="https://cs101b.stickmind.com/cslib_docs/">Stanford C++ Library Documentation</a>. In particular, we recommend looking at the following:</p>
+<ul class="simple">
+<li><p>How do you determine how many rows or how many columns are in the <code class="docutils literal notranslate"><span class="pre">Grid</span></code>?</p></li>
+<li><p>How do you determine if a particular <code class="docutils literal notranslate"><span class="pre">(row,</span> <span class="pre">col)</span></code> position is inside the <code class="docutils literal notranslate"><span class="pre">Grid</span></code>?</p></li>
+</ul>
+<p>There are functions that do each of these tasks, and you’ll likely need to make use of them in the course of solving this problem.</p>
+<p>To summarize, here’s what you need to do.</p>
+<div class="tip admonition">
+<p class="admonition-title">Fire Requirements</p>
+<ol class="arabic simple">
+<li><p>Implement the <code class="docutils literal notranslate"><span class="pre">updateFire</span></code> function in <code class="docutils literal notranslate"><span class="pre">Fire.cpp</span></code>.</p></li>
+<li><p>Check that your implementation is correct by clicking the “Run Tests” button and checking whether the tests for <code class="docutils literal notranslate"><span class="pre">updateFire</span></code> are passing. If so, great! Move on to the next section. If not, go back and fix any bugs you might have.</p></li>
+<li><p>(Optional) Run the provided demo program to see your program in action! Isn’t that something?</p></li>
+</ol>
+</div>
+<p>Some notes on this problem:</p>
+<ul>
+<li><p>All C++ programs begin inside the <code class="docutils literal notranslate"><span class="pre">main()</span></code> function, and we’ve already written this function for you in one of the starter files. You just need to implement <code class="docutils literal notranslate"><span class="pre">updateFire</span></code> and are not responsible for writing <code class="docutils literal notranslate"><span class="pre">main()</span></code>. (In fact, if you did try to write your own <code class="docutils literal notranslate"><span class="pre">main()</span></code> function here, you’d get an error because there would be two different versions of <code class="docutils literal notranslate"><span class="pre">main()</span></code> and C++ wouldn’t know which one to pick!)</p></li>
+<li><p>You may want to consult the <a class="reference external" href="https://cs101b.stickmind.com/cslib_docs/">Stanford C++ Library Documentation</a> for information about how to generate random numbers in C++. In particular, look at the <code class="docutils literal notranslate"><span class="pre">randomInteger</span></code> and <code class="docutils literal notranslate"><span class="pre">randomChance</span></code> functions from the <code class="docutils literal notranslate"><span class="pre">random.h</span></code> header file.</p></li>
+<li><p>Feel free to add helper functions if you’d like. More generally, across all assignments, loop for opportunities to decompose complex problems into smaller pieces.</p></li>
+<li><p>Unlike Python, but like Java, in C++ if you divide one <code class="docutils literal notranslate"><span class="pre">int</span></code> value by another, the result will always be rounded toward zero. For example, this code prints 0, not 0.6:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="n">numerator</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">denominator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="p">(</span><span class="n">numerator</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">denominator</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w"> </span><span class="c1">// Prints 0, not 0.6</span>
+</pre></div>
+</div>
+<p>This may be relevant when you’re determining whether to cool down one of the cells in the grid. Consult Chapter 1.7 of the textbook to see how to divide two integers without rounding down.</p>
+</li>
+<li><p>Temperature values will never be negative, but they may be equal to zero.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">fire</span></code> parameter to <code class="docutils literal notranslate"><span class="pre">updateFire</span></code> is passed by reference (that’s what the <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> after the type name means). For more on reference parameters, read Chapter 2.5 of the textbook.</p></li>
+<li><p>Our testing framework is very sensitive to incorrect choices of probabilities. So, for example, don’t use 67% as an approximation for <span class="math notranslate nohighlight">\(\frac{2}{3}\)</span>.</p></li>
+<li><p>All cells should be copied upward, even cells whose temperature is zero.</p></li>
+<li><p>We do not recommend using recursion here. This one is a lot easier to solve iteratively. Check Chapter 1.8 of the textbook for more information about the syntax of <code class="docutils literal notranslate"><span class="pre">for</span></code> loops in C++.</p></li>
+<li><p>Our provided test cases here will help you check whether you’re properly copying cells upward, shifting them around randomly, and cooling them down with the right probabilities. You may, however, want to add some of your own test cases.</p></li>
+</ul>
+</section>
+<section id="part-three-only-connect">
+<h2>Part Three: Only Connect<a class="headerlink" href="#part-three-only-connect" title="Link to this heading">¶</a></h2>
+<p>The last round of the British quiz show Only Connect consists of puzzles of the following form: can you identify these movie titles, given that all characters except consonants have been deleted?</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">BTYNDTHBST</span>      <span class="n">MN</span>      <span class="n">CTCHMFYCN</span>      <span class="n">SRSMN</span>
+</pre></div>
+</div>
+<p>The first is “Beauty and the Beast,” the second is “Moana,” the third is “Catch Me If You Can,” and we’ll leave the last one as a mystery for you to work out if you’re so inclined.</p>
+<p><strong>To form a puzzle string like this, you simply delete all characters from the original word or phrase except for consonants, then convert the remaining letters to ALL-CAPS</strong>.</p>
+<p>Your task is to write a recursive function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">string</span><span class="w"> </span><span class="nf">onlyConnectize</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">phrase</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a string, then transforms it into an Only Connect puzzle. For example:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">onlyConnectize(&quot;Elena</span> <span class="pre">Kagan&quot;)</span></code> returns <code class="docutils literal notranslate"><span class="pre">&quot;LNKGN&quot;</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">onlyConnectize(&quot;Antonin</span> <span class="pre">Scalia&quot;)</span></code> returns <code class="docutils literal notranslate"><span class="pre">&quot;NTNNSCL&quot;</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">onlyConnectize(&quot;EE</span> <span class="pre">364A&quot;)</span></code> returns <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">onlyConnectize(&quot;For</span> <span class="pre">sale:</span> <span class="pre">baby</span> <span class="pre">shoes,</span> <span class="pre">never</span> <span class="pre">worn.&quot;)</span></code> returns <code class="docutils literal notranslate"><span class="pre">&quot;FRSLBBYSHSNVRWRN&quot;</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">onlyConnectize(&quot;I'm</span> <span class="pre">the</span> <span class="pre">bad</span> <span class="pre">guy.</span> <span class="pre">(Duh!)&quot;)</span></code> returns <code class="docutils literal notranslate"><span class="pre">&quot;MTHBDGYDH&quot;</span></code>, and</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">onlyConnectize(&quot;Annie</span> <span class="pre">Mae,</span> <span class="pre">My</span> <span class="pre">Sea</span> <span class="pre">Anemone</span> <span class="pre">Enemy!&quot;)</span></code> returns <code class="docutils literal notranslate"><span class="pre">&quot;NNMMYSNMNNMY&quot;</span></code>.</p></li>
+</ul>
+<p>Notice that the letter <code class="docutils literal notranslate"><span class="pre">Y</span></code> isn’t removed from these strings. While you could argue that <code class="docutils literal notranslate"><span class="pre">Y</span></code> counts as a vowel in English, the actual BBC show leaves the letter <code class="docutils literal notranslate"><span class="pre">Y</span></code> in.</p>
+<p>The starter code that we’ve provided contains code to test your function on certain inputs. These tests check a few sample strings and are not designed to be comprehensive. In addition to implementing the <code class="docutils literal notranslate"><span class="pre">onlyConnectize</span></code> function, you will need to add in at least one new test of your own using the <code class="docutils literal notranslate"><span class="pre">STUDENT_TEST</span></code> macro. To do so, use this syntax:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">&quot;description of the test&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Put your testing code here. */</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Take a look at the other tests provided to get a sense of how to write a test case. The <code class="docutils literal notranslate"><span class="pre">EXPECT_EQUAL</span></code> macro takes in two expressions. If those expressions are equal, great! Nothing happens. Otherwise, <code class="docutils literal notranslate"><span class="pre">EXPECT_EQUAL</span></code> reports an error. You can run the tests by choosing the “Run Tests” button from the demo app. You can read more about how these tests work through our Guide to Testing.</p>
+<p>Once you have everything working, run our demo program to play around with your code interactively. Then, leave an Only Connect puzzle of your own choosing for your section leader! To do so, edit the file comments at the top of the file with the consonant string, along with a hint.</p>
+<p>To summarize, here’s what you need to do:</p>
+<div class="tip admonition">
+<p class="admonition-title">Only Connect Requirements</p>
+<ol class="arabic simple">
+<li><p>Implement the <code class="docutils literal notranslate"><span class="pre">onlyConnectize</span></code> function in <code class="docutils literal notranslate"><span class="pre">OnlyConnect.cpp</span></code>. <strong>This function must be implemented recursively.</strong> It takes as input a string. The output should be that same string, in upper case, with all characters except consonants deleted. Feel free to write helper functions if you’d like. As you go, test your code by using the “Run Tests” button in the provided program.</p></li>
+<li><p>Add at least one test case using the <code class="docutils literal notranslate"><span class="pre">STUDENT_TEST</span></code> macro. Your test should go in the file <code class="docutils literal notranslate"><span class="pre">OnlyConnectTest.cpp</span></code>, preferably with all the other test cases. For full credit, your test case should check some style of input that wasn’t previously addressed by the provided tests.</p></li>
+<li><p>Leave an Only Connect puzzle for your section leader in the comments at the top of the file.</p></li>
+</ol>
+</div>
+<p>As you’re writing up your solution to this problem, remember that coding style is important. We have a style guide available on the CS101B website. Take a few minutes to read over it, then review your code to make sure it conforms to those style expectations. In particular, make sure to indent your code! We recommend that you indent early and indent often to make sure that your code is structured the way you think it is.</p>
+<p>Some notes on this problem:</p>
+<ul class="simple">
+<li><p>If one of the test cases crashes with a stack overflow, it will cause the entire program to crash. But not to worry! You’ve seen how to recognize stack overflows in the first part of this assignment. If you think you’re seeing a stack overflow, run the program in debug mode, find where the stack overflow is, and explore the call stack and local variables window to isolate what’s going on.</p></li>
+<li><p>Your solution must be recursive. You may not use loops (<code class="docutils literal notranslate"><span class="pre">while</span></code>, <code class="docutils literal notranslate"><span class="pre">for</span></code>, <code class="docutils literal notranslate"><span class="pre">do</span> <span class="pre">…</span> <span class="pre">while</span></code>, or <code class="docutils literal notranslate"><span class="pre">goto</span></code>).</p></li>
+<li><p>There are lots of helpful function available to you in the <code class="docutils literal notranslate"><span class="pre">strlib.h</span></code> header. Check out the <a class="reference external" href="https://cs101b.stickmind.com/cslib_docs/">Stanford C++ Library Documentation</a> for more information about what’s there.</p></li>
+<li><p>Make sure that you’re always returning a value from your recursive function. It’s easy to accidentally forget to do this when you’re getting started with recursion.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">isalpha</span></code> function from the <cctype> header takes in a character and returns whether it’s a letter. There is no library function that checks if a letter is a consonant or vowel, though.</p></li>
+<li><p>You should delete all characters that aren’t consonants, including spaces, numbers, digits, etc.</p></li>
+<li><p>Remember that C++ treats individual characters differently than strings. Individual characters have type <code class="docutils literal notranslate"><span class="pre">char</span></code>. To talk about a specific single character, you must use single quotes (e.g. <code class="docutils literal notranslate"><span class="pre">'a'</span></code> rather than <code class="docutils literal notranslate"><span class="pre">&quot;a&quot;</span></code>). Strings have type <code class="docutils literal notranslate"><span class="pre">string</span></code>. To talk about a specific string, you must use double quotes (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;hello&quot;</span></code> rather than <code class="docutils literal notranslate"><span class="pre">'hello'</span></code>).</p></li>
+<li><p>You are welcome to add your own helper functions when solving this problem. Those functions must obey the same rules as the <code class="docutils literal notranslate"><span class="pre">main</span></code> function (e.g. no loops).</p></li>
+<li><p>Just to make sure you didn’t miss this, we are not treating the letter <code class="docutils literal notranslate"><span class="pre">y</span></code> as a vowel. This is in line with what the actual BBC show does.</p></li>
+<li><p>You shouldn’t need to edit <code class="docutils literal notranslate"><span class="pre">OnlyConnect.h</span></code> in the course of solving this problem.</p></li>
+</ul>
+</section>
+<section id="optional-part-four-extensions">
+<h2>(Optional) Part Four: Extensions<a class="headerlink" href="#optional-part-four-extensions" title="Link to this heading">¶</a></h2>
+<p>You are welcome to add extensions to your programs beyond what’s required for the assignment, and if you do, we’re happy to give extra credit! If you do, please submit two sets of source files – a set of originals meeting the specifications we’ve set, plus a set of modified files with whatever changes you’d like. We recommend doing that by downloading two versions of the starter files, one where you’ll do the base assignment and one where you’ll put your extensions.</p>
+<p>Here are some ideas to help get you started:</p>
+<ul>
+<li><p>Fire: Our model of fire is an example of a cellular automaton, where each cell in a grid has rules by which it updates in response to its neighbors. There are hundreds of other cellular automata out there. Conway’s Game of Life is a famous example that gives rise to surprisingly complex and intricate behavior. Fredkin’s replicator follows very simple rules and, as the name suggests, has a tendency to build larger and larger copies of itself. Read up on other cellular automata, code one up, and let us know what you come up with!</p>
+<p>Alternatively, you could look at making the fire simulation more realistic. Could you add support for wind? Could you make the fire emerge from a single point rather than from a row of pixels at the bottom? Can you model burning fuel? Try this out and let us know what you see!</p>
+</li>
+<li><p>Only Connect: The puzzles given in the show Only Connect are made even more difficult because the show’s creators don’t just delete non-consonants; they also insert spaces into the result that may or may not align with the original phrase. For example, the string “O say, can you see?” might be rendered as “SYC NYS”, giving the illusion that it’s only two words rather than the five from the original. Write a recursive function that inserts spaces in random places into your resulting string.</p>
+<p>Another option: find a data set online containing a bunch of related phrases (for example, a list of movies, or historical figures, or geographic locations) and try building this into a legit trivia game. We’re curious to see what you choose to do here!</p>
+</li>
+</ul>
+</section>
+<section id="submission-instructions">
+<h2>Submission Instructions<a class="headerlink" href="#submission-instructions" title="Link to this heading">¶</a></h2>
+<p>Before you call it done, run through our <a class="reference external" href="https://cs101b.stickmind.com/resources/Submit-checklist.html" title="Submit checklist">submit checklist</a> to be sure all your <code class="docutils literal notranslate"><span class="pre">t</span></code>s are crossed and <code class="docutils literal notranslate"><span class="pre">i</span></code>s are dotted. Make sure your code follows our <a class="reference external" href="https://cs101b.stickmind.com/resources/Style-Guide.html" title="Style Guide">style guide</a>. Then upload your completed files for grading.</p>
+<p>Please submit only the files you edited; for this assignment, these files will be:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DebuggerWarmups.cpp</span></code> (don’t forget this one!)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Fire.cpp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OnlyConnect.cpp</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OnlyConnectTest.cpp</span></code></p></li>
+</ul>
+<p>You don’t need to submit any of the other files in the project folder.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../../topic-2/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>下一页</span>
+                </div>
+                <div class="title">Topic 2. Containers</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../section-1.1/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>上一页</span>
+                </div>
+                
+                <div class="title">Section 1.1 C++ and Recursion</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, <a href='https://www.stickmind.com/' target="_blank">StickMind</a>
+            </div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            本页目录
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Assignment 1. Welcome to C++</a><ul>
+<li><a class="reference internal" href="#starter-files">Starter Files</a></li>
+<li><a class="reference internal" href="#part-one-debugger-warmups">Part One: Debugger Warmups</a><ul>
+<li><a class="reference internal" href="#milestone-one-call-stack-storytelling">Milestone One: Call Stack Storytelling</a></li>
+<li><a class="reference internal" href="#milestone-two-stack-overflows">Milestone Two: Stack Overflows</a><ul>
+<li><a class="reference internal" href="#step-one-see-a-stack-overflow">Step One: See a Stack Overflow</a></li>
+<li><a class="reference internal" href="#step-two-trace-a-stack-overflow">Step Two: Trace a Stack Overflow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#part-two-fire">Part Two: Fire</a></li>
+<li><a class="reference internal" href="#part-three-only-connect">Part Three: Only Connect</a></li>
+<li><a class="reference internal" href="#optional-part-four-extensions">(Optional) Part Four: Extensions</a></li>
+<li><a class="reference internal" href="#submission-instructions">Submission Instructions</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=7d86a446"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/tabs.js?v=3ee01567"></script>
+    <script>let toggleHintShow = '';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    </body>
+</html>

@@ -1,0 +1,955 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Assignment 3.2 Recursion to the Rescue!" href="../assign-3.2/index.html" /><link rel="prev" title="Assignment 3.1 A Visit to Recursia" href="../assign-3.1/index.html" />
+
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+        <title>Section 3.2 Recursion and Backtracking - CS101B Programming Abstractions</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pied-piper-admonition.css?v=e32e2275" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">CS101B Programming Abstractions</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">CS101B Programming Abstractions</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../resources/index.html">Resources</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Resources</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Workflow/index.html">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/PythonToCpp/index.html">Python to C++ Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Debugging/index.html">Debugging Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Testing/index.html">Testing Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-0/index.html">Introduction</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Introduction</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-0/assign-0/index.html">Assignment 0. Welcome to CS101B!</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-1/index.html">Topic 1. Getting Started</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Topic 1. Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-1/section-1.1/index.html">Section 1.1 C++ and Recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-1/assign-1.1/index.html">Assignment 1. Welcome to C++</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-2/index.html">Topic 2. Containers</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Topic 2. Containers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-2/section-2.1/index.html">Section 2. Containers and Recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-2/assign-2.1/index.html">Assignment 2. Fun with Collections</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Topic 3. Recursion</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Topic 3. Recursion</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../section-3.1/index.html">Section 3.1 Recursion and Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assign-3.1/index.html">Assignment 3.1 A Visit to Recursia</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Section 3.2 Recursion and Backtracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assign-3.2/index.html">Assignment 3.2 Recursion to the Rescue!</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-4/index.html">Topic 4. Algorithm and Abstraction</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Topic 4. Algorithm and Abstraction</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/section-4.1/index.html">Section 4.1 Big-O, Searching and Sorting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/section-4.2/index.html">Section 4.2 Class Design and Dynamic Memory Allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/assign-4.1/index.html">Assignment 4.1 Bag’O Big-O</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../topic-5/index.html">Topic 5. Data Structures</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>返回顶部</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section class="tex2jax_ignore mathjax_ignore" id="section-3-2-recursion-and-backtracking">
+<h1>Section 3.2 Recursion and Backtracking<a class="headerlink" href="#section-3-2-recursion-and-backtracking" title="Link to this heading">¶</a></h1>
+<p>This week’s section exercises explore the ins and outs of content from weeks 4 and 5, focusing on delving more deeply into recursive backtracking and its applications, plus a bit of Big-O!</p>
+<p>Each week, we will also be releasing a project containing starter code and testing infrastructure for that week’s section problems. When a problem name is followed by the name of a <code class="docutils literal notranslate"><span class="pre">.cpp</span></code> file, that means you can practice writing the code for that problem in the named file of the project. Here is the zip of the section starter code:</p>
+<p><a class="reference download internal" download="" href="../../_downloads/cf778db8f08b384d7923f1d72b6a159b/Section-3.2.zip"><span class="xref download myst">📦 Starter code</span></a></p>
+<section id="recursive-backtracking">
+<h2>Recursive Backtracking<a class="headerlink" href="#recursive-backtracking" title="Link to this heading">¶</a></h2>
+<section id="win-sum-lose-sum">
+<h3>Win Sum, Lose Sum<a class="headerlink" href="#win-sum-lose-sum" title="Link to this heading">¶</a></h3>
+<p>In this problem, you’ll walk through a series of steps to build up a recursive backtracking solution to a classic problem in theoretical computer science.</p>
+<p>You are given a <code class="docutils literal notranslate"><span class="pre">Set&lt;int&gt;</span></code> containing some integers. By adding up different groups of numbers from that <code class="docutils literal notranslate"><span class="pre">Set</span></code>, you can form different sums. For example, given the set <code class="docutils literal notranslate"><span class="pre">{1,</span> <span class="pre">2,</span> <span class="pre">5,</span> <span class="pre">9}</span></code>, you can form these sums:</p>
+<ul class="simple">
+<li><p>You could add up no values to get 0.</p></li>
+<li><p>You could add 1 + 2 to get 3.</p></li>
+<li><p>You could add 1 + 5 to get 6.</p></li>
+<li><p>You could add up 1 by itself to get 1.</p></li>
+<li><p>(etc.)</p></li>
+</ul>
+<p>With the set given above, it’s not possible to pick numbers that add up to 4, but it is possible to pick numbers that add up to 5, 6, 7, 8, 9, 10, 11, and 12. You can’t make 13, but you can make 14, 15, and 16.</p>
+<ol class="arabic simple">
+<li><p>Write a function</p></li>
+</ol>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">numbersMadeFrom</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a <code class="docutils literal notranslate"><span class="pre">Set&lt;int&gt;</span></code> of numbers, then returns a <code class="docutils literal notranslate"><span class="pre">Set&lt;int&gt;</span></code> containing all the numbers that can be made by summing up zero or more values from <code class="docutils literal notranslate"><span class="pre">values</span></code>.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">You might recognize that this feels a lot like subsets - for each number, we can either include that number or exclude that number. All we need to do is keep track of what we come up with at each point.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* What numbers can we make by adding elements from values, given that our</span>
+<span class="cm"> * current total is totalSoFar?</span>
+<span class="cm"> */</span>
+<span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">numbersMadeFromRec</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">totalSoFar</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base Case: No numbers left? We can make totalSoFar, and nothing</span>
+<span class="cm">     * else.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">values</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">totalSoFar</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Recursive Case: Pick an element from the set. We either include it</span>
+<span class="cm">     * or exclude it. Try both options and see what we find.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">values</span><span class="p">.</span><span class="n">first</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">numbersMadeFromRec</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="n">totalSoFar</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">         </span><span class="c1">// Exclude it</span>
+<span class="w">               </span><span class="n">numbersMadeFromRec</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="n">totalSoFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">number</span><span class="p">);</span><span class="w"> </span><span class="c1">// Include it</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">numbersMadeFrom</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">numbersMadeFromRec</span><span class="p">(</span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details><p>Now, suppose that you’re interested not in finding <em>every</em> number you can make, but rather determining whether it’s possible to make a particular number called the <strong><em>target number</em></strong>. You could in principle solve this by using your solution from before - generate every number you can make, then check if your target number is in there. However, that wouldn’t be a good idea for two reasons:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Set</span></code> returned from this function can be enormous. For example, if you have a 30-element input set, you can have up to <span class="math notranslate nohighlight">\(2^{30} \approx 1,000,000,000\)</span> elements in the resulting set! If you only care about one of them, it’s wasteful to produce so many other numbers.</p></li>
+<li><p>Suppose that your recursion, early on, figures out how to make the target number. In that case, any additional work being done by the function is wasteful, since you’re generating numbers you don’t need.</p></li>
+</ul>
+<p>To address this, we’ll need to change the function so that it doesn’t report all the numbers it finds and instead stops as soon as it finds one that works.</p>
+<ol class="arabic simple" start="2">
+<li><p>Using your previous function as a starting point, write a function</p></li>
+</ol>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">canMakeTarget</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">target</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a <code class="docutils literal notranslate"><span class="pre">Set&lt;int&gt;</span></code> and a target number, then returns whether you can add up some collection of the numbers in <code class="docutils literal notranslate"><span class="pre">value</span></code> to get <code class="docutils literal notranslate"><span class="pre">target</span></code>.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">In many ways, this function is going to work similarly to the previous one. We’ll keep track of what we’ve added up so far, and at each point will either include or exclude the next item from the set. Unlike last time, though, the way in which we’ll combine values together will not be by adding them, and we’ll need another base case to account for the possibiltiy that we’ve already hit our total. Here’s what that looks like:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Can we make the value target with the numbers remaining from values,</span>
+<span class="cm"> * given that our current sum is target?</span>
+<span class="cm"> */</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">canMakeTargetRec</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">totalSoFar</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base Case 1: If we hit the target, we&#39;re done! */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">totalSoFar</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">target</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Base Case 2: Otherwise, if there are no numbers left in the set, we</span>
+<span class="cm">     * know that we can&#39;t make the target given the decisions we have</span>
+<span class="cm">     * committed to so far.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">values</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Recursive Case: Pick an element from the set. We either include it</span>
+<span class="cm">     * or exclude it. Try both options and see what we find.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">values</span><span class="p">.</span><span class="n">first</span><span class="p">();</span>
+
+<span class="w">        </span><span class="cm">/* We use the OR (||) operator here, since if either option leads to</span>
+<span class="cm">         * our total then we can make it, and if neither option leads to our</span>
+<span class="cm">         * total we know we can&#39;t make the total given the decisions we&#39;ve</span>
+<span class="cm">         * committed to at this point.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">canMakeTargetRec</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">totalSoFar</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w">        </span><span class="c1">// Exclude it</span>
+<span class="w">               </span><span class="n">canMakeTargetRec</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">totalSoFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">number</span><span class="p">);</span><span class="w"> </span><span class="c1">// Include it</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">canMakeTarget</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">target</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">canMakeTargetRec</span><span class="p">(</span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">As a note, you can combine the two parameters <code class="docutils literal notranslate"><span class="pre">target</span></code> and <code class="docutils literal notranslate"><span class="pre">totalSoFar</span></code> together in <code class="docutils literal notranslate"><span class="pre">canMakeTarget</span></code>. Instead of adding values to <code class="docutils literal notranslate"><span class="pre">totalSoFar</span></code>, subtract them from <code class="docutils literal notranslate"><span class="pre">target</span></code>, and stop once <code class="docutils literal notranslate"><span class="pre">target</span></code> is zero.</p>
+</div>
+</details><p>You now have a function that will tell you whether it’s possible to sum numbers up to reach a target. However, when the function finishes running, all you’ll have is the <code class="docutils literal notranslate"><span class="pre">bool</span></code> saying “yes, it’s possible” or “no, it isn’t.” But what if it is possible, and you’d like to know one way to get the values to add up to the target?</p>
+<ol class="arabic simple" start="2">
+<li><p>Modify your <code class="docutils literal notranslate"><span class="pre">canMakeTarget</span></code> function so that it has this signature:</p></li>
+</ol>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">canMakeTarget</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">solution</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Your function should, as before, take in <code class="docutils literal notranslate"><span class="pre">values</span></code> and <code class="docutils literal notranslate"><span class="pre">target</span></code> and see whether it’s possible to find numbers in <code class="docutils literal notranslate"><span class="pre">values</span></code> that sum up to <code class="docutils literal notranslate"><span class="pre">target</span></code>. If not, your function should return <code class="docutils literal notranslate"><span class="pre">false</span></code>. But if it is possible, your function should return <code class="docutils literal notranslate"><span class="pre">true</span></code> and then modify <code class="docutils literal notranslate"><span class="pre">solution</span></code> so hold one subset of <code class="docutils literal notranslate"><span class="pre">values</span></code> that adds up to target.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">There are several different ways to do this.</p>
+<p class="sd-card-text">This first approach works by replacing the integer <code class="docutils literal notranslate"><span class="pre">totalSoFar</span></code> with a <code class="docutils literal notranslate"><span class="pre">Set&lt;int&gt;</span></code> consisting of the choices that we have made up to this point. If we find that it adds up to exactly <code class="docutils literal notranslate"><span class="pre">target</span></code>, great! We can overwrite <code class="docutils literal notranslate"><span class="pre">solution</span></code> with that as our answer.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Helper function to add up the integers in a set. */</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">sumOf</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="o">:</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Can we make the value target with the numbers remaining from values,</span>
+<span class="cm"> * given that our current sum is target?</span>
+<span class="cm"> */</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">canMakeTargetRec</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">target</span><span class="p">,</span>
+<span class="w">                      </span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">soFar</span><span class="p">,</span>
+<span class="w">                      </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">solution</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base Case 1: If we hit the target, we&#39;re done! */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sumOf</span><span class="p">(</span><span class="n">soFar</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">target</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">solution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">soFar</span><span class="p">;</span><span class="w"> </span><span class="c1">// Write down the solution</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Base Case 2: Otherwise, if there are no numbers left in the set, we</span>
+<span class="cm">     * know that we can&#39;t make the target given the decisions we have</span>
+<span class="cm">     * committed to so far.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">values</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Recursive Case: Pick an element from the set. We either include it</span>
+<span class="cm">     * or exclude it. Try both options and see what we find.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">values</span><span class="p">.</span><span class="n">first</span><span class="p">();</span>
+
+<span class="w">        </span><span class="cm">/* We use the OR (||) operator here, since if either option leads to</span>
+<span class="cm">         * our total then we can make it, and if neither option leads to our</span>
+<span class="cm">         * total we know we can&#39;t make the total given the decisions we&#39;ve</span>
+<span class="cm">         * committed to at this point.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">canMakeTargetRec</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">soFar</span><span class="p">,</span><span class="w"> </span><span class="n">solution</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w">        </span><span class="c1">// Exclude it</span>
+<span class="w">               </span><span class="n">canMakeTargetRec</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="n">solution</span><span class="p">);</span><span class="w"> </span><span class="c1">// Include it</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">canMakeTarget</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">solution</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">canMakeTargetRec</span><span class="p">(</span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="n">solution</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">Another option is to not pass down a set like that and to instead use our old approach of having the sum of the numbers we’ve seen so far. Then, as the recursion unwinds when we find a successful option, we can add in the number if we used it. Here’s what this might look like:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Can we make the value target with the numbers remaining from values,</span>
+<span class="cm"> * given that our current sum is target?</span>
+<span class="cm"> */</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">canMakeTargetRec</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">totalSoFar</span><span class="p">,</span>
+<span class="w">                      </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">solution</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base Case 1: If we hit the target, we&#39;re done! */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">totalSoFar</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">target</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* Clear out whatever happened to be in solution up to this point. */</span>
+<span class="w">        </span><span class="n">solution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Base Case 2: Otherwise, if there are no numbers left in the set, we</span>
+<span class="cm">     * know that we can&#39;t make the target given the decisions we have</span>
+<span class="cm">     * committed to so far.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">values</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Recursive Case: Pick an element from the set. We either include it</span>
+<span class="cm">     * or exclude it. Try both options and see what we find.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">values</span><span class="p">.</span><span class="n">first</span><span class="p">();</span>
+
+<span class="w">        </span><span class="cm">/* First, see what happens if we exclude the number. */</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">canMakeTargetRec</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">totalSoFar</span><span class="p">,</span><span class="w"> </span><span class="n">solution</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="cm">/* Great, a solution exists! We haven&#39;t included anything here, so</span>
+<span class="cm">             * whatever that solution is doesn&#39;t need number in it.</span>
+<span class="cm">             */</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="cm">/* Now try including the number. */</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">canMakeTargetRec</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">totalSoFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">number</span><span class="p">,</span><span class="w"> </span><span class="n">solution</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="cm">/* A solution exists assuming we add in number. So let&#39;s add number</span>
+<span class="cm">             * into the solution that was found.</span>
+<span class="cm">             */</span>
+<span class="w">            </span><span class="n">solution</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">number</span><span class="p">;</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="cm">/* Oh fiddlesticks, neither works. */</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">canMakeTarget</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">solution</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">canMakeTargetRec</span><span class="p">(</span><span class="n">values</span><span class="p">,</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">solution</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="weights-and-balances">
+<h3>Weights and Balances<a class="headerlink" href="#weights-and-balances" title="Link to this heading">¶</a></h3>
+<p><em>Thanks to Eric Roberts for this problem</em></p>
+<p><em>Topics: Recursion, Combinations, Backtracking</em></p>
+<blockquote>
+<div><p>I am the only child of parents who weighed, measured, and priced everything; for whom what could not be weighed, measured, and priced had no existence.</p>
+<p><strong>—Charles Dickens, Little Dorrit, 1857</strong></p>
+</div></blockquote>
+<p>In Dickens’s time, merchants measured many commodities using weights and a two-pan balance – a practice that continues in many parts of the world today. If you are using a limited set of weights, however, you can only measure certain quantities accurately.</p>
+<p>For example, suppose that you have only two weights: a 1-ounce weight and a 3-ounce weight. With these you can easily measure out 4 ounces, as shown:</p>
+<p><img alt="A scale, with a large lump on the left equally balanced by two weights on the right, one weighing 1 ounce and another weighing 3 ounces." src="../../_images/weights_1.png" /></p>
+<p>It’s more interesting to discover that you can also measure out 2 ounces by shifting the 1-ounce weight to the other side, as follows:</p>
+<p><img alt="A scale, with both a small lump and a 1-ounce weight on the left equally balanced by a single 3 ounce weight on the right." src="../../_images/weights_2.png" /></p>
+<p>Write a recursive function,</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">isMeasurable</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">target</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">weights</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that determines whether it is possible to measure out the desired target amount with a given set of weights, which is stored in the vector weights.</p>
+<p>As an example, the function call</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">isMeasurable</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">})</span>
+</pre></div>
+</div>
+<p>should return <code class="docutils literal notranslate"><span class="pre">true</span></code> because it is possible to measure out two ounces using the sample weight set as illustrated in the preceding diagram. On the other hand, calling</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">isMeasurable</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">})</span>
+</pre></div>
+</div>
+<p>should return <code class="docutils literal notranslate"><span class="pre">false</span></code> because it is impossible to use the 1- and 3-ounce weights to add up to 5 ounces. However, the call</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">isMeasurable</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="p">})</span>
+</pre></div>
+</div>
+<p>should return <code class="docutils literal notranslate"><span class="pre">true</span></code>: you can measure the six-ounce weight by placing it and the one-ounce weight on one side of the scale and the seven-ounce weight on the other.</p>
+<p>Here’s a function question to ponder: let’s say that you get to choose <em>n</em> weights. Which ones would you pick to give yourself the best range of weights that you’d be capable of measuring?</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">Imagine that we start off by putting the amount to be measured (call it <em>n</em>) on the left side of the balance. This makes the imbalance on the scale equal to <em>n</em>. Imagine that there is some way to measure <em>n</em>. If we put the weights on the scale one at a time, we can look at where we put that first weight (let’s suppose it weighs <em>w</em>). It must either:</p>
+<ul class="simple">
+<li><p class="sd-card-text">go on the left side, making the net imbalance on the scale <em>n + w</em>, or</p></li>
+<li><p class="sd-card-text">go on the right side, making the net imbalance on the scale <em>n – w</em>, or</p></li>
+<li><p class="sd-card-text">not get used at all, leaving the net imbalance <em>n</em>.</p></li>
+</ul>
+<p class="sd-card-text">If it is indeed truly possible to measure <em>n</em>, then one of these three options has to be the way to do it, even if we don’t know which one it is. The question we then have to ask is whether it’s then possible to measure the new net imbalance using the weights that remain – which we can determine recursively! On the other hand, if it’s not possible to measure <em>n</em>, then no matter which option we choose, we’ll find that there’s no way to use the remaining weights to make everything balanced!</p>
+<p class="sd-card-text">If we’re proceeding recursively, which we are here, we need to think about our base case. There are many options we can choose from. One simple one is the following: imagine that we don’t have any weights at all, that we’re asked to see whether some weight is measurable using no weights. In what circumstances can we do that? Well, if what we’re weighing has a nonzero weight, we can’t possibly measure it – placing it on the scale will tip it to some side, but that doesn’t tell us how much it weighs. On the other hand, if what we’re weighing is completely weightless, then putting it on the scale won’t cause it to tip, convincing us that, indeed, it is weightless! So as our base case, we’ll say that when we’re down to no remaining weights, we can measure <em>n</em> precisely if <em>n = 0</em>. With that in mind, here’s our code:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * Given an amount, a list of weights, and an index, determines whether it&#39;s</span>
+<span class="cm"> * possible to measure n using the weights at or after the index given by</span>
+<span class="cm"> * startPoint.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @param amount The amount to measure, which can be positive, negative or 0.</span>
+<span class="cm"> * @param weights The weights available to us.</span>
+<span class="cm"> * @param index The starting index into the weights Vector.</span>
+<span class="cm"> * @return Whether the amount can be measured using the weights from the specified</span>
+<span class="cm"> *         index and forward.</span>
+<span class="cm"> */</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">isMeasurableRec</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">amount</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">weights</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">index</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">weights</span><span class="p">.</span><span class="n">size</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">amount</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">isMeasurableRec</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span><span class="w">                  </span><span class="n">weights</span><span class="p">,</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">||</span>
+<span class="w">             </span><span class="n">isMeasurableRec</span><span class="p">(</span><span class="n">amount</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">weights</span><span class="p">[</span><span class="n">index</span><span class="p">],</span><span class="w"> </span><span class="n">weights</span><span class="p">,</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">||</span>
+<span class="w">             </span><span class="n">isMeasurableRec</span><span class="p">(</span><span class="n">amount</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">weights</span><span class="p">[</span><span class="n">index</span><span class="p">],</span><span class="w"> </span><span class="n">weights</span><span class="p">,</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">isMeasurable</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">amount</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">weights</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">isMeasurableRec</span><span class="p">(</span><span class="n">amount</span><span class="p">,</span><span class="w"> </span><span class="n">weights</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="tug-of-war">
+<h3>Tug-of-War<a class="headerlink" href="#tug-of-war" title="Link to this heading">¶</a></h3>
+<p>You are trying to organize a tug-of-war event for a group of people. For each person, you have an <code class="docutils literal notranslate"><span class="pre">int</span></code> representing the amount of force they can pull with. You’d like to break the group into two teams with exactly equal pulling strength.</p>
+<p>Write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">canSplitEvently</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">strengths</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a <code class="docutils literal notranslate"><span class="pre">Vector&lt;int&gt;</span></code> holding all the pulling strengths of the people in the group, then returns whether there is some way to split the group into two teams of exactly equal pulling strength.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">The main insight here is that each person either goes onto the first team or the second team. So, for each person, we recursively explore what happens if we try putting them on the first team, then on the second, and see if either option works.</p>
+<p class="sd-card-text">Here’s one way to do this.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Given the existing strengths of the two teams, can the people from index</span>
+<span class="cm"> * nextIndex and onward be split across the two teams to balance out the</span>
+<span class="cm"> * strengths?</span>
+<span class="cm"> */</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">canSplitRec</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">strengths</span><span class="p">,</span>
+<span class="w">                 </span><span class="kt">int</span><span class="w"> </span><span class="n">teamAStrength</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">teamBStrength</span><span class="p">,</span>
+<span class="w">                 </span><span class="kt">int</span><span class="w"> </span><span class="n">nextIndex</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base Case: If everyone is assigned, see if the teams have the same</span>
+<span class="cm">     * strength.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nextIndex</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">strengths</span><span class="p">.</span><span class="n">size</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">teamAStrength</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">teamBStrength</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Recursive Case: See what happens if we assign the next person to Team</span>
+<span class="cm">     * A and to Team B. If either option works, there&#39;s a split. If neither</span>
+<span class="cm">     * option works, we need to back up and try something else.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">canSplitRec</span><span class="p">(</span><span class="n">strengths</span><span class="p">,</span>
+<span class="w">                           </span><span class="n">teamAStrength</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">strengths</span><span class="p">[</span><span class="n">nextIndex</span><span class="p">],</span>
+<span class="w">                           </span><span class="n">teamBStrength</span><span class="p">,</span>
+<span class="w">                           </span><span class="n">nextIndex</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">||</span>
+<span class="w">               </span><span class="n">canSplitRec</span><span class="p">(</span><span class="n">strengths</span><span class="p">,</span>
+<span class="w">                           </span><span class="n">teamAStrength</span><span class="p">,</span>
+<span class="w">                           </span><span class="n">teamBStrength</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">strengths</span><span class="p">[</span><span class="n">nextIndex</span><span class="p">],</span>
+<span class="w">                           </span><span class="n">nextIndex</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="nf">canSplitEvenly</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">strengths</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Nice little optimization here: because the roles of the two teams are</span>
+<span class="cm">     * interchangeable, we can place the first person onto Team A. Otherwise,</span>
+<span class="cm">     * we&#39;d consider each split twice, once with the teams labeled Team A</span>
+<span class="cm">     * and Team B, and once with the teams labeled Team B and Team A.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">strengths</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">canSplitRec</span><span class="p">(</span><span class="n">strengths</span><span class="p">,</span><span class="w"> </span><span class="n">strengths</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">Bonus points if you noticed that this is basically the same as the Weights and Measures problem from last week, except that you’re specifically trying to make a value equal to half the sum of the input strengths.</p>
+</div>
+</details></section>
+<section id="all-squared-away">
+<h3>All Squared Away<a class="headerlink" href="#all-squared-away" title="Link to this heading">¶</a></h3>
+<p>Here’s a little number puzzle: can you arrange the numbers 1, 2, 3, …, and 15 in a sequence such that the sum of any two adjacent numbers is a perfect square? (A <strong><em>perfect square</em></strong> is a number that’s the square of an integer. So, for example, 16 = 42 is a perfect square, and 1 = 12 is a perfect square, but 19 isn’t a perfect square). There is indeed a way to do this, which is shown here:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">  </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="mi">15</span><span class="p">,</span><span class="w">  </span><span class="mi">10</span><span class="p">,</span><span class="w">  </span><span class="mi">6</span><span class="p">,</span><span class="w">  </span><span class="mi">3</span><span class="p">,</span><span class="w">  </span><span class="mi">13</span><span class="p">,</span><span class="w">  </span><span class="mi">12</span><span class="p">,</span><span class="w">  </span><span class="mi">4</span><span class="p">,</span><span class="w">  </span><span class="mi">5</span><span class="p">,</span><span class="w">  </span><span class="mi">11</span><span class="p">,</span><span class="w">  </span><span class="mi">14</span><span class="p">,</span><span class="w">  </span><span class="mi">2</span><span class="p">,</span><span class="w">  </span><span class="mi">7</span><span class="p">,</span><span class="w">  </span><span class="mi">9</span>
+</pre></div>
+</div>
+<p>However, you <em>can’t</em> do this with the numbers 1, 2, 3, …, 18, and you <em>can’t</em> do this with the numbers 1, 2, 3, …, 19, but you <em>can</em> do this with the numbers 1, 2, 3, …, 23.</p>
+<p>Implement a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">findSquareSequence</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a number <em>n</em>, then returns an arrangement of the numbers 1, 2, 3, …, n such that each number appears exactly once and the sum of any two adjacent numbers is a perfect square. If there isn’t a way to do this, this function returns <code class="docutils literal notranslate"><span class="pre">Nothing</span></code>. (If <span class="math notranslate nohighlight">\(n\)</span> is negative, your function should call <code class="docutils literal notranslate"><span class="pre">error</span></code> to report an error.)</p>
+<p>For convenience, we have provided you with a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">isPerfectSquare</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input an integer and returns whether that integer is a perfect square.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">The main observations we need to solve this problem are the following. First, since this problem talks about finding a way of rearranging things in a sequence, we’re going to approach this as a permutations-type problem. At each point, we’ll ask the question “which of the remaining numbers should come next?” Second, since we’re asking the question “is it possible to do this?” (or, equivalently, “are there any ways to do this?”), we can frame this as a backtracking problem. We’ll try out each option and, if any option works, immediately stop and report that we’ve found a solution.</p>
+<p class="sd-card-text">Simply trying out all possible permutations won’t be fast enough here. For example, with <span class="math notranslate nohighlight">\(n = 35\)</span>, there are <span class="math notranslate nohighlight">\(35! = 10,333,147,966,386,144,929,666,651,337,523,200,000,000\)</span> possible ways of ordering the numbers <span class="math notranslate nohighlight">\(1, 2, …, 35\)</span>. However, most of those orderings are “silly.” For example, no sequence starting with <span class="math notranslate nohighlight">\(1, 2\)</span> could possibly work, since <span class="math notranslate nohighlight">\(1 + 2\)</span> isn’t a perfect square. Restricting ourselves by only appending numbers to the sequence that form a perfect square when added into the previous total <em>dramatically</em> cuts down the number of options that we need to try, and makes it surprisingly quick to find a solution for <span class="math notranslate nohighlight">\(1, 2, …, 35\)</span>.</p>
+<p class="sd-card-text">Below are two different solutions to this problem. The first of these is based on the idea that to see whether we can extend the sequence, we only need to know what the last number in the partially-built sequence is. When we start, though, there is no previous number in the sequence. But not to worry - we can use an <code class="docutils literal notranslate"><span class="pre">Optional&lt;int&gt;</span></code> parameter to handle this. It’ll either hold <code class="docutils literal notranslate"><span class="pre">Nothing</span></code> if we’re figuring out what the first term in the sequence is, or it’ll hold the last term if there is one.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Can we use the remaining numbers to build up a sequence, given what the last</span>
+<span class="cm"> * number used in the sequence was?</span>
+<span class="cm"> */</span>
+<span class="n">Optional</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">findSequenceRec</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">unused</span><span class="p">,</span>
+<span class="w">                                      </span><span class="n">Optional</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">last</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base Case: If all numbers are used, we have our sequence! */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">unused</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">// Empty sequence works</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Recursive Case: Some number comes next. Try each of them and see which</span>
+<span class="cm">     * one we should pick.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">next</span><span class="o">:</span><span class="w"> </span><span class="n">unused</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* We can use this if either</span>
+<span class="cm">         *</span>
+<span class="cm">         * 1. there is no previous number (we&#39;re the first), or</span>
+<span class="cm">         * 2. we add with the previous number to a perfect square.</span>
+<span class="cm">         *</span>
+<span class="cm">         * We rely on short-circuit evaluation below. If last is Nothing,</span>
+<span class="cm">         * we don&#39;t evaluate the isPerfectSquare bit.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">last</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">Nothing</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">isPerfectSquare</span><span class="p">(</span><span class="n">next</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">last</span><span class="p">.</span><span class="n">value</span><span class="p">()))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="cm">/* See what happens if we extend with this number. */</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">findSequenceRec</span><span class="p">(</span><span class="n">unused</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">next</span><span class="p">,</span><span class="w"> </span><span class="n">next</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Nothing</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="cm">/* result currently holds a square sequence using all the</span>
+<span class="cm">                 * remaining numbers. We need to put our number at the front</span>
+<span class="cm">                 * of the sequence.</span>
+<span class="cm">                 */</span>
+<span class="w">                </span><span class="n">result</span><span class="p">.</span><span class="n">value</span><span class="p">().</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">next</span><span class="p">);</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Tried all options and none of them worked. Oh well! */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Nothing</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Optional</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">findSquareSequence</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Validate input. */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Don&#39;t be so negative!&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Build a set of the numbers 1, 2, 3, ..., n. */</span>
+<span class="w">    </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">options</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">findSequenceRec</span><span class="p">(</span><span class="n">options</span><span class="p">,</span><span class="w"> </span><span class="n">Nothing</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">We can also just use our traditional <code class="docutils literal notranslate"><span class="pre">soFar</span></code> parameter approach, which looks like this:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">findSequenceRec</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">unused</span><span class="p">,</span>
+<span class="w">                                      </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">soFar</span><span class="p">);</span>
+
+<span class="n">Optional</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">findSquareSequence</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Validate input. */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">error</span><span class="p">(</span><span class="s">&quot;Don&#39;t be so negative!&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Build a set of the numbers 1, 2, 3, ..., n. */</span>
+<span class="w">    </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">options</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">findSequenceRec</span><span class="p">(</span><span class="n">options</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">});</span>
+<span class="p">}</span>
+
+<span class="n">Optional</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">findSequenceRec</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">unused</span><span class="p">,</span>
+<span class="w">                                      </span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">soFar</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base Case: If all numbers are used, we have our sequence! */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">unused</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">soFar</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Recursive Case: Some number comes next. Try each of them and see which</span>
+<span class="cm">     * one we should pick.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">next</span><span class="o">:</span><span class="w"> </span><span class="n">unused</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* We can use this if either</span>
+<span class="cm">         *</span>
+<span class="cm">         * 1. the sequence is empty, so we&#39;re first in line, or</span>
+<span class="cm">         * 2. the sequence is not empty, but we sum to a perfect square</span>
+<span class="cm">         *    with the previous term.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">soFar</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">()</span><span class="w"> </span><span class="o">||</span>
+<span class="w">            </span><span class="n">isPerfectSquare</span><span class="p">(</span><span class="n">next</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">soFar</span><span class="p">[</span><span class="n">soFar</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">]))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="cm">/* See what happens if we extend with this number. */</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">findSequenceRec</span><span class="p">(</span><span class="n">unused</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">next</span><span class="p">,</span><span class="w"> </span><span class="n">soFar</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">next</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Nothing</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Tried all options and none of them worked. Oh well! */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Nothing</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="mmmmm-pancakes">
+<h3>Mmmmm… Pancakes!<a class="headerlink" href="#mmmmm-pancakes" title="Link to this heading">¶</a></h3>
+<p>Bill Gates is famous for a number of things – for his work at Microsoft, for his wide-scale philanthropy through the Bill and Melinda Gates Foundation, and, oddly enough, for a paper he co-authored about flip-ping pancakes.</p>
+<p>Imagine you have a stack of pancakes of different diameters. In an ideal pancake stack, the kind of pancake stack you’d see someone photograph and put on Instagram, the pancakes would be stacked in decreasing order of size from bottom to top. That way, all the delicious syrup and melted butter you put on top of the pancakes can drip down onto the rest of the stack. Otherwise, you’ll have a bigger pancake on top of a smaller one, serving as an edible umbrella that shields the lower pancakes from all the deliciousness you’re trying to spread onto them.</p>
+<p>The problem with trying to get a stack of pancakes in sorted order is that it’s really, really hard to pull a single pancake out of a stack and move it somewhere else in the stack. On the other hand, it’s actually not that difficult to slip a spatula under one of the pancakes, pick up that pancake and all the pancakes above it, then flip that part of the stack over. For example, in the illustration below, we can flip the top three pancakes in the stack over, then flip the top five pancakes of the resulting stack over:</p>
+<figure class="align-default" id="id1">
+<img alt="../../_images/pancakes.jpg" src="../../_images/pancakes.jpg" />
+<figcaption>
+<p><span class="caption-text"><em>Three stacks of pancakes. The first stack has the largest pancakes on the bottom, the smallest pancakes in the middle, and the rest of the pancakes on the top with the largest of the medium sized pancakes at the bottom of the top group of pancakes and the smallest of the medium sized pancakes at the very top of the stack. The middle stack of pancakes shows what happens after flipping the medium sized pancakes upside down. The bottom two pancakes are still the largest, and now the rest of the stack increasingly gets larger as you go up. The last stack is perfectly ordered with the largest pancake on the bottom, and the smallest pancake on top.</em></span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>Your task is to write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">sortStack</span><span class="p">(</span><span class="n">Stack</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pancakes</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">numFlips</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that accepts as input a <code class="docutils literal notranslate"><span class="pre">Stack&lt;double&gt;</span></code> representing the stack of pancakes (with each pancake represented by its width in cm) and a number of flips, then returns a sequence of at most <code class="docutils literal notranslate"><span class="pre">numFlips</span></code> flips needed to sort the stack. Each flip is specified as how many pancakes off the top of the stack you flipped. For example, the above illustration would correspond to the flip sequence <code class="docutils literal notranslate"><span class="pre">{3,</span> <span class="pre">5}</span></code>, since we first flipped the top three pancakes, then the top five pancakes. If there is no way to sort the stack with <code class="docutils literal notranslate"><span class="pre">numFlips</span></code> or fewer flips, you should return <code class="docutils literal notranslate"><span class="pre">Nothing</span></code>.</p>
+<p>Here are some notes on this problem:</p>
+<ul class="simple">
+<li><p>Treat this as a backtracking problem – try all possible series of flips you can make and see whether you can find one that gets everything into sorted order. As a result, don’t worry about efficiency.</p></li>
+<li><p>Your solution must be recursive.</p></li>
+<li><p>You can assume the pancakes all have different widths and that those widths are positive.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Stack</span></code> here is ordered the way the pancakes are – the topmost pancake is at the top of the stack, and the bottommost pancake is at the bottom.</p></li>
+</ul>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">The key idea behind this problem is to follow the hint suggested and to try all possible flips at each point in time. If we ever get the stack sorted, great! We’re done. If we’re out of moves, then we report failure.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Given a stack of pancakes, returns whether it&#39;s sorted. */</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">isSorted</span><span class="p">(</span><span class="n">Stack</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pancakes</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span><span class="w"> </span><span class="c1">// No pancakes have negative size;</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">pancakes</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* Check the next pancake. */</span>
+<span class="w">        </span><span class="kt">double</span><span class="w"> </span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pancakes</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">next</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">last</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="n">last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">next</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Pancakes are in increasing order! */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/* Given a stack of pancakes and a flip size, flips that many pancakes</span>
+<span class="cm"> * on the top of the stack.</span>
+<span class="cm"> */</span>
+<span class="n">Stack</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">flip</span><span class="p">(</span><span class="n">Stack</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pancakes</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">numToFlip</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Take the top pancakes off the stack and run them into a queue.</span>
+<span class="cm">     * This preserves the order in which they were removed.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="n">Queue</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">buffer</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">numToFlip</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">buffer</span><span class="p">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">pancakes</span><span class="p">.</span><span class="n">pop</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* Move the pancakes back. */</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">buffer</span><span class="p">.</span><span class="n">isEmpty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">pancakes</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">buffer</span><span class="p">.</span><span class="n">dequeue</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">pancakes</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">Optional</span><span class="o">&lt;</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">sortStack</span><span class="p">(</span><span class="n">Stack</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pancakes</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">numFlips</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base Case: If the stack is sorted, great! We&#39;re done, and no flips</span>
+<span class="cm">     * were needed.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isSorted</span><span class="p">(</span><span class="n">pancakes</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">};</span><span class="w"> </span><span class="c1">// No flips</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Base Case: If the stack isn&#39;t sorted and we&#39;re out of flips, then</span>
+<span class="cm">     * there is no way to sort things.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">numFlips</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Nothing</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Recursive Case: The stack isn&#39;t sorted and we still have flips left.</span>
+<span class="cm">     * The next flip could flip 1, 2, 3, ..., or all N of the pancakes.</span>
+<span class="cm">     * Try each option and see whether any of them work.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">numToFlip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">numToFlip</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">pancakes</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">numToFlip</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="cm">/* Make the flip and see if it works. */</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sortStack</span><span class="p">(</span><span class="n">flip</span><span class="p">(</span><span class="n">pancakes</span><span class="p">,</span><span class="w"> </span><span class="n">numToFlip</span><span class="p">),</span><span class="w"> </span><span class="n">numFlips</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">result</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">Nothing</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="cm">/* The result holds all the remaining flips but doesn&#39;t know about</span>
+<span class="cm">             * the flip we just did. Insert that flip at the beginning.</span>
+<span class="cm">             */</span>
+<span class="w">            </span><span class="n">result</span><span class="p">.</span><span class="n">value</span><span class="p">().</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">numToFlip</span><span class="p">);</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* If we&#39;re here, then no matter which flip we make first, we cannot</span>
+<span class="cm">     * get the pancakes sorted. Give up.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">Nothing</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../assign-3.2/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>下一页</span>
+                </div>
+                <div class="title">Assignment 3.2 Recursion to the Rescue!</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../assign-3.1/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>上一页</span>
+                </div>
+                
+                <div class="title">Assignment 3.1 A Visit to Recursia</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, <a href='https://www.stickmind.com/' target="_blank">StickMind</a>
+            </div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            本页目录
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Section 3.2 Recursion and Backtracking</a><ul>
+<li><a class="reference internal" href="#recursive-backtracking">Recursive Backtracking</a><ul>
+<li><a class="reference internal" href="#win-sum-lose-sum">Win Sum, Lose Sum</a></li>
+<li><a class="reference internal" href="#weights-and-balances">Weights and Balances</a></li>
+<li><a class="reference internal" href="#tug-of-war">Tug-of-War</a></li>
+<li><a class="reference internal" href="#all-squared-away">All Squared Away</a></li>
+<li><a class="reference internal" href="#mmmmm-pancakes">Mmmmm… Pancakes!</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=7d86a446"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/tabs.js?v=3ee01567"></script>
+    <script>let toggleHintShow = '';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+    </body>
+</html>

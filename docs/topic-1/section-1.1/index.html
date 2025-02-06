@@ -1,0 +1,850 @@
+<!doctype html>
+<html class="no-js" lang="zh-CN" data-content_root="../../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Assignment 1. Welcome to C++" href="../assign-1.1/index.html" /><link rel="prev" title="Topic 1. Getting Started" href="../index.html" />
+
+    
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+        <title>Section 1.1 C++ and Recursion - CS101B Programming Abstractions</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pied-piper-admonition.css?v=e32e2275" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">CS101B Programming Abstractions</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  
+  <span class="sidebar-brand-text">CS101B Programming Abstractions</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="搜索" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../resources/index.html">Resources</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Resources</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Workflow/index.html">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/PythonToCpp/index.html">Python to C++ Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Debugging/index.html">Debugging Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../resources/Testing/index.html">Testing Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-0/index.html">Introduction</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Introduction</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-0/assign-0/index.html">Assignment 0. Welcome to CS101B!</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../index.html">Topic 1. Getting Started</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Topic 1. Getting Started</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Section 1.1 C++ and Recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../assign-1.1/index.html">Assignment 1. Welcome to C++</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-2/index.html">Topic 2. Containers</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Topic 2. Containers</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-2/section-2.1/index.html">Section 2. Containers and Recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-2/assign-2.1/index.html">Assignment 2. Fun with Collections</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-3/index.html">Topic 3. Recursion</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of Topic 3. Recursion</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/section-3.1/index.html">Section 3.1 Recursion and Iteration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/assign-3.1/index.html">Assignment 3.1 A Visit to Recursia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/section-3.2/index.html">Section 3.2 Recursion and Backtracking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-3/assign-3.2/index.html">Assignment 3.2 Recursion to the Rescue!</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../topic-4/index.html">Topic 4. Algorithm and Abstraction</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of Topic 4. Algorithm and Abstraction</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/section-4.1/index.html">Section 4.1 Big-O, Searching and Sorting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/section-4.2/index.html">Section 4.2 Class Design and Dynamic Memory Allocation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../topic-4/assign-4.1/index.html">Assignment 4.1 Bag’O Big-O</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../topic-5/index.html">Topic 5. Data Structures</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>返回顶部</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section class="tex2jax_ignore mathjax_ignore" id="section-1-1-c-and-recursion">
+<h1>Section 1.1 C++ and Recursion<a class="headerlink" href="#section-1-1-c-and-recursion" title="Link to this heading">¶</a></h1>
+<p>Each week, you’ll meet for about an hour in a small discussion section. Your section leader will help review the material, explore some topics in more depth, and generally answer questions as appropriate. These section problems are designed to give you some extra practice with the course material. You’re not expected to complete these problems before attending section and we won’t be grading them for credit. Instead, think of them as a resource you can use to practice with the material as you see fit. You’re not expected to cover all these problems in section, so feel free to look over the solutions to the problems you didn’t complete.</p>
+<p>📦 <a class="reference download internal" download="" href="../../_downloads/1672e279e4a1ba7d72b55b3c366fd36d/Section-1.1.zip"><span class="xref download myst">Starter code</span></a></p>
+<section id="c-fundamentals-code-reading">
+<h2>C++ Fundamentals: Code Reading<a class="headerlink" href="#c-fundamentals-code-reading" title="Link to this heading">¶</a></h2>
+<section id="returning-and-printing">
+<h3>Returning and Printing<a class="headerlink" href="#returning-and-printing" title="Link to this heading">¶</a></h3>
+<p><em>Topics: Function call and return, return types</em></p>
+<p>Below is a series of four <code class="docutils literal notranslate"><span class="pre">printLyrics_v#</span></code> functions, each of which has a blank where the return type should be. For each function, determine</p>
+<ul class="simple">
+<li><p>what the return type of the function should be,</p></li>
+<li><p>what value, if any, is returned, and</p></li>
+<li><p>what output, if any, will be produced if that function is called.</p></li>
+</ul>
+<p>Is it appropriate for each of these functions to be named <code class="docutils literal notranslate"><span class="pre">printLyrics</span></code>? Why or why not?</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">_____</span><span class="w"> </span><span class="nf">printLyrics_v1</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Havana ooh na na&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">_____</span><span class="w"> </span><span class="nf">printLyrics_v2</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Havana ooh na na&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">_____</span><span class="w"> </span><span class="nf">printLyrics_v3</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;H&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">_____</span><span class="w"> </span><span class="nf">printLyrics_v4</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;H&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">printLyrics_v1</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Havana ooh na na&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">string</span><span class="w"> </span><span class="nf">printLyrics_v2</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;Havana ooh na na&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">string</span><span class="w"> </span><span class="nf">printLyrics_v3</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;H&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">char</span><span class="w"> </span><span class="nf">printLyrics_v4</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="sc">&#39;H&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details><p>Of these four functions, only <code class="docutils literal notranslate"><span class="pre">printLyrics_v1</span></code> will print anything. Specifically, it prints out the string <code class="docutils literal notranslate"><span class="pre">&quot;Havana</span> <span class="pre">ooh</span> <span class="pre">na</span> <span class="pre">na.&quot;</span></code>. The name “<code class="docutils literal notranslate"><span class="pre">printLyrics</span></code>” is inappropriate for the other functions, as those functions don’t actually print anything. 😃</p>
+<p>The function <code class="docutils literal notranslate"><span class="pre">printLyrics_v1</span></code> doesn’t return anything – it just sends information to the console. As a result, its return type should be <code class="docutils literal notranslate"><span class="pre">void</span></code>. The functions <code class="docutils literal notranslate"><span class="pre">printLyrics_v2</span></code> and <code class="docutils literal notranslate"><span class="pre">printLyrics_v3</span></code> each return strings, since C++ treats anything in double-quotes as a string. Finally, <code class="docutils literal notranslate"><span class="pre">printLyrics_v4</span></code> returns a <code class="docutils literal notranslate"><span class="pre">char</span></code>, since C++ treats anything in single-quotes as a character.</p>
+<div class="docutils">
+<p class="rubric" id="testing-and-debugging">Testing and Debugging</p>
+<p><em>Topics: Testing, loops, types, function call and return</em></p>
+<p>Consider the following piece of code:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Watch out! This code contains many bugs! */</span>
+<span class="kt">bool</span><span class="w"> </span><span class="nf">hasDoubledCharacter</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">text</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">string</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">        </span><span class="n">string</span><span class="w"> </span><span class="n">previous</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">previous</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This code attempts to check whether a string contains at least two consecutive copies of the same character. Unfortunately, it has some errors in it.</p>
+<ol class="arabic simple">
+<li><p>Identify and fix all the errors in this code.</p></li>
+</ol>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">Here’s a list of the errors in the code:</p>
+<ol class="arabic simple">
+<li><p class="sd-card-text">It uses the <code class="docutils literal notranslate"><span class="pre">string</span></code> type instead of the <code class="docutils literal notranslate"><span class="pre">char</span></code> type when representing individual characters in the string. This will cause the code to not compile.</p></li>
+<li><p class="sd-card-text">On the first iteration of the loop, we will try to look at the -1 st character of the string, which will probably cause a crash and definitely is wrong.</p></li>
+<li><p class="sd-card-text">The <code class="docutils literal notranslate"><span class="pre">return</span></code> statement inside the for loop means that we’ll never look at more than one pair of characters; the function will exit as soon as the return statement is executed, so we can’t progress from one iteration to the next.</p></li>
+<li><p class="sd-card-text">If the string doesn’t contain any doubled characters, the function never returns a value.</p></li>
+</ol>
+<p class="sd-card-text">We can fix all of these errors by rewriting the code like this:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">hasDoubledCharacter</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">text</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">        </span><span class="kt">char</span><span class="w"> </span><span class="n">previous</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">current</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">previous</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">To make things cleaner, we could remove the <code class="docutils literal notranslate"><span class="pre">current</span></code> and <code class="docutils literal notranslate"><span class="pre">previous</span></code> variables:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">hasDoubledCharacter</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">text</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">Although we hadn’t talked about pass-by-<code class="docutils literal notranslate"><span class="pre">const</span></code> reference in the first week of class, we really should use the pass-by-<code class="docutils literal notranslate"><span class="pre">const</span></code> reference here because we are reading but not modifying the <code class="docutils literal notranslate"><span class="pre">text</span></code> parameter.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">hasDoubledCharacter</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">text</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></div>
+<p>We can write test cases to check our work and ensure that the code indeed works as expected. Imagine you’re given the following provided test:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">PROVIDED_TEST</span><span class="p">(</span><span class="s">&quot;Detects doubled characters&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">&quot;aa&quot;</span><span class="p">));</span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">&quot;bb&quot;</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This test checks some cases, but leaves others unchecked. As a result, even if these tests pass, it might still be the case that the function is incorrect.</p>
+<ol class="arabic simple" start="2">
+<li><p>Identify three types of strings not tested by the above test case. For each of those types of strings, write a <code class="docutils literal notranslate"><span class="pre">STUDENT_TEST</span></code> that covers that type of string.</p></li>
+</ol>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">Notice that the test cases we have are purely for</p>
+<ul class="simple">
+<li><p class="sd-card-text">strings that have doubled characters,</p></li>
+<li><p class="sd-card-text">where the doubled letters are at the beginning,</p></li>
+<li><p class="sd-card-text">where there are no undoubled characters,</p></li>
+<li><p class="sd-card-text">where the doubled characters are lower-case letters, and</p></li>
+<li><p class="sd-card-text">that have length exactly two.</p></li>
+</ul>
+<p class="sd-card-text">To find some classes of strings that don’t have these properties, we can simply break all of the above rules and see what we find! So let’s write tests for each of the following types of strings:</p>
+<ul class="simple">
+<li><p class="sd-card-text">strings that don’t have doubled letters;</p></li>
+<li><p class="sd-card-text">strings that have doubled letters, but not at the beginning;</p></li>
+<li><p class="sd-card-text">strings that have doubled letters, but also some non-doubled letters;</p></li>
+<li><p class="sd-card-text">strings that have doubled non-letter characters; and</p></li>
+<li><p class="sd-card-text">strings whose lengths aren’t two (maybe shorter strings or longer strings).</p></li>
+</ul>
+<p class="sd-card-text">Here’s some sample tests we could write:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">&quot;Strings without doubled characters&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="o">!</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">&quot;abcd&quot;</span><span class="p">));</span><span class="w"> </span><span class="c1">// Nothing doubled</span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="o">!</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">&quot;aba&quot;</span><span class="p">));</span><span class="w"> </span><span class="c1">// a appears twice, but not consecutively</span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="o">!</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">&quot;Aa&quot;</span><span class="p">));</span><span class="w"> </span><span class="c1">// Not technically the same character</span>
+<span class="p">}</span>
+
+<span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">&quot;Strings with doubled characters not at the front&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">&quot;abb&quot;</span><span class="p">));</span><span class="w"> </span><span class="c1">// Back</span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">&quot;abcddabc&quot;</span><span class="p">));</span><span class="w"> </span><span class="c1">// Middle</span>
+<span class="p">}</span>
+
+<span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">&quot;Strings with doubled non-letter characters&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">&quot;**&quot;</span><span class="p">));</span><span class="w"> </span><span class="c1">// Symbols</span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">));</span><span class="w"> </span><span class="c1">// Spaces</span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">&quot;00&quot;</span><span class="p">));</span><span class="w"> </span><span class="c1">// Numbers</span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">&quot;!!&quot;</span><span class="p">));</span><span class="w"> </span><span class="c1">// Punctuation</span>
+<span class="p">}</span>
+
+<span class="n">STUDENT_TEST</span><span class="p">(</span><span class="s">&quot;Short strings&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="o">!</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">));</span><span class="w"> </span><span class="c1">// Too short</span>
+<span class="w">    </span><span class="n">EXPECT</span><span class="p">(</span><span class="o">!</span><span class="n">hasDoubledCharacter</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">));</span><span class="w"> </span><span class="c1">// Too short</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="references-available-upon-request">
+<h3>References Available Upon Request<a class="headerlink" href="#references-available-upon-request" title="Link to this heading">¶</a></h3>
+<p><em>Topic: Reference parameters, range-based for loops</em></p>
+<p>Reference parameters are an important part of C++ programming, but can take some getting used to if you’re not familiar with them. Trace through the following code. What does it print?</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="nf">printVector</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">elem</span><span class="o">:</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">elem</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">maui</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">values</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1258</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">moana</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">elem</span><span class="o">:</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">elem</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mi">137</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">heihei</span><span class="p">(</span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">elem</span><span class="o">:</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">elem</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">teFiti</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">elem</span><span class="o">:</span><span class="w"> </span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="n">elem</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">137</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="w"> </span><span class="p">};</span>
+<span class="w">    </span><span class="n">maui</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printVector</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+<span class="w">    </span><span class="n">moana</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printVector</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+<span class="w">    </span><span class="n">heihei</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printVector</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+<span class="w">    </span><span class="n">teFiti</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printVector</span><span class="p">(</span><span class="n">values</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">Here’s the output from the program:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1 3 7
+1 3 7
+2 4 8
+2 4 8
+</pre></div>
+</div>
+<p class="sd-card-text">Here’s a breakdown of where this comes from:</p>
+<ul class="simple">
+<li><p class="sd-card-text">The <code class="docutils literal notranslate"><span class="pre">maui</span></code> function takes its argument by value, so it’s making changes to a copy of the original vector, not the vector itself. That means that the values are unchanged back in main.</p></li>
+<li><p class="sd-card-text">The <code class="docutils literal notranslate"><span class="pre">moana</span></code> function uses a range-based for loop to access the elements of the vector. This makes a copy of each element of the vector, so the changes made in the loop only change the temporary copy and not the elements of the vector. That makes that the values are unchanged back in main.</p></li>
+<li><p class="sd-card-text"><code class="docutils literal notranslate"><span class="pre">heihei</span></code>, on the other hand, uses <code class="docutils literal notranslate"><span class="pre">int&amp;</span></code> as its type for the range-based for loop, so in a sense it’s really iterating over the elements of the underlying vector. Therefore, its changes stick.</p></li>
+<li><p class="sd-card-text">The <code class="docutils literal notranslate"><span class="pre">teFiti</span></code> function creates and returns a new vector with a bunch of updated values, but the return value isn’t captured back in main.</p></li>
+</ul>
+</div>
+</details></section>
+</section>
+<section id="c-fundamentals-code-writing">
+<h2>C++ Fundamentals: Code Writing<a class="headerlink" href="#c-fundamentals-code-writing" title="Link to this heading">¶</a></h2>
+<section id="the-license-plate-game">
+<h3>The License Plate Game<a class="headerlink" href="#the-license-plate-game" title="Link to this heading">¶</a></h3>
+<p>If you’ve driven on California streets, you may have noticed that California license plates generally consist of a number, three letters, then another three numbers. For example, you might see these license plates:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">5</span><span class="n">NPT839</span>	<span class="mi">4</span><span class="n">KDD232</span>	<span class="mi">7</span><span class="n">FTW142</span>
+</pre></div>
+</div>
+<p>On a long highway drive in California, one fun way to pass the time is to play the <strong><em>license plate game</em></strong>, in which you look at the license plate of the nearest car, then try to find a word that uses the letters in that license plate in the order in which they appear. For example, for the license plate <code class="docutils literal notranslate"><span class="pre">5NPT839</span></code>, you might use the word <code class="docutils literal notranslate"><span class="pre">INPUT</span></code>. For <code class="docutils literal notranslate"><span class="pre">4KDD232</span></code>, you could use <code class="docutils literal notranslate"><span class="pre">KIDDING</span></code>. For <code class="docutils literal notranslate"><span class="pre">7FTW142</span></code>, you could use <code class="docutils literal notranslate"><span class="pre">AFTERGLOW</span></code>.</p>
+<p>For a word to match a license plate, it has to contain all the letters in the license plate in the order in which they occur. This means, for instance, that <code class="docutils literal notranslate"><span class="pre">FTW</span></code> doesn’t match <code class="docutils literal notranslate"><span class="pre">WATERFALL</span></code> because the letters are in the wrong order. Similarly, <code class="docutils literal notranslate"><span class="pre">NNN</span></code> doesn’t match <code class="docutils literal notranslate"><span class="pre">ENTIRE</span></code>, since only one of the <code class="docutils literal notranslate"><span class="pre">N</span></code>’s was matched.</p>
+<p>Certain letter combinations are a lot harder to find words for than others. The letter combination <code class="docutils literal notranslate"><span class="pre">YRW</span></code> only matches a handful of words (like <code class="docutils literal notranslate"><span class="pre">EYEBROW</span></code>). The combination <code class="docutils literal notranslate"><span class="pre">XCX</span></code> only matches two English words (<code class="docutils literal notranslate"><span class="pre">EXECUTRIX</span></code>, a woman who executes a will, and its plural <code class="docutils literal notranslate"><span class="pre">EXECUTRIXES</span></code>), and some combinations don’t match anything at all. There are no English words that match <code class="docutils literal notranslate"><span class="pre">QQQ</span></code>, for example.</p>
+<p>Write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">wordMatchesPlate</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">word</span><span class="p">,</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="n">plate</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a word and a California license plate, then returns whether the word is a match for that license plate. Your code should work regardless of whether the letters in <code class="docutils literal notranslate"><span class="pre">word</span></code> or <code class="docutils literal notranslate"><span class="pre">plate</span></code> are in UPPER CASE or in lower case. The license plate may be a regular California license plate (e.g. <code class="docutils literal notranslate"><span class="pre">4KDD232</span></code>), or might be a custom plate (I recently saw <code class="docutils literal notranslate"><span class="pre">2FAST4U</span></code> on the freeway). In either case, the function should return whether all the letters of the license plate appear in the same relative order within the word, ignoring digits and other symbols.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">bool</span><span class="w"> </span><span class="nf">wordMatchesPlate</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">word</span><span class="p">,</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="n">plate</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Do case conversion up front so that we can assume all letters have</span>
+<span class="cm">     * the same representation.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="n">word</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">toUpperCase</span><span class="p">(</span><span class="n">word</span><span class="p">);</span>
+<span class="w">    </span><span class="n">plate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">toUpperCase</span><span class="p">(</span><span class="n">plate</span><span class="p">);</span>
+
+<span class="w">    </span><span class="cm">/* Track where we are within the word. */</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Scan across the characters of the license plate. For each letter, see</span>
+<span class="cm">     * if we can find it in the word without having to look backwards.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="n">ch</span><span class="o">:</span><span class="w"> </span><span class="n">plate</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">isalpha</span><span class="p">(</span><span class="n">ch</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="cm">/* See if we can find that character. */</span>
+<span class="w">            </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">word</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">ch</span><span class="p">,</span><span class="w"> </span><span class="n">index</span><span class="p">);</span>
+
+<span class="w">            </span><span class="cm">/* Didn&#39;t find it? Oops. */</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">index</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">string</span><span class="o">::</span><span class="n">npos</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="cm">/* Skip past that character. */</span>
+<span class="w">            </span><span class="n">index</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="cm">/* If we&#39;re here, we&#39;ve matched all the charactes in the right order. */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="problem-five-the-look-and-say-sequence">
+<h3>Problem Five: The Look-And-Say Sequence<a class="headerlink" href="#problem-five-the-look-and-say-sequence" title="Link to this heading">¶</a></h3>
+<p><em>(Thanks to Jerry Cain for this amazing problem.)</em></p>
+<p>The <strong><em>look-and-say sequence</em></strong> is the sequence of numbers that begins as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">1</span>
+<span class="mi">11</span>
+<span class="mi">21</span>
+<span class="mi">1211</span>
+<span class="mi">111221</span>
+<span class="mi">312211</span>
+<span class="mi">13112221</span>
+</pre></div>
+</div>
+<p>Each number in the sequence is generated by “reciting” its predecessor, and then capturing what was said in a number format that should be clear from the example below. Reciting <code class="docutils literal notranslate"><span class="pre">111221</span></code> out loud, you’d look and say: 3 ones, followed by 2 twos, followed by 1 one, or <code class="docutils literal notranslate"><span class="pre">312211</span></code>. Reading <code class="docutils literal notranslate"><span class="pre">312211</span></code> aloud, you’d say: 1 three, 1 one, 2 twos, 2 ones, or <code class="docutils literal notranslate"><span class="pre">13112221</span></code>.</p>
+<p>Even if a number doesn’t fall in the actual sequence, it should be clear how to generate its look-and-say successor. Write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">string</span><span class="w"> </span><span class="nf">lookAndSay</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">number</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes a number in string form, and returns its look-and-say form. You can assume the incoming string contains only digits.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">This solution works by finding a run of equal values, then writing out how many times it saw each value.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">string</span><span class="w"> </span><span class="nf">lookAndSay</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">number</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Current position. */</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">index</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">number</span><span class="p">.</span><span class="n">length</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">numCopies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">        </span><span class="cm">/* Keep scanning forward until we either (1) hit the end of the string</span>
+<span class="cm">         * or (2) find a character that doesn&#39;t match the current one.</span>
+<span class="cm">         */</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">numCopies</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">number</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span>
+<span class="w">               </span><span class="n">number</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">number</span><span class="p">[</span><span class="n">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">numCopies</span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">numCopies</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="cm">/* Write down the appropriate number of copies. */</span>
+<span class="w">        </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">to_string</span><span class="p">(</span><span class="n">numCopies</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">number</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+
+<span class="w">        </span><span class="cm">/* Step past all the copies we read. */</span>
+<span class="w">        </span><span class="n">index</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">numCopies</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+<section id="recursion-fundamentals">
+<h2>Recursion Fundamentals<a class="headerlink" href="#recursion-fundamentals" title="Link to this heading">¶</a></h2>
+<section id="recursion-tracing">
+<h3>Recursion Tracing<a class="headerlink" href="#recursion-tracing" title="Link to this heading">¶</a></h3>
+<p><em>Topics: Recursion, strings, recursion tracing</em></p>
+<p>In lecture, we wrote the following recursive function to reverse a string:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">string</span><span class="w"> </span><span class="nf">reverseOf</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">reverseOf</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Trace through the execution of <code class="docutils literal notranslate"><span class="pre">reverseOf(&quot;stop&quot;)</span></code> along the lines of what we did in Wednesday’s lecture, showing stack frames for each call that’s made and how the final value gets computed.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">Our initial call to <code class="docutils literal notranslate"><span class="pre">reverseOf(&quot;stop&quot;)</span></code> looks like this:</p>
+<p class="sd-card-text"><img alt="The initial stack frame of reverseOf, with &quot;stop&quot; passed in as s." src="../../_images/trace_1.png" /></p>
+<p class="sd-card-text">This call then fires off a call to <code class="docutils literal notranslate"><span class="pre">reverseOf(&quot;top&quot;)</span></code>, which looks like this:</p>
+<p class="sd-card-text"><img alt="The second stack frame of reverseOf, with &quot;top&quot; passed in as s." src="../../_images/trace_2.png" /></p>
+<p class="sd-card-text">This call fires off a call to <code class="docutils literal notranslate"><span class="pre">reverseOf(&quot;op&quot;)</span></code>:</p>
+<p class="sd-card-text"><img alt="The third stack frame of reverseOf, with &quot;op&quot; passed in as s." src="../../_images/trace_3.png" /></p>
+<p class="sd-card-text">This in turn calls <code class="docutils literal notranslate"><span class="pre">reverseOf(&quot;p&quot;)</span></code>:</p>
+<p class="sd-card-text"><img alt="The fourth stack frame of reverseOf, with &quot;p&quot; passed in as s." src="../../_images/trace_4.png" /></p>
+<p class="sd-card-text">This in turn calls <code class="docutils literal notranslate"><span class="pre">reverseOf(&quot;&quot;)</span></code>:</p>
+<p class="sd-card-text"><img alt="The fifth stack frame of reverseOf, with the empty string passed in as s." src="../../_images/trace_5.png" /></p>
+<p class="sd-card-text">This triggers the base case and returns the empty string. (Notice that the reverse of the empty string <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code> is indeed the empty string <code class="docutils literal notranslate"><span class="pre">&quot;&quot;</span></code>):</p>
+<p class="sd-card-text"><img alt="The base case is hit, so we return the empty string." src="../../_images/trace_6.png" /></p>
+<p class="sd-card-text">We now append <code class="docutils literal notranslate"><span class="pre">p</span></code> to return <code class="docutils literal notranslate"><span class="pre">&quot;p&quot;</span></code>:</p>
+<p class="sd-card-text"><img alt="&quot;p&quot; is returned back from reverseOf the third stack frame." src="../../_images/trace_7.png" /></p>
+<p class="sd-card-text">We now append <code class="docutils literal notranslate"><span class="pre">o</span></code> to return <code class="docutils literal notranslate"><span class="pre">&quot;po&quot;</span></code>:</p>
+<p class="sd-card-text"><img alt="&quot;po&quot; is returned back from reverseOf the second stack frame." src="../../_images/trace_8.png" /></p>
+<p class="sd-card-text">We append <code class="docutils literal notranslate"><span class="pre">t</span></code> to return <code class="docutils literal notranslate"><span class="pre">&quot;pot&quot;</span></code>:</p>
+<p class="sd-card-text"><img alt="&quot;pot&quot; is returned back from reverseOf the first stack frame." src="../../_images/trace_9.png" /></p>
+<p class="sd-card-text">And finally we append <code class="docutils literal notranslate"><span class="pre">s</span></code> to return <code class="docutils literal notranslate"><span class="pre">&quot;pots&quot;</span></code> back to whoever called us. Yay!</p>
+</div>
+</details></section>
+<section id="human-pyramids">
+<h3>Human Pyramids<a class="headerlink" href="#human-pyramids" title="Link to this heading">¶</a></h3>
+<p><em>Topics: Recursion</em></p>
+<p>A <strong><em>human pyramid</em></strong> is a triangular stack of a bunch of people where each person (except the person at the top) supports their weight on the two people below them. A sample human pyramid is shown below.</p>
+<p><img alt="A picture of a human pyramid, with one person at the top, two people in the middle, and three people at the bottom level." src="../../_images/human_pyramid.png" /></p>
+<p>Your task is to write a function</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">peopleInPyramidOfHeight</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input the height of the human pyramid (the number of layers; the pyramid to the right has height three) and returns the number of people in that pyramid. Your function should be completely recursive and should not involve any loops of any sort. As a hint, think about what happens if you take the bottom layer off of a human pyramid.</p>
+<p>Once you’ve written your solution, trace through the execution of <code class="docutils literal notranslate"><span class="pre">peopleInPyramidOfHeight(3)</span></code> similarly to how we traced through <code class="docutils literal notranslate"><span class="pre">factorial(5)</span></code> in class, showing each function call and how values get returned.</p>
+<p>If you’re given a negative value for <code class="docutils literal notranslate"><span class="pre">n</span></code>, you should call <code class="docutils literal notranslate"><span class="pre">error</span></code> to report an error. After all, you can’t have a human pyramid of negative height.</p>
+<p>As a note, there’s a closed-form solution to this problem (you can directly compute how many people are in the pyramid just from the height through a simple formula). It’s described in the solutions.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">The key recursive insight here is that a human pyramid of height 0 is a pyramid of no people, and that a human pyramid of height <em>n</em> is a group of <em>n</em> people supporting a human pyramid of <em>n-1</em> people. Using that idea, we can write this function:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span><span class="w"> </span><span class="nf">peopleInPyramidOfHeight</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">error</span><span class="p">(</span><span class="s">&quot;You owe me some people. :-)&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">peopleInPyramidOfHeight</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">As a note, you can directly evaluate <code class="docutils literal notranslate"><span class="pre">peopleInPyramidOfHeight(n)</span></code> by computing <code class="docutils literal notranslate"><span class="pre">n(n</span> <span class="pre">+</span> <span class="pre">1)</span> <span class="pre">/</span> <span class="pre">2</span></code>. We’ll see a really cool intuition for this later in the quarter!</p>
+</div>
+</details></section>
+<section id="eeyohrcaatr-every-other-character">
+<h3>EeyOhrCaatr (Every Other Character)<a class="headerlink" href="#eeyohrcaatr-every-other-character" title="Link to this heading">¶</a></h3>
+<p>Write a function</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">string</span> <span class="n">everyOtherCharacterOf</span><span class="p">(</span><span class="n">string</span> <span class="nb">input</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>that takes as input a string, then returns a string consisting of every other character of the input string, starting with the front character of the string (the character at position 0 within the string). Implement this function in two different ways. First, implement the function iteratively using loops. Next, implement the function recursively.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Solution</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">First, let’s talk about how to solve this one iteratively. There are several strategies that work here. My personal favorite way of coding this one up uses a loop that counts up two steps at a time, retrieving the relevant characters from the input:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">string</span><span class="w"> </span><span class="nf">everyOtherCharacterOf</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Build up the result from scratch. */</span>
+<span class="w">    </span><span class="n">string</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+
+<span class="w">    </span><span class="cm">/* Start at position zero, take steps of size two, and don&#39;t overshoot</span>
+<span class="cm">     * the end of the string.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">input</span><span class="p">.</span><span class="n">length</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">input</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p class="sd-card-text">Now, let’s think about this one recursively. Whenever we’re tasked with solving something recursively, we should answer two separate questions. First, which cases are so simple that we can solve them directly? Those will be our base cases. Second, if we have a “larger” input, one where we can’t just immediately read off the answer, how can we make the problem simpler?</p>
+<p class="sd-card-text">To answer these questions, let’s try to work out what <code class="docutils literal notranslate"><span class="pre">everyOtherCharacterOf(&quot;Elena</span> <span class="pre">Kagan&quot;)</span></code> works out to. If we compute this, we should get back the string <code class="docutils literal notranslate"><span class="pre">&quot;EeaKgn&quot;</span></code>. We can see this by looking at the original string and selecting every other character:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Elena</span> <span class="n">Kagan</span>
+<span class="n">E</span> <span class="n">e</span> <span class="n">a</span> <span class="n">K</span> <span class="n">g</span> <span class="n">n</span>
+</pre></div>
+</div>
+<p class="sd-card-text">This is where we can start looking for our recursive insight. In particular, look at what happens if we slice the strings at the indicated positions:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">El</span><span class="o">|</span><span class="n">ena</span> <span class="n">Kagan</span>
+<span class="n">E</span> <span class="o">|</span><span class="n">e</span> <span class="n">a</span> <span class="n">K</span> <span class="n">g</span> <span class="n">n</span>
+</pre></div>
+</div>
+<p class="sd-card-text">Notice that every other character of <code class="docutils literal notranslate"><span class="pre">&quot;ena</span> <span class="pre">Kagan&quot;</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;eaKgn&quot;</span></code>. In other words, to get every other character of <code class="docutils literal notranslate"><span class="pre">&quot;Elena</span> <span class="pre">Kagan&quot;</span></code>, we can take the <code class="docutils literal notranslate"><span class="pre">E</span></code> from the front of the string, discard the <code class="docutils literal notranslate"><span class="pre">l</span></code> that comes after it, then form every other character of what remains (<code class="docutils literal notranslate"><span class="pre">&quot;ena</span> <span class="pre">Kagan&quot;</span></code>). This is looking like it might be a useful recursive insight!</p>
+<p class="sd-card-text">We now need to think about our really simple cases. Are there any strings where it’s “obvious” what the answer should be? With a little thought and exploration, you can find that asking for every other character of the empty string is pretty easy - that’s just going to be the empty string itself. And similarly, if you ask for every other character of a string of length one, what you’ll get back will be just the string itself. (Do you see why?) Putting these insights together, we get the following recursive solution:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="n">string</span><span class="w"> </span><span class="nf">everyOtherCharacterOf</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">input</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="cm">/* Base Case: Getting every other character of a string of length 0 or</span>
+<span class="cm">     * of length 1 yields the original string.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">length</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">input</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="cm">/* Recursive Case: Take the first character of the string, discard the</span>
+<span class="cm">     * second, and recursively take every other string of what&#39;s left.</span>
+<span class="cm">     */</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">everyOtherCharacterOf</span><span class="p">(</span><span class="n">input</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="mi">2</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../assign-1.1/index.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>下一页</span>
+                </div>
+                <div class="title">Assignment 1. Welcome to C++</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>上一页</span>
+                </div>
+                
+                <div class="title">Topic 1. Getting Started</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2024, <a href='https://www.stickmind.com/' target="_blank">StickMind</a>
+            </div>
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            本页目录
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Section 1.1 C++ and Recursion</a><ul>
+<li><a class="reference internal" href="#c-fundamentals-code-reading">C++ Fundamentals: Code Reading</a><ul>
+<li><a class="reference internal" href="#returning-and-printing">Returning and Printing</a></li>
+<li><a class="reference internal" href="#references-available-upon-request">References Available Upon Request</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#c-fundamentals-code-writing">C++ Fundamentals: Code Writing</a><ul>
+<li><a class="reference internal" href="#the-license-plate-game">The License Plate Game</a></li>
+<li><a class="reference internal" href="#problem-five-the-look-and-say-sequence">Problem Five: The Look-And-Say Sequence</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#recursion-fundamentals">Recursion Fundamentals</a><ul>
+<li><a class="reference internal" href="#recursion-tracing">Recursion Tracing</a></li>
+<li><a class="reference internal" href="#human-pyramids">Human Pyramids</a></li>
+<li><a class="reference internal" href="#eeyohrcaatr-every-other-character">EeyOhrCaatr (Every Other Character)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=7d86a446"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/tabs.js?v=3ee01567"></script>
+    <script>let toggleHintShow = '';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    </body>
+</html>
