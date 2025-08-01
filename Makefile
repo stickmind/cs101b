@@ -9,11 +9,15 @@ PUBLISH       = docs
 
 .PHONY: help clean
 
+server:
+	make clean && make build
+	$(SPHINXAUTO) $(SRC) $(PUBLISH)
+
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo "  server    to run all doctests embedded in the documentation (if enabled)"
 
-init:
+config:
 	pip install -r requirements.txt
 
 clean:
@@ -28,10 +32,6 @@ build:
 
 	@echo
 	@echo "Build finished. The HTML pages are in $(PUBLISH)."
-
-server:
-	make clean && make build
-	$(SPHINXAUTO) $(SRC) $(PUBLISH)
 
 publish:
 	make clean
